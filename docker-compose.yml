@@ -1,0 +1,6 @@
+﻿services:
+  webapi:
+    image: noko-web-api
+    build:
+      context: .
+      dockerfile: NokoWebApi/Dockerfile
