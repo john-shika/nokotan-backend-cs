@@ -5,8 +5,9 @@ using NokoWebApiExtra.Utils;
 namespace NokoWebApiExtra.Repositories;
 
 public interface IBaseRepository<T> 
-    where T : IBaseModel
+    where T : BaseModel
 {
+    public DbSet<T> Dataset { get; set; }
 }
 
 public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TContext> options) : DbContext(options), IBaseRepository<TBaseModel>
