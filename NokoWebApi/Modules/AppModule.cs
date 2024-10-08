@@ -1,18 +1,26 @@
-﻿using NokoWebApiSdk.Annotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Extensions.ApiModule;
-using NokoWebApiSdk.Extensions.Scalar;
-using NokoWebApiSdk.Extensions.Scalar.Enums;
-using NokoWebApiSdk.Extensions.Scalar.Options;
+using NokoWebApiSdk.Extensions.CustomException;
+using NokoWebApiSdk.Filters;
 
 namespace NokoWebApi.Modules;
 
 [ApiModule]
 public class AppModule : IApiModuleConfigureInitialized
 {
-    public void OnInitialized(IServiceCollection services)
+    public void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {
         services.AddAntiforgery();
-        services.AddControllers();
+        services.AddControllers((options) =>
+        {
+            options.Filters.Add<CustomValidationFilter>();
+            options.Filters.Add<HttpExceptionFilter>();
+        });
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
         services.AddHsts((options) =>
         {
             options.IncludeSubDomains = true;
@@ -28,10 +36,14 @@ public class AppModule : IApiModuleConfigureInitialized
             app.UseHsts();
         }
 
-        app.UseAuthorization();
+        // app.UseCustomExceptionMiddleware();
+
         app.UseHttpsRedirection();
         app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseStaticFiles();
+        
         // app.UseEndpoints(endpoints =>
         // {
         //     endpoints.MapControllerRoute(
@@ -39,7 +51,12 @@ public class AppModule : IApiModuleConfigureInitialized
         //         pattern: "{controller=Home}/{action=Index}/{id?}");
         // });
 
-        app.MapControllers();
+        app.UseEndpoints((endpoints) =>
+        {
+            endpoints.MapControllers();
+        });
+
+        // app.MapControllers();
         // app.MapStaticAssets();
     }
 }

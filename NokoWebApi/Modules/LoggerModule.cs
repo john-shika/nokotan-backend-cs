@@ -31,7 +31,7 @@ public class LoggerModule : IApiModuleInitialized
             .CreateLogger();
     }
     
-    public void OnInitialized(IServiceCollection services)
+    public void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {
         services.AddSerilog(Logger);
     }

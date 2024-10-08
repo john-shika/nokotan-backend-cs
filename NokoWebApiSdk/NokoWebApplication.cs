@@ -40,7 +40,7 @@ public class NokoWebApplication : INokoWebApplication
     public NokoWebApplication(string[] args)
     {
         WebAppBuilder = WebApplication.CreateBuilder(args);
-        WebAppBuilder.Services.AddApiModules();
+        WebAppBuilder.Services.AddApiModules(WebAppBuilder.Configuration);
         WebAppBuilder.Services.AddOpenApi();
         Listeners = [];
     }
@@ -78,7 +78,7 @@ public class NokoWebApplication : INokoWebApplication
             var options = new ScalarOptions();
             configureOptions?.Invoke(options);
         
-            webApp.MapOpenApi(pattern: options.OpenApiRoutePattern);
+            webApp.MapOpenApi(pattern: options.OpenApiRoutePattern).AllowAnonymous();
 
             if (!webHostEnv.IsDevelopment()) return;
         

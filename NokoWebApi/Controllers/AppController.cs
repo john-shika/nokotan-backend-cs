@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NokoWebApi.Schemas;
 using NokoWebApiSdk.Schemas;
 using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
@@ -7,10 +6,10 @@ using NokoWebApiSdk.Utils.Net;
 namespace NokoWebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class AppController
+[Route("")]
+public class AppController : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("message")]
     public async Task<IResult> GetMessage()
     {
         var messageBody = new MessageBody<object>

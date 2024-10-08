@@ -5,7 +5,7 @@ namespace NokoWebApiSdk.Extensions.ApiModule;
 
 public static class ApiModuleExtensions
 {
-    public static IServiceCollection AddApiModules(this IServiceCollection services)
+    public static IServiceCollection AddApiModules(this IServiceCollection services, IConfiguration configuration)
     {
         // Get Assemblies In Current App Domain
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
@@ -53,7 +53,7 @@ public static class ApiModuleExtensions
             {
                 
                 // Initialized Api Module With Service Collections
-                apiModuleInitialized.OnInitialized(services);
+                apiModuleInitialized.OnInitialized(services, configuration);
             }
 
             // Check Api Service Is Assignable From Api Module Configurable Type
