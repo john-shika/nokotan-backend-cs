@@ -1,5 +1,7 @@
 # NokoWebApi (Nokotan) ASP.Net 9.0
 
+## created by <ahmadasysyafiq@proton.me>
+
 ## dotnet workload restore
 
 ```shell
