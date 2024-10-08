@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using NokoWebApiExtra.Models;
+using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Models;
 
 namespace NokoWebApi.Models;
 
@@ -13,6 +14,7 @@ public record User : BaseModel
     public string? Fullname { get; set; }
     
     [Required]
+    [UniqueKey]
     [Column("username")]
     [JsonPropertyName("username")]
     public string Username { get; set; }
@@ -22,10 +24,12 @@ public record User : BaseModel
     [JsonPropertyName("password")]
     public string Password { get; set; }
     
+    [UniqueKey]
     [Column("email")]
     [JsonPropertyName("email")]
     public string? Email { get; set; }
     
+    [UniqueKey]
     [Column("phone")]
     [JsonPropertyName("phone")]
     public string? Phone { get; set; }

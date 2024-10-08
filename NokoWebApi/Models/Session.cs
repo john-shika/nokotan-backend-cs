@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using NokoWebApiExtra.Models;
+using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Models;
 
 namespace NokoWebApi.Models;
 
@@ -15,10 +16,12 @@ public record Session : BaseModel
     public Guid UserId { get; set; }
     
     [Required]
+    [UniqueKey]
     [Column("token")]
     [JsonPropertyName("token")]
     public string Token { get; set; }
     
+    [UniqueKey]
     [Column("new_token")]
     [JsonPropertyName("newToken")]
     public string? NewToken { get; set; }

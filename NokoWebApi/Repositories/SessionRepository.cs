@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NokoWebApi.Models;
-using NokoWebApiExtra.Extensions.ApiRepository;
-using NokoWebApiExtra.Repositories;
+using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Repositories;
 
 namespace NokoWebApi.Repositories;
 
@@ -16,11 +16,11 @@ public class SessionRepository(DbContextOptions<SessionRepository> options) : Ba
     {
         base.OnModelCreating(modelBuilder);
         
-        modelBuilder.Entity<Session>((entity) =>
-        {
-            entity.HasIndex(e => e.UserId).IsUnique();
-            entity.HasIndex(e => e.Token).IsUnique();
-            entity.HasIndex(e => e.NewToken).IsUnique();
-        });
+        // modelBuilder.Entity<Session>((entity) =>
+        // {
+        //     entity.HasIndex(e => e.UserId).IsUnique();
+        //     entity.HasIndex(e => e.Token).IsUnique();
+        //     entity.HasIndex(e => e.NewToken).IsUnique();
+        // });
     }
 }

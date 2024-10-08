@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NokoWebApi.Models;
-using NokoWebApiExtra.Extensions.ApiRepository;
-using NokoWebApiExtra.Repositories;
+using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Repositories;
 
 namespace NokoWebApi.Repositories;
 
@@ -16,11 +16,11 @@ public class UserRepository(DbContextOptions<UserRepository> options) : BaseRepo
     {
         base.OnModelCreating(modelBuilder);
         
-        modelBuilder.Entity<User>((entity) =>
-        {
-            entity.HasIndex(e => e.Username).IsUnique();
-            entity.HasIndex(e => e.Email).IsUnique();
-            entity.HasIndex(e => e.Phone).IsUnique();
-        });
+        // modelBuilder.Entity<User>((entity) =>
+        // {
+        //     entity.HasIndex(e => e.Username).IsUnique();
+        //     entity.HasIndex(e => e.Email).IsUnique();
+        //     entity.HasIndex(e => e.Phone).IsUnique();
+        // });
     }
 }

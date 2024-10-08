@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NokoWebApi.Schemas;
-using NokoWebApiExtra.Schemas;
-using NokoWebApiExtra.Utils;
-using NokoWebApiExtra.Utils.Net;
+using NokoWebApiSdk.Schemas;
+using NokoWebApiSdk.Utils;
+using NokoWebApiSdk.Utils.Net;
 
 namespace NokoWebApi.Controllers;
 

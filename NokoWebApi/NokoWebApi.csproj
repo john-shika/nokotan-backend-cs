@@ -27,11 +27,6 @@
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NokoWebApiExtra\NokoWebApiExtra.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
+    <ProjectReference Include="..\NokoWebApiSdk\NokoWebApiSdk.csproj" />
   </ItemGroup>
 </Project>

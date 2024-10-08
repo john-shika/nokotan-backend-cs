@@ -1,21 +1,28 @@
 using Microsoft.EntityFrameworkCore;
 using NokoWebApi.Controllers;
-using NokoWebApiExtra.Extensions.ApiService;
-using NokoWebApi.Services;
-using NokoWebApiExtra.Extensions.ApiRepository;
+using NokoWebApiSdk.Extensions.ApiModule;
+using NokoWebApi.Modules;
+using NokoWebApiSdk;
+using NokoWebApiSdk.Extensions.ApiRepository;
+using NokoWebApiSdk.Extensions.Scalar.Enums;
 
-var builder = WebApplication.CreateBuilder(args);
+var noko = NokoWebApplication.Create(args);
 
-builder.Services.AddApiRepositories((options) =>
+noko.Repository((options) =>
 {
     // options.UseInMemoryDatabase("main");
     options.UseSqlite("Data Source=Migrations/dev.db");
 });
 
-builder.Services.AddApiServices();
+noko.MapOpenApi((options) =>
+{
+    options.Title = "Scalar API Reference -- {documentName}";
+    options.EndpointPathPrefix = "/scalar/{documentName}";
+    options.OpenApiRoutePattern = "/openapi/{documentName}.json";
+    // options.CdnUrl = "https://cdn.jsdelivr.net/npm/@scalar/api-reference";
+    options.CdnUrl = "/js/scalar.api-reference.js";
+    options.Theme = ScalarTheme.Purple;
+    options.Favicon = "/favicon.ico";
+});
 
-var app = builder.Build();
-
-app.UseApiServices();
-
-app.Run();
+noko.Run();
