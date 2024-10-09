@@ -33,3 +33,5 @@ values.dev.yaml
 
 *-lock.json
 pnpm-lock.yaml
+
+*.DotSettings.user

@@ -69,17 +69,9 @@ public static class HttpStatusText
     public const string NotExtended = "NOT_EXTENDED";
     public const string NetworkAuthenticationRequired = "NETWORK_AUTHENTICATION_REQUIRED";
     
-    public static string ToUpperSnakeCase(string value)
+    public static HttpStatusCodes ParseCode(string statusText)
     {
-        if (Common.IsNoneOrEmptyOrWhiteSpace(value)) return string.Empty;
-        var temp = Regex.Replace(value.Trim(), @"(?<!^)(?=[A-Z])|[-_\s]+", "_");
-        temp = Regex.Replace(temp, @"[-_\s]+", "_").ToUpper();
-        return temp;
-    }
-    
-    public static HttpStatusCodes GetCode(string statusText)
-    {
-        return ToUpperSnakeCase(statusText) switch
+        return Transform.ToSnakeCaseUpper(statusText) switch
         {
             Continue => HttpStatusCodes.Continue,
             SwitchingProtocols => HttpStatusCodes.SwitchingProtocols,
@@ -149,7 +141,7 @@ public static class HttpStatusText
         };
     }
 
-    public static string From(HttpStatusCodes statusCode)
+    public static string FromCode(HttpStatusCodes statusCode)
     {
         return statusCode switch
         {

@@ -38,7 +38,7 @@ public class CustomExceptionMiddleware
         {
             StatusOk = false,
             StatusCode = context.Response.StatusCode,
-            Status = HttpStatusText.From((HttpStatusCodes)context.Response.StatusCode),
+            Status = HttpStatusText.FromCode((HttpStatusCodes)context.Response.StatusCode),
             Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
             Message = "An unexpected error occurred.",
             Data = null,

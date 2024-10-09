@@ -26,7 +26,7 @@ public class CustomValidationFilter : IActionFilter
         {
             StatusOk = false,
             StatusCode = response.StatusCode,
-            Status = HttpStatusText.From((HttpStatusCodes)response.StatusCode),
+            Status = HttpStatusText.FromCode((HttpStatusCodes)response.StatusCode),
             Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
             Message = "One or more validation errors occurred.",
             Data = errors,

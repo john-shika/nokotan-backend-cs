@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using NokoWebApi.Controllers;
-using NokoWebApiSdk.Extensions.ApiModule;
 using NokoWebApi.Modules;
+using NokoWebApi.Repositories;
 using NokoWebApiSdk;
-using NokoWebApiSdk.Extensions.ApiRepository;
 using NokoWebApiSdk.Extensions.Scalar.Enums;
 
 var noko = NokoWebApplication.Create(args);

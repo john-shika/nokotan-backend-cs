@@ -23,4 +23,9 @@ public class UserRepository(DbContextOptions<UserRepository> options) : BaseRepo
         //     entity.HasIndex(e => e.Phone).IsUnique();
         // });
     }
+
+    public async Task<List<User>> GetAllUsers()
+    {
+        return await Dataset.ToListAsync();
+    }
 }

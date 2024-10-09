@@ -21,7 +21,7 @@ public class HttpExceptionFilter : IExceptionFilter
         {
             StatusOk = false,
             StatusCode = response.StatusCode,
-            Status = HttpStatusText.From((HttpStatusCodes)response.StatusCode),
+            Status = HttpStatusText.FromCode((HttpStatusCodes)response.StatusCode),
             Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
             Message = exception.Message,
             Data = null,

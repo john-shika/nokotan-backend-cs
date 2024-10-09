@@ -10,12 +10,12 @@ namespace NokoWebApiSdk;
 
 public interface INokoWebApplication
 {
-    public WebApplicationBuilder WebAppBuilder { get; init; }
-    public IServiceCollection Services => WebAppBuilder.Services;
-    public WebApplication? WebApp { get; set; }
-    public IWebHostEnvironment? WebHostEnv => WebApp?.Environment;
-    public IHostApplicationLifetime? AppLifetime => WebApp?.Lifetime;
-    public ILogger? Logger => WebApp?.Logger;
+    public WebApplicationBuilder ApplicationBuilder { get; init; }
+    public IServiceCollection Services => ApplicationBuilder.Services;
+    public WebApplication? Application { get; set; }
+    public IWebHostEnvironment? Environment => Application?.Environment;
+    public IHostApplicationLifetime? ApplicationLifetime => Application?.Lifetime;
+    public ILogger? Logger => Application?.Logger;
     public IServiceCollection Repository(Action<DbContextOptionsBuilder>? optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped);
     public WebApplication? MapOpenApi(Action<ScalarOptions>? configureOptions = null);
     public WebApplication Build();
@@ -27,27 +27,27 @@ public interface INokoWebApplication
 
 public class NokoWebApplication : INokoWebApplication
 {
-    public WebApplicationBuilder WebAppBuilder { get; init; }
-    public IServiceCollection Services => WebAppBuilder.Services;
-    public WebApplication? WebApp { get; set; }
+    public WebApplicationBuilder ApplicationBuilder { get; init; }
+    public IServiceCollection Services => ApplicationBuilder.Services;
+    public WebApplication? Application { get; set; }
     
-    public IWebHostEnvironment? WebHostEnv => WebApp?.Environment;
-    public IHostApplicationLifetime? AppLifetime => WebApp?.Lifetime;
-    public ILogger? Logger => WebApp?.Logger;
+    public IWebHostEnvironment? Environment => Application?.Environment;
+    public IHostApplicationLifetime? ApplicationLifetime => Application?.Lifetime;
+    public ILogger? Logger => Application?.Logger;
 
     public List<Action<NokoWebApplication>?> Listeners { get; }
     
     public NokoWebApplication(string[] args)
     {
-        WebAppBuilder = WebApplication.CreateBuilder(args);
-        WebAppBuilder.Services.AddApiModules(WebAppBuilder.Configuration);
-        WebAppBuilder.Services.AddOpenApi();
+        ApplicationBuilder = WebApplication.CreateBuilder(args);
+        ApplicationBuilder.Services.AddApiModules(ApplicationBuilder.Configuration);
+        ApplicationBuilder.Services.AddOpenApi();
         Listeners = [];
     }
 
     protected void InvokeOrListen(Action<NokoWebApplication> listener)
     {
-        if (WebApp is null || WebHostEnv is null)
+        if (Application is null || Environment is null)
         {
             Listeners.Add(listener);
         }
@@ -72,42 +72,44 @@ public class NokoWebApplication : INokoWebApplication
     {
         var listener = (NokoWebApplication noko) =>
         {
-            var webApp = noko.WebApp!;
-            var webHostEnv = noko.WebHostEnv!;
+            var app = noko.Application!;
+            var env = noko.Environment!;
             
             var options = new ScalarOptions();
             configureOptions?.Invoke(options);
         
-            webApp.MapOpenApi(pattern: options.OpenApiRoutePattern).AllowAnonymous();
+            app.MapOpenApi(pattern: options.OpenApiRoutePattern)
+                .RequireAuthorization()
+                .AllowAnonymous();
 
-            if (!webHostEnv.IsDevelopment()) return;
+            if (!env.IsDevelopment()) return;
         
             if (configureOptions is not null)
             {
-                webApp.MapScalarApiReference((scalarOptions) =>
+                app.MapScalarApiReference((scalarOptions) =>
                 {
                     scalarOptions.CopyFrom(options);
                 });
             }
             else
             {
-                webApp.MapScalarApiReference();
+                app.MapScalarApiReference();
             }
         
-            webApp.UseDeveloperExceptionPage();
+            app.UseDeveloperExceptionPage();
         };
 
         InvokeOrListen(listener);
 
-        return WebApp;
+        return Application;
     }
 
     public WebApplication Build()
     {
-        if (WebApp is not null) return WebApp;
-        WebApp = WebAppBuilder.Build();
-        WebApp.UseApiModules(WebHostEnv);
-        return WebApp;
+        if (Application is not null) return Application;
+        Application = ApplicationBuilder.Build();
+        Application.UseApiModules(Environment);
+        return Application;
     }
 
     public void BuildAndEmitListen()
@@ -125,24 +127,24 @@ public class NokoWebApplication : INokoWebApplication
     public void Run()
     {
         BuildAndEmitListen();
-        WebApp!.Run();
+        Application!.Run();
     }
     
     public async Task RunAsync([StringSyntax("Uri")] string? url = null)
     {
         BuildAndEmitListen();
-        await WebApp!.RunAsync(url);
+        await Application!.RunAsync(url);
     }
     
     public void Start()
     {
         BuildAndEmitListen();
-        WebApp!.Start();
+        Application!.Start();
     }
 
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
         BuildAndEmitListen();
-        await WebApp!.StartAsync(cancellationToken);
+        await Application!.StartAsync(cancellationToken);
     }
 }

@@ -6,15 +6,13 @@
     <RootNamespace>NokoWebApiSdk</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Properties\launchSettings.json" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="NetEscapades.EnumGenerators" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Database\Feeders\" />
     <Folder Include="Modules\" />
   </ItemGroup>
 </Project>

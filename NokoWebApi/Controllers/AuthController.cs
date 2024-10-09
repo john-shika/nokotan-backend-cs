@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -29,8 +30,14 @@ public class AuthController : ControllerBase
         _sessionRepository = sessionRepository;
     }
     
+    // <summary>
+    // This is Login API Reference.
+    // </summary>
+    // <param name="loginFormBody">This is Login Form Body Expected.</param>
+    // <returns>Returns a message body with access token generated.</returns>
     [HttpPost("login")]
-    public async Task<IResult> Authenticate([FromBody] LoginFormBody model)
+    [Consumes(MediaTypeNames.Application.Json)]
+    public async Task<IResult> Authenticate([FromBody] LoginFormBody loginFormBody)
     {
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
         var userAgent = HttpContext.Request.Headers[HeaderNames.UserAgent].ToString();
@@ -40,14 +47,14 @@ public class AuthController : ControllerBase
         
         var token = GenerateJwtToken(
             Common.GenerateUuidV7(), 
-            model.Username, 
+            loginFormBody.Username, 
             DateTime.UtcNow.AddDays(7));
         
         var messageBody = new AccessJwtTokenMessageBody
         {
             StatusOk = true,
             StatusCode = (int)HttpStatusCodes.Created,
-            Status = HttpStatusText.From(HttpStatusCodes.Created),
+            Status = HttpStatusText.FromCode(HttpStatusCodes.Created),
             Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
             Message = "Successfully create JWT Token.",
             Data = new AccessJwtTokenData {
@@ -60,9 +67,11 @@ public class AuthController : ControllerBase
     
     [Authorize]
     [HttpGet("validate")]
-    public async Task<IResult> ValidateToken()
+    [Consumes(MediaTypeNames.Application.Json)]
+    public async Task<IResult> ValidateToken([FromHeader(Name = "Authorization")] string authorization)
     {
-        var token = HttpContext.Request.Headers[HeaderNames.Authorization].FirstOrDefault()?.Split(" ").Last()!;
+        // var token = HttpContext.Request.Headers[HeaderNames.Authorization].FirstOrDefault()?
+        var token = authorization.Split(" ").Last()!;
         
         try
         {
