@@ -28,6 +28,11 @@ public static class NokoWebCommon
         return TruncateToMilliseconds(dateTimeUtcNow);
     }
 
+    public static string GetDateTimeIso8601(DateTime dateTime)
+    {
+        return dateTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+    }
+
     public static Guid GenerateUuidV7()
     {
         return Guid.CreateVersion7();

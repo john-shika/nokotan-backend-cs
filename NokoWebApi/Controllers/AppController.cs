@@ -27,7 +27,7 @@ public class AppController : ControllerBase
     [HttpGet("users")]
     [Tags(TagNames.Anonymous, "App")]
     [EndpointSummary("GET_ALL_USERS")]
-    [Produces(MediaTypeNames.Application.Json)]
+    [Produces(typeof(MessageBody<List<User>>))]
     public async Task<IResult> GetAllUsers()
     {
         var users = await _userRepository.GetAllUsers();

@@ -41,7 +41,7 @@ public class AuthController : ControllerBase
     [Tags(TagNames.Anonymous, "Auth")]
     [EndpointSummary("LOGIN_USER")]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Produces(MediaTypeNames.Application.Json)]
+    [Produces(typeof(AccessJwtTokenMessageBody))]
     public async Task<IResult> Authenticate([FromBody] LoginFormBody loginFormBody)
     {
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
@@ -49,11 +49,13 @@ public class AuthController : ControllerBase
         
         _logger.LogInformation($"IpAddress: {ipAddress}");
         _logger.LogInformation($"UserAgent: {userAgent}");
+
+        var tokenId = NokoWebCommon.GenerateUuidV7(); // as JTI
+        var sessionId = NokoWebCommon.GenerateUuidV7(); // as SID
+        var username = loginFormBody.Username; // as USERNAME
+        var expires = DateTime.UtcNow.AddDays(7); // as EXP
         
-        var token = GenerateJwtToken(
-            NokoWebCommon.GenerateUuidV7(), 
-            loginFormBody.Username, 
-            DateTime.UtcNow.AddDays(7));
+        var token = GenerateJwtToken(tokenId, sessionId, username, expires);
         
         var messageBody = new AccessJwtTokenMessageBody
         {
@@ -82,12 +84,13 @@ public class AuthController : ControllerBase
         
         try
         {
-            var (sessionId, username, expires) = ParseJwtToken(token);
+            var (tokenId, sessionId, username, expires) = ParseJwtToken(token);
             return TypedResults.Ok(new
             {
+                TokenId = tokenId,
                 SessionId = sessionId,
                 Username = username,
-                Expires = expires
+                ExpiredAt = expires
             });
         }
         catch (Exception ex)
@@ -96,7 +99,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    private string GenerateJwtToken(Guid sessionId, string username, DateTime? expires = null)
+    private string GenerateJwtToken(Guid tokenId, Guid sessionId, string username, DateTime? expires = null)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
         var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]!);
@@ -107,13 +110,12 @@ public class AuthController : ControllerBase
 
         const string algorithm = SecurityAlgorithms.HmacSha256Signature;
 
-        var jti = NokoWebCommon.GenerateUuidV7();
         var symmetricSecurityKey = new SymmetricSecurityKey(secretKey);
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, algorithm);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity([
-                new Claim(JwtClaimTagNames.Jti, jti.ToString()),
+                new Claim(JwtClaimTagNames.Jti, tokenId.ToString()),
                 new Claim(JwtClaimTagNames.Sid, sessionId.ToString()),
                 new Claim("username", username),
                 // new Claim("role", "user"),
@@ -129,7 +131,7 @@ public class AuthController : ControllerBase
         return tokenHandler.WriteToken(token);
     }
     
-    private (Guid SessionId, string Username, DateTime? Expires) ParseJwtToken(string token)
+    private (Guid TokenId, Guid SessionId, string Username, DateTime? Expires) ParseJwtToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
@@ -139,11 +141,12 @@ public class AuthController : ControllerBase
             throw new ArgumentException("Invalid JWT token");
         }
 
+        var tokenId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtClaimTagNames.Jti).Value);
         var sessionId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtClaimTagNames.Sid).Value);
         var username = jwtToken.Claims.First(claim => claim.Type == "username").Value;
         var expires = jwtToken.ValidTo;
 
-        return (sessionId, username, expires);
+        return (tokenId, sessionId, username, expires);
     }
 
 }

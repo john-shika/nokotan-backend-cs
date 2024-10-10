@@ -17,14 +17,14 @@ public record Session : BaseModel
     
     [Required]
     [UniqueKey]
-    [Column("token")]
-    [JsonPropertyName("token")]
-    public string Token { get; set; }
+    [Column("token_id")]
+    [JsonPropertyName("tokenId")]
+    public string TokenId { get; set; }
     
     [UniqueKey]
-    [Column("new_token")]
-    [JsonPropertyName("newToken")]
-    public string? NewToken { get; set; }
+    [Column("new_token_id")]
+    [JsonPropertyName("newTokenId")]
+    public string? NewTokenId { get; set; }
     
     [Required]
     [Column("ip_addr")]

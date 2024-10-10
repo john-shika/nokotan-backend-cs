@@ -2,6 +2,7 @@
 using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Extensions.ApiService;
 using NokoWebApiSdk.Filters;
+using NokoWebApiSdk.Json.Converters;
 
 namespace NokoWebApi.Services;
 
@@ -16,6 +17,10 @@ public class AppService : ApiServiceInitialized
         {
             options.Filters.Add<CustomValidationFilter>();
             options.Filters.Add<HttpExceptionFilter>();
+        }).AddJsonOptions(options =>
+        {
+            // TODO: source codes moved into NokoWebApiSdk.Json.Services.JsonService
+            options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverter());
         });
         services.Configure<ApiBehaviorOptions>(options =>
         {

@@ -8,7 +8,7 @@ public interface IUserSessionLookupData
 {
     public Guid SessionId { get; init; }
     public bool Used { get; init; }
-    public bool Online { get; init; }
+    // public bool Online { get; init; }
     public string IpAddr { get; init; }
     public string UserAgent { get; init; }
     public DateTime ExpiredAt { get; init; }
@@ -25,8 +25,8 @@ public record UserSessionLookupData : IUserSessionLookupData
     [JsonPropertyName("used")]
     public bool Used { get; init; }
     
-    [JsonPropertyName("online")]
-    public bool Online { get; init; }
+    // [JsonPropertyName("online")]
+    // public bool Online { get; init; }
     
     [Required]
     [JsonPropertyName("ipAddr")]
@@ -49,9 +49,4 @@ public record UserSessionLookupData : IUserSessionLookupData
     public DateTime? DeletedAt { get; init; }
 }
 
-public record UserSessionLookupDataMany
-{
-    public List<UserSessionLookupData> Data { get; init; }
-}
-
-public record UserSessionLookupManyMessageBody : MessageBody<UserSessionLookupDataMany>;
+public record UserSessionLookupManyMessageBody : MessageBody<UserSessionLookupData[]>;
