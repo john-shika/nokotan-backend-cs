@@ -2,6 +2,12 @@
 
 ## created by <ahmadasysyafiq@proton.me>
 
+## dotnet run
+
+```shell
+dotnet run --project NokoWebApi
+```
+
 ## dotnet workload restore
 
 ```shell

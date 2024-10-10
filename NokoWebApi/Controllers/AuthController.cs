@@ -1,17 +1,19 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mime;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
-using NokoWebApiSdk.Schemas;
+using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.OpenApi;
 using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace NokoWebApi.Controllers;
 
@@ -36,7 +38,11 @@ public class AuthController : ControllerBase
     // <param name="loginFormBody">This is Login Form Body Expected.</param>
     // <returns>Returns a message body with access token generated.</returns>
     [HttpPost("login")]
+    [Tags("Auth")]
+    [EndpointSummary("Login User")]
+    [EndpointDescription("Auth Login Endpoint")]
     [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     public async Task<IResult> Authenticate([FromBody] LoginFormBody loginFormBody)
     {
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
@@ -46,7 +52,7 @@ public class AuthController : ControllerBase
         _logger.LogInformation($"UserAgent: {userAgent}");
         
         var token = GenerateJwtToken(
-            Common.GenerateUuidV7(), 
+            NokoWebCommon.GenerateUuidV7(), 
             loginFormBody.Username, 
             DateTime.UtcNow.AddDays(7));
         
@@ -55,7 +61,7 @@ public class AuthController : ControllerBase
             StatusOk = true,
             StatusCode = (int)HttpStatusCodes.Created,
             Status = HttpStatusText.FromCode(HttpStatusCodes.Created),
-            Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
             Message = "Successfully create JWT Token.",
             Data = new AccessJwtTokenData {
                 AccessToken = token,
@@ -65,9 +71,12 @@ public class AuthController : ControllerBase
         return TypedResults.Ok(messageBody);
     }
     
-    [Authorize]
     [HttpGet("validate")]
-    [Consumes(MediaTypeNames.Application.Json)]
+    [Tags(BearerTagNames.BearerJwt, "Auth")]
+    [EndpointSummary("Validate User")]
+    [EndpointDescription("Validate User Endpoint")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
+    [Produces(MediaTypeNames.Application.Json)]
     public async Task<IResult> ValidateToken([FromHeader(Name = "Authorization")] string authorization)
     {
         // var token = HttpContext.Request.Headers[HeaderNames.Authorization].FirstOrDefault()?
@@ -99,13 +108,18 @@ public class AuthController : ControllerBase
         var tokenHandler = new JwtSecurityTokenHandler();
 
         const string algorithm = SecurityAlgorithms.HmacSha256Signature;
+
+        var jti = NokoWebCommon.GenerateUuidV7();
         var symmetricSecurityKey = new SymmetricSecurityKey(secretKey);
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, algorithm);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity([
-                new Claim("sessionId", sessionId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, jti.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sid, sessionId.ToString()),
                 new Claim("username", username),
+                // new Claim("role", "user"),
+                new Claim("role", "Admin"),
             ]),
             Expires = expires,
             Issuer = issuer,
@@ -127,7 +141,7 @@ public class AuthController : ControllerBase
             throw new ArgumentException("Invalid JWT token");
         }
 
-        var sessionId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == "sessionId").Value);
+        var sessionId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sid).Value);
         var username = jwtToken.Claims.First(claim => claim.Type == "username").Value;
         var expires = jwtToken.ValidTo;
 

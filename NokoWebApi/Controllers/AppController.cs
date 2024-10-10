@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NokoWebApi.Models;
 using NokoWebApi.Repositories;
+using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Schemas;
 using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
@@ -24,7 +25,10 @@ public class AppController : ControllerBase
     }
     
     [HttpGet("users")]
-    [Consumes(MediaTypeNames.Application.Json)]
+    [Tags("App")]
+    [EndpointSummary("Get All Users")]
+    [EndpointDescription("Get All Users Endpoint")]
+    [Produces(MediaTypeNames.Application.Json)]
     public async Task<IResult> GetAllUsers()
     {
         var users = await _userRepository.GetAllUsers();
@@ -33,7 +37,7 @@ public class AppController : ControllerBase
             StatusOk = true,
             StatusCode = (int)HttpStatusCodes.Ok,
             Status = HttpStatusText.FromCode(HttpStatusCodes.Ok),
-            Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
             Message = "Get All Users.",
             Data = users,
         };
@@ -42,7 +46,10 @@ public class AppController : ControllerBase
     }
     
     [HttpGet("message")]
-    [Consumes(MediaTypeNames.Application.Json)]
+    [Tags("App")]
+    [EndpointSummary("Get Message")]
+    [EndpointDescription("Get Message Endpoint")]
+    [Produces(typeof(MessageBody<object>))]
     public async Task<IResult> GetMessage()
     {
         var messageBody = new MessageBody<object>
@@ -50,7 +57,7 @@ public class AppController : ControllerBase
             StatusOk = true,
             StatusCode = (int)HttpStatusCodes.Ok,
             Status = HttpStatusText.FromCode(HttpStatusCodes.Ok),
-            Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
             Message = "Hello World.",
             Data = null,
         };

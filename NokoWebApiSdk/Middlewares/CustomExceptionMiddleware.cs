@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Schemas;
 using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
@@ -39,7 +40,7 @@ public class CustomExceptionMiddleware
             StatusOk = false,
             StatusCode = context.Response.StatusCode,
             Status = HttpStatusText.FromCode((HttpStatusCodes)context.Response.StatusCode),
-            Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
             Message = "An unexpected error occurred.",
             Data = null,
         };

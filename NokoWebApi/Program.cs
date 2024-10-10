@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using NokoWebApi.Controllers;
-using NokoWebApi.Modules;
 using NokoWebApi.Repositories;
 using NokoWebApiSdk;
-using NokoWebApiSdk.Extensions.Scalar.Enums;
+using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Extensions.OpenApi.Scalar.Enums;
 
 var noko = NokoWebApplication.Create(args);
 
@@ -20,7 +20,7 @@ noko.MapOpenApi((options) =>
     options.OpenApiRoutePattern = "/openapi/{documentName}.json";
     // options.CdnUrl = "https://cdn.jsdelivr.net/npm/@scalar/api-reference";
     options.CdnUrl = "/js/scalar.api-reference.js";
-    options.Theme = ScalarTheme.Purple;
+    options.Theme = OpenApiScalarTheme.Purple;
     options.Favicon = "/favicon.ico";
 });
 

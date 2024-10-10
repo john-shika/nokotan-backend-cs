@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Schemas;
 using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
@@ -22,7 +23,7 @@ public class HttpExceptionFilter : IExceptionFilter
             StatusOk = false,
             StatusCode = response.StatusCode,
             Status = HttpStatusText.FromCode((HttpStatusCodes)response.StatusCode),
-            Timestamp = Common.GetDateTimeUtcNowInMilliseconds(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
             Message = exception.Message,
             Data = null,
         };

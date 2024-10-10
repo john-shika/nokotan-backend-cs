@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Models;
 using NokoWebApiSdk.Utils;
 
@@ -53,9 +54,9 @@ public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TCon
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.Id = Common.GenerateUuidV7();
-                    entry.Entity.CreatedAt = Common.GetDateTimeUtcNowInMilliseconds();
-                    entry.Entity.UpdatedAt = Common.GetDateTimeUtcNowInMilliseconds();
+                    entry.Entity.Id = NokoWebCommon.GenerateUuidV7();
+                    entry.Entity.CreatedAt = NokoWebCommon.GetDateTimeUtcNowInMilliseconds();
+                    entry.Entity.UpdatedAt = NokoWebCommon.GetDateTimeUtcNowInMilliseconds();
                     break;
                 case EntityState.Modified:
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
