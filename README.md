@@ -8,10 +8,24 @@
 dotnet run --project NokoWebApi
 ```
 
+## dotnet developer certificates https trusted
+
+```shell
+dotnet dev-certs https --trust
+```
+
 ## dotnet workload restore
 
 ```shell
 dotnet workload restore
+```
+
+## dotnet tool update all packages
+
+```shell
+dotnet tool list -g
+dotnet tool install <package-id> -g
+dotnet tool update --all -g
 ```
 
 ## dotnet tool install dotnet-ef
