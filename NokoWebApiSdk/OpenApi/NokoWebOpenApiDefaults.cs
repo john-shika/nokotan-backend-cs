@@ -9,6 +9,6 @@ public static class NokoWebOpenApiDefaults
 {
     public static AuthSchemeBearerTagOpenApiSecurityScheme AuthSchemeBearerTagOpenApiSecuritySchemes = new() 
     {
-        [JwtBearerDefaults.AuthenticationScheme] = (BearerTagNames.BearerJwt, NokoWebOpenApiSecuritySchemes.SecuritySchemeJwt),
+        [JwtBearerDefaults.AuthenticationScheme] = (NokoWebOpenApiSecuritySchemeTagNames.BearerJwt, NokoWebOpenApiSecuritySchemes.SecuritySchemeJwt),
     };
 }

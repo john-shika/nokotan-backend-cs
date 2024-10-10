@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.OpenApi;
+using NokoWebApiSdk.OpenApi.Extensions;
 using NokoWebApiSdk.Utils;
 using Serilog;
 
@@ -19,11 +20,8 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
         
         var defineAuthSchemeSecurities = NokoWebOpenApiDefaults.AuthSchemeBearerTagOpenApiSecuritySchemes;
         var defineAuthSchemeFounds = NokoWebCommon.InsertAnyMapValues(defineAuthSchemeSecurities, false);
-        
-        document.Components ??= new OpenApiComponents();
-        document.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
-        document.SecurityRequirements ??= new List<OpenApiSecurityRequirement>();
-        document.Paths ??= new OpenApiPaths();
+
+        document.Preload();
 
         foreach (var authScheme in authSchemes)
         {

@@ -15,7 +15,7 @@ public static class NokoWebOpenApiSecuritySchemes
         Reference = new OpenApiReference
         {
             Type = ReferenceType.SecurityScheme,
-            Id = BearerTagNames.BearerJwt,
+            Id = NokoWebOpenApiSecuritySchemeTagNames.BearerJwt,
         }
     };
 }

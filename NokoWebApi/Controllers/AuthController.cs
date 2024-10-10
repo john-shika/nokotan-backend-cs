@@ -11,9 +11,9 @@ using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.OpenApi;
-using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+using JwtClaimTagNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
+using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
 namespace NokoWebApi.Controllers;
 
@@ -38,9 +38,8 @@ public class AuthController : ControllerBase
     // <param name="loginFormBody">This is Login Form Body Expected.</param>
     // <returns>Returns a message body with access token generated.</returns>
     [HttpPost("login")]
-    [Tags("Auth")]
-    [EndpointSummary("Login User")]
-    [EndpointDescription("Auth Login Endpoint")]
+    [Tags(TagNames.Anonymous, "Auth")]
+    [EndpointSummary("LOGIN_USER")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     public async Task<IResult> Authenticate([FromBody] LoginFormBody loginFormBody)
@@ -72,9 +71,8 @@ public class AuthController : ControllerBase
     }
     
     [HttpGet("validate")]
-    [Tags(BearerTagNames.BearerJwt, "Auth")]
-    [EndpointSummary("Validate User")]
-    [EndpointDescription("Validate User Endpoint")]
+    [Tags(TagNames.BearerJwt, TagNames.RoleAdmin, "Auth")]
+    [EndpointSummary("VALIDATE_USER")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
     [Produces(MediaTypeNames.Application.Json)]
     public async Task<IResult> ValidateToken([FromHeader(Name = "Authorization")] string authorization)
@@ -115,8 +113,8 @@ public class AuthController : ControllerBase
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity([
-                new Claim(JwtRegisteredClaimNames.Jti, jti.ToString()),
-                new Claim(JwtRegisteredClaimNames.Sid, sessionId.ToString()),
+                new Claim(JwtClaimTagNames.Jti, jti.ToString()),
+                new Claim(JwtClaimTagNames.Sid, sessionId.ToString()),
                 new Claim("username", username),
                 // new Claim("role", "user"),
                 new Claim("role", "Admin"),
@@ -141,7 +139,7 @@ public class AuthController : ControllerBase
             throw new ArgumentException("Invalid JWT token");
         }
 
-        var sessionId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sid).Value);
+        var sessionId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtClaimTagNames.Sid).Value);
         var username = jwtToken.Claims.First(claim => claim.Type == "username").Value;
         var expires = jwtToken.ValidTo;
 

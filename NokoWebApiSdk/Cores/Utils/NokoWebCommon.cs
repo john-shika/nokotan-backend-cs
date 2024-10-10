@@ -77,4 +77,10 @@ public static class NokoWebCommon
         }
         return m;
     }
+
+    public static string EndsCut(string? value, string ends)
+    {
+        if (value is null) return string.Empty;
+        return value.EndsWith(ends) ? value[..^ends.Length] : value;
+    }
 }

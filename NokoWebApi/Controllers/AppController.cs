@@ -4,8 +4,8 @@ using NokoWebApi.Models;
 using NokoWebApi.Repositories;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Schemas;
-using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
+using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
 namespace NokoWebApi.Controllers;
 
@@ -25,9 +25,8 @@ public class AppController : ControllerBase
     }
     
     [HttpGet("users")]
-    [Tags("App")]
-    [EndpointSummary("Get All Users")]
-    [EndpointDescription("Get All Users Endpoint")]
+    [Tags(TagNames.Anonymous, "App")]
+    [EndpointSummary("GET_ALL_USERS")]
     [Produces(MediaTypeNames.Application.Json)]
     public async Task<IResult> GetAllUsers()
     {
@@ -46,13 +45,12 @@ public class AppController : ControllerBase
     }
     
     [HttpGet("message")]
-    [Tags("App")]
-    [EndpointSummary("Get Message")]
-    [EndpointDescription("Get Message Endpoint")]
-    [Produces(typeof(MessageBody<object>))]
+    [Tags(TagNames.Anonymous, "App")]
+    [EndpointSummary("GET_MESSAGE")]
+    [Produces(typeof(EmptyMessageBody))]
     public async Task<IResult> GetMessage()
     {
-        var messageBody = new MessageBody<object>
+        var messageBody = new EmptyMessageBody
         {
             StatusOk = true,
             StatusCode = (int)HttpStatusCodes.Ok,
