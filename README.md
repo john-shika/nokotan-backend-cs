@@ -22,8 +22,12 @@ dotnet tool install dotnet-ef -g
 # dotnet list all migrations
 dotnet ef migrations list
 
+dotnet ef migrations list --context NokoWebApi.Repository.<repository-name>
+
 # dotnet added new migration
 dotnet ef migrations add <migration-name>
+
+dotnet ef migrations add <migration-name> --context NokoWebApi.Repository.<repository-name>
 
 # dotnet remove last migration
 dotnet ef migrations remove
@@ -31,9 +35,19 @@ dotnet ef migrations remove
 # dotnet update database
 dotnet ef database update
 
+dotnet ef database update --context NokoWebApi.Repository.<repository-name>
+
 # dotnet reset database
 dotnet ef database drop
 dotnet ef database update
+
+dotnet ef database drop --context NokoWebApi.Repository.<repository-name>
+dotnet ef database update --context NokoWebApi.Repository.<repository-name>
+
+# dotnet database context list
+dotnet ef dbcontext list
+
+dotnet ef dbcontext info --context NokoWebApi.Repository.<repository-name>
 ```
 
 ## step by step using dotnet-ef

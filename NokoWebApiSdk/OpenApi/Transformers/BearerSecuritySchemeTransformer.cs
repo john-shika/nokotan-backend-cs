@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 using NokoWebApiSdk.Cores;
-using NokoWebApiSdk.OpenApi;
 using NokoWebApiSdk.OpenApi.Extensions;
-using NokoWebApiSdk.Utils;
-using Serilog;
 
-namespace NokoWebApiSdk.Transformers;
+namespace NokoWebApiSdk.OpenApi.Transformers;
 
 public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
 {

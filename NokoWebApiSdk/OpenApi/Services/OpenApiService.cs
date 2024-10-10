@@ -2,9 +2,9 @@
 using Microsoft.OpenApi;
 using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Extensions.ApiService;
-using NokoWebApiSdk.Transformers;
+using NokoWebApiSdk.OpenApi.Transformers;
 
-namespace NokoWebApiSdk.Services;
+namespace NokoWebApiSdk.OpenApi.Services;
 
 [ApiService]
 public class OpenApiService : ApiServiceInitialized
