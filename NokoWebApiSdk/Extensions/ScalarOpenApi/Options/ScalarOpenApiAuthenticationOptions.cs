@@ -1,9 +1,9 @@
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 
 /// <summary>
 /// Represents the authentication options for Scalar.
 /// </summary>
-public sealed class OpenApiScalarAuthenticationOptions
+public sealed class ScalarOpenApiAuthenticationOptions
 {
     /// <summary>
     /// Gets or sets the preferred security scheme.

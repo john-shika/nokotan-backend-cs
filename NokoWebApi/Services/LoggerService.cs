@@ -1,12 +1,12 @@
 ﻿using NokoWebApiSdk.Annotations;
-using NokoWebApiSdk.Extensions.ApiService;
+using NokoWebApiSdk.Extensions.AppService;
 using Serilog;
 using Serilog.Sinks.OpenTelemetry;
 
 namespace NokoWebApi.Services;
 
-[ApiService]
-public class LoggerService : ApiServiceInitialized
+[AppService]
+public class LoggerService : AppServiceInitialized
 {
     public LoggerService()
     {

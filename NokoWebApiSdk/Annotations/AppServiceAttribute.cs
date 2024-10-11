@@ -1,6 +1,6 @@
 ﻿namespace NokoWebApiSdk.Annotations;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public class ApiServiceAttribute : Attribute
+public class AppServiceAttribute : Attribute
 {
 }

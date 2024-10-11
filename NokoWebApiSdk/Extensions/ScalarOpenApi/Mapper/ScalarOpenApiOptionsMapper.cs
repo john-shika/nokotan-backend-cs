@@ -1,10 +1,10 @@
 using NokoWebApiSdk.Extensions.OpenApi.Scalar.Enums;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Schemas;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Schemas;
 
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar.Mapper;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi.Mapper;
 
-internal static class OpenApiScalarOptionsMapper
+internal static class ScalarOpenApiOptionsMapper
 {
     internal static readonly Dictionary<OpenApiScalarTarget, OpenApiScalarClient[]> ClientOptions = new()
     {
@@ -28,9 +28,9 @@ internal static class OpenApiScalarOptionsMapper
         { OpenApiScalarTarget.Kotlin, [OpenApiScalarClient.OkHttp] }
     };
 
-    internal static OpenApiScalarConfiguration ToOpenApiScalarConfiguration(this OpenApiScalarOptions options)
+    internal static ScalarOpenApiConfiguration ToOpenApiScalarConfiguration(this ScalarOpenApiOptions options)
     {
-        return new OpenApiScalarConfiguration
+        return new ScalarOpenApiConfiguration
         {
             Proxy = options.ProxyUrl,
             Theme = options.Theme.ToString(),
@@ -59,7 +59,7 @@ internal static class OpenApiScalarOptionsMapper
         };
     }
 
-    private static Dictionary<string, IEnumerable<string>>? GetHiddenClients(OpenApiScalarOptions options)
+    private static Dictionary<string, IEnumerable<string>>? GetHiddenClients(ScalarOpenApiOptions options)
     {
         var targets = ProcessOptions(options);
 
@@ -69,7 +69,7 @@ internal static class OpenApiScalarOptionsMapper
         );
     }
 
-    private static Dictionary<OpenApiScalarTarget, OpenApiScalarClient[]>? ProcessOptions(OpenApiScalarOptions options)
+    private static Dictionary<OpenApiScalarTarget, OpenApiScalarClient[]>? ProcessOptions(ScalarOpenApiOptions options)
     {
         if (options.HiddenClients)
         {

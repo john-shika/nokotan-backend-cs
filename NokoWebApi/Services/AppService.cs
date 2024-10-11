@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NokoWebApiSdk.Annotations;
-using NokoWebApiSdk.Extensions.ApiService;
+using NokoWebApiSdk.Extensions.AppService;
 using NokoWebApiSdk.Filters;
 using NokoWebApiSdk.Json.Converters;
 
 namespace NokoWebApi.Services;
 
-[ApiService]
-public class AppService : ApiServiceInitialized
+[AppService]
+public class AppService : AppServiceInitialized
 {
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {

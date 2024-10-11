@@ -1,15 +1,15 @@
 using NokoWebApiSdk.Extensions.OpenApi.Scalar.Enums;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Schemas;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Schemas;
 
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 
 /// <summary>
 /// Represents all available options for the Scalar API reference.
 /// Based on <a href="https://github.com/scalar/scalar/blob/main/documentation/configuration.md">Configuration</a>.
 /// </summary>
-public sealed class OpenApiScalarOptions
+public sealed class ScalarOpenApiOptions
 {
-    public void CopyFrom(OpenApiScalarOptions other)
+    public void CopyFrom(ScalarOpenApiOptions other)
     {
         Title = other.Title;
         Favicon = other.Favicon;
@@ -180,7 +180,7 @@ public sealed class OpenApiScalarOptions
     /// To make authentication easier, you can prefill the credentials.
     /// </summary>
     /// <value>The default value is <c>null</c>.</value>
-    public OpenApiScalarAuthenticationOptions? Authentication { get; set; }
+    public ScalarOpenApiAuthenticationOptions? Authentication { get; set; }
 
     /// <summary>
     /// Gets or sets the default HTTP client.
@@ -198,7 +198,7 @@ public sealed class OpenApiScalarOptions
     /// <summary>
     /// Gets or sets the list of servers for the Scalar API reference.
     /// </summary>
-    /// <value>A list of <see cref="OpenApiScalarServer" /> representing the servers. The default value is <c>null</c>.</value>
+    /// <value>A list of <see cref="ScalarOpenApiServer" /> representing the servers. The default value is <c>null</c>.</value>
     /// <remarks>This list will override the servers defined in the OpenAPI document.</remarks>
-    public IList<OpenApiScalarServer>? Servers { get; set; }
+    public IList<ScalarOpenApiServer>? Servers { get; set; }
 }

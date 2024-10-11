@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using NokoWebApiSdk.Annotations;
-using NokoWebApiSdk.Extensions.ApiService;
+using NokoWebApiSdk.Extensions.AppService;
 
 namespace NokoWebApi.Services;
 
-[ApiService]
-public class AuthService : ApiServiceInitialized
+[AppService]
+public class AuthService : AppServiceInitialized
 {
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {

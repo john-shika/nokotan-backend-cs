@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Models;
 using NokoWebApiSdk.Utils;
 

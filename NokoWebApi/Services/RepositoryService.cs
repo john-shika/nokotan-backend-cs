@@ -1,10 +1,10 @@
 ﻿using NokoWebApiSdk.Annotations;
-using NokoWebApiSdk.Extensions.ApiService;
+using NokoWebApiSdk.Extensions.AppService;
 
 namespace NokoWebApi.Services;
 
-[ApiService]
-public class RepositoryService : ApiServiceInitialized
+[AppService]
+public class RepositoryService : AppServiceInitialized
 {
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {

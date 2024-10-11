@@ -10,6 +10,7 @@ using Microsoft.Net.Http.Headers;
 using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.OpenApi;
 using NokoWebApiSdk.Utils.Net;
 using JwtClaimTagNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;

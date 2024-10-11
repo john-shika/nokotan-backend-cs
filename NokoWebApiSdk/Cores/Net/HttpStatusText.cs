@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Utils;
 
 namespace NokoWebApiSdk.Utils.Net;
 
@@ -72,7 +73,7 @@ public static class HttpStatusText
     
     public static HttpStatusCodes ParseCode(string statusText)
     {
-        return NokoWebTransform.ToSnakeCaseUpper(statusText) switch
+        return NokoWebTransformText.ToSnakeCaseUpper(statusText) switch
         {
             Continue => HttpStatusCodes.Continue,
             SwitchingProtocols => HttpStatusCodes.SwitchingProtocols,

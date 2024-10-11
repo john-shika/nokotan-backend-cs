@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Schemas;
 using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
@@ -16,7 +17,7 @@ public class CustomValidationFilter : IActionFilter
         var errors = context.ModelState
             .Where(x => x.Value is { Errors.Count: > 0 })
             .ToDictionary(
-                keyValuePair => NokoWebTransform.ToCamelCase(keyValuePair.Key), 
+                keyValuePair => NokoWebTransformText.ToCamelCase(keyValuePair.Key), 
                 keyValuePair => keyValuePair.Value?.Errors.Select(e => e.ErrorMessage).ToArray());
 
         var response = context.HttpContext.Response;

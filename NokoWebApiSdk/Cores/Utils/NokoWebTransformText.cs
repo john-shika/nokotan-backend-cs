@@ -1,10 +1,9 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
-using NokoWebApiSdk.Utils;
 
-namespace NokoWebApiSdk.Cores;
+namespace NokoWebApiSdk.Cores.Utils;
 
-public static class NokoWebTransform
+public static class NokoWebTransformText
 {
     public static string ToTitleCase(string value)
     {

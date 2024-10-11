@@ -1,6 +1,6 @@
-﻿namespace NokoWebApiSdk.Extensions.ApiService;
+﻿namespace NokoWebApiSdk.Extensions.AppService;
 
-public class ApiServiceInitialized : IApiServiceInitialized
+public class AppServiceInitialized : IAppServiceInitialized
 {
     public virtual void OnInitialized(IServiceCollection services, IConfiguration configuration) 
     {

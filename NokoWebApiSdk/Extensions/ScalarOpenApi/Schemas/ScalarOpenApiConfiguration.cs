@@ -1,15 +1,12 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
+﻿using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar.Schemas;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi.Schemas;
 
 /// <summary>
 /// Internal representation of the configuration for the Scalar API reference.
 /// Based on <a href="https://github.com/scalar/scalar/blob/main/documentation/configuration.md">Configuration</a>.
 /// </summary>
-internal sealed class OpenApiScalarConfiguration
+internal sealed class ScalarOpenApiConfiguration
 {
     public required string? Proxy { get; init; }
 
@@ -31,7 +28,7 @@ internal sealed class OpenApiScalarConfiguration
 
     public required string? SearchHotKey { get; init; }
 
-    public required IEnumerable<OpenApiScalarServer>? Servers { get; init; }
+    public required IEnumerable<ScalarOpenApiServer>? Servers { get; init; }
     
     public required IDictionary<string, string>? Metadata { get; init; }
 
@@ -39,7 +36,7 @@ internal sealed class OpenApiScalarConfiguration
 
     public required IDictionary<string, IEnumerable<string>>? HiddenClients { get; init; }
 
-    public required OpenApiScalarAuthenticationOptions? Authentication { get; init; }
+    public required ScalarOpenApiAuthenticationOptions? Authentication { get; init; }
 
     public required bool? DefaultFonts { get; init; }
 

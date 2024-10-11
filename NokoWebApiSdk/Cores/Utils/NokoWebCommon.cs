@@ -1,4 +1,4 @@
-﻿namespace NokoWebApiSdk.Cores;
+﻿namespace NokoWebApiSdk.Cores.Utils;
 
 public static class NokoWebCommon
 {

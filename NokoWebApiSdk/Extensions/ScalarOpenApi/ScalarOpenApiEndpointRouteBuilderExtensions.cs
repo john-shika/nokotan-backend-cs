@@ -2,15 +2,15 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Mapper;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Mapper;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi;
 
 /// <summary>
 /// Extension methods for <see cref="IEndpointRouteBuilder" /> to provide required endpoints.
 /// </summary>
-public static class OpenApiScalarEndpointRouteBuilderExtensions
+public static class ScalarOpenApiEndpointRouteBuilderExtensions
 {
     private const string DocumentName = "{documentName}";
 
@@ -20,7 +20,7 @@ public static class OpenApiScalarEndpointRouteBuilderExtensions
     /// <param name="endpoints"><see cref="IEndpointRouteBuilder" />.</param>
     public static IEndpointConventionBuilder MapScalarApiReference(this IEndpointRouteBuilder endpoints)
     {
-        return endpoints.MapScalarApiReference(_ =>{});
+        return endpoints.MapScalarOpenApiReference(_ =>{});
     }
 
     /// <summary>
@@ -28,9 +28,9 @@ public static class OpenApiScalarEndpointRouteBuilderExtensions
     /// </summary>
     /// <param name="endpoints"><see cref="IEndpointRouteBuilder" />.</param>
     /// <param name="configureOptions">An action to configure the Scalar options.</param>
-    public static IEndpointConventionBuilder MapScalarApiReference(this IEndpointRouteBuilder endpoints, Action<OpenApiScalarOptions> configureOptions)
+    public static IEndpointConventionBuilder MapScalarOpenApiReference(this IEndpointRouteBuilder endpoints, Action<ScalarOpenApiOptions> configureOptions)
     {
-        var options = endpoints.ServiceProvider.GetService<IOptions<OpenApiScalarOptions>>()?.Value ?? new OpenApiScalarOptions();
+        var options = endpoints.ServiceProvider.GetService<IOptions<ScalarOpenApiOptions>>()?.Value ?? new ScalarOpenApiOptions();
         configureOptions(options);
 
         if (!options.EndpointPathPrefix.Contains(DocumentName))

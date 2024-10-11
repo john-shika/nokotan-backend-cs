@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.OpenApi.Extensions;
 
 namespace NokoWebApiSdk.OpenApi.Transformers;

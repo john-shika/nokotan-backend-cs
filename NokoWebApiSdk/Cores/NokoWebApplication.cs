@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using NokoWebApiSdk.Extensions.ApiRepository;
-using NokoWebApiSdk.Extensions.ApiService;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
-using NokoWebApiSdk.Extensions.OpenApi.Swagger;
+using NokoWebApiSdk.Extensions.AppService;
+using NokoWebApiSdk.Extensions.ScalarOpenApi;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 
 namespace NokoWebApiSdk.Cores;
 
@@ -18,7 +17,7 @@ public interface INokoWebApplication
     public ILogger? Logger => Application?.Logger;
     public IList<NokoWebApplicationListenerDelegate?> Listeners { get; }
     public IServiceCollection Repository(Action<DbContextOptionsBuilder>? optionsAction = null, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime optionsLifetime = ServiceLifetime.Scoped);
-    public WebApplication? MapOpenApi(Action<OpenApiScalarOptions>? configureOptions = null);
+    public WebApplication? MapOpenApi(Action<ScalarOpenApiOptions>? configureOptions = null);
     public WebApplication Build();
     public void Run();
     public Task RunAsync([StringSyntax("Uri")] string? url = null);
@@ -41,7 +40,7 @@ public class NokoWebApplication : INokoWebApplication
     public NokoWebApplication(string[] args)
     {
         Builder = WebApplication.CreateBuilder(args);
-        Builder.Services.AddApiServices(Builder.Configuration);
+        Builder.Services.AddAppServices(Builder.Configuration);
         // some codes have been moved in services folder
         Listeners = [];
     }
@@ -69,14 +68,14 @@ public class NokoWebApplication : INokoWebApplication
         return Services;
     }
 
-    public WebApplication? MapOpenApi(Action<OpenApiScalarOptions>? configureOptions = null)
+    public WebApplication? MapOpenApi(Action<ScalarOpenApiOptions>? configureOptions = null)
     {
         var action = (NokoWebApplication noko) =>
         {
             var app = noko.Application!;
             var env = noko.Environment!;
             
-            var options = new OpenApiScalarOptions();
+            var options = new ScalarOpenApiOptions();
             configureOptions?.Invoke(options);
         
             // TODO: some codes have been moved in services folder
@@ -88,12 +87,10 @@ public class NokoWebApplication : INokoWebApplication
         
             if (configureOptions is not null)
             {
-                app.MapScalarApiReference((scalarOptions) =>
+                app.MapScalarOpenApiReference((scalarOptions) =>
                 {
                     scalarOptions.CopyFrom(options);
                 });
-
-                app.MapSwaggerApiReference();
             }
             else
             {
@@ -112,7 +109,7 @@ public class NokoWebApplication : INokoWebApplication
     {
         if (Application is not null) return Application;
         Application = Builder.Build();
-        Application.UseApiServices(Environment);
+        Application.UseAppServices(Environment);
         return Application;
     }
 

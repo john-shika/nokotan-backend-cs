@@ -1,4 +1,4 @@
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar.Schemas;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi.Schemas;
 
 internal sealed class DefaultHttpClient
 {

@@ -1,21 +1,21 @@
 using System.Diagnostics.CodeAnalysis;
 using NokoWebApiSdk.Extensions.OpenApi.Scalar.Enums;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Schemas;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Schemas;
 
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi;
 
 /// <summary>
-/// Provides extension methods for configuring <see cref="OpenApiScalarOptions" />.
+/// Provides extension methods for configuring <see cref="ScalarOpenApiOptions" />.
 /// </summary>
-public static class OpenApiScalarOptionsExtensions
+public static class ScalarOpenApiOptionsExtensions
 {
     /// <summary>
     /// Sets the title of the page.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="title">The title to set.</param>
-    public static OpenApiScalarOptions WithTitle(this OpenApiScalarOptions options, string title)
+    public static ScalarOpenApiOptions WithTitle(this ScalarOpenApiOptions options, string title)
     {
         options.Title = title;
         return options;
@@ -24,9 +24,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the favicon path or URL that will be used for the documentation.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="favicon">The path or URL to the favicon.</param>
-    public static OpenApiScalarOptions WithFavicon(this OpenApiScalarOptions options, string favicon)
+    public static ScalarOpenApiOptions WithFavicon(this ScalarOpenApiOptions options, string favicon)
     {
         options.Favicon = favicon;
         return options;
@@ -35,9 +35,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the path prefix to access the documentation.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="prefix">The path prefix to set.</param>
-    public static OpenApiScalarOptions WithEndpointPrefix(this OpenApiScalarOptions options, string prefix)
+    public static ScalarOpenApiOptions WithEndpointPrefix(this ScalarOpenApiOptions options, string prefix)
     {
         options.EndpointPathPrefix = prefix;
         return options;
@@ -46,9 +46,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the proxy URL for the API requests.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="proxyUrl">The proxy URL to set.</param>
-    public static OpenApiScalarOptions WithProxyUrl(this OpenApiScalarOptions options, string proxyUrl)
+    public static ScalarOpenApiOptions WithProxyUrl(this ScalarOpenApiOptions options, string proxyUrl)
     {
         options.ProxyUrl = proxyUrl;
         return options;
@@ -57,9 +57,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether the sidebar should be shown.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="showSidebar">Whether to show the sidebar.</param>
-    public static OpenApiScalarOptions WithSidebar(this OpenApiScalarOptions options, bool showSidebar)
+    public static ScalarOpenApiOptions WithSidebar(this ScalarOpenApiOptions options, bool showSidebar)
     {
         options.ShowSidebar = showSidebar;
         return options;
@@ -68,9 +68,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether models should be shown in the sidebar, search, and content.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="showModels">Whether to show models.</param>
-    public static OpenApiScalarOptions WithModels(this OpenApiScalarOptions options, bool showModels)
+    public static ScalarOpenApiOptions WithModels(this ScalarOpenApiOptions options, bool showModels)
     {
         options.HideModels = !showModels;
         return options;
@@ -79,9 +79,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether to show the "Download OpenAPI Specification" button.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="showDownloadButton">Whether to show the download button.</param>
-    public static OpenApiScalarOptions WithDownloadButton(this OpenApiScalarOptions options, bool showDownloadButton)
+    public static ScalarOpenApiOptions WithDownloadButton(this ScalarOpenApiOptions options, bool showDownloadButton)
     {
         options.HideDownloadButton = !showDownloadButton;
         return options;
@@ -90,9 +90,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether to show the "Test Request" button.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="showTestRequestButton">Whether to show the test request button.</param>
-    public static OpenApiScalarOptions WithTestRequestButton(this OpenApiScalarOptions options, bool showTestRequestButton)
+    public static ScalarOpenApiOptions WithTestRequestButton(this ScalarOpenApiOptions options, bool showTestRequestButton)
     {
         options.HideTestRequestButton = !showTestRequestButton;
         return options;
@@ -101,9 +101,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether dark mode is on or off initially.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="darkMode">Whether dark mode is on or off initially.</param>
-    public static OpenApiScalarOptions WithDarkMode(this OpenApiScalarOptions options, bool darkMode)
+    public static ScalarOpenApiOptions WithDarkMode(this ScalarOpenApiOptions options, bool darkMode)
     {
         options.DarkMode = darkMode;
         return options;
@@ -112,10 +112,10 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Forces the theme mode to always be the specified state.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="forceThemeMode">The theme mode to force.</param>
     /// <returns></returns>
-    public static OpenApiScalarOptions WithForceThemeMode(this OpenApiScalarOptions options, ThemeMode forceThemeMode)
+    public static ScalarOpenApiOptions WithForceThemeMode(this ScalarOpenApiOptions options, ThemeMode forceThemeMode)
     {
         options.ForceThemeMode = forceThemeMode;
         return options;
@@ -124,9 +124,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether to show the dark mode toggle.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="showDarkModeToggle">Whether to show the dark mode toggle.</param>
-    public static OpenApiScalarOptions WithDarkModeToggle(this OpenApiScalarOptions options, bool showDarkModeToggle)
+    public static ScalarOpenApiOptions WithDarkModeToggle(this ScalarOpenApiOptions options, bool showDarkModeToggle)
     {
         options.HideDarkModeToggle = !showDarkModeToggle;
         return options;
@@ -135,9 +135,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets custom CSS directly to the component.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="customCss">The custom CSS to set.</param>
-    public static OpenApiScalarOptions WithCustomCss(this OpenApiScalarOptions options, string customCss)
+    public static ScalarOpenApiOptions WithCustomCss(this ScalarOpenApiOptions options, string customCss)
     {
         options.CustomCss = customCss;
         return options;
@@ -146,9 +146,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the key used with CTRL/CMD to open the search modal.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="searchHotKey">The search hotkey to set.</param>
-    public static OpenApiScalarOptions WithSearchHotKey(this OpenApiScalarOptions options, string searchHotKey)
+    public static ScalarOpenApiOptions WithSearchHotKey(this ScalarOpenApiOptions options, string searchHotKey)
     {
         options.SearchHotKey = searchHotKey;
         return options;
@@ -157,9 +157,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the color theme.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="theme">The theme to set.</param>
-    public static OpenApiScalarOptions WithTheme(this OpenApiScalarOptions options, OpenApiScalarTheme theme)
+    public static ScalarOpenApiOptions WithTheme(this ScalarOpenApiOptions options, OpenApiScalarTheme theme)
     {
         options.Theme = theme;
         return options;
@@ -168,9 +168,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether to use the default fonts.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="useDefaultFonts">Whether to use the default fonts.</param>
-    public static OpenApiScalarOptions WithDefaultFonts(this OpenApiScalarOptions options, bool useDefaultFonts)
+    public static ScalarOpenApiOptions WithDefaultFonts(this ScalarOpenApiOptions options, bool useDefaultFonts)
     {
         options.WithDefaultFonts = useDefaultFonts;
         return options;
@@ -179,43 +179,43 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets whether to open all tags by default.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="useOpenAllTags">Whether to open all tags by default.</param>
-    public static OpenApiScalarOptions WithDefaultOpenAllTags(this OpenApiScalarOptions options, bool useOpenAllTags)
+    public static ScalarOpenApiOptions WithDefaultOpenAllTags(this ScalarOpenApiOptions options, bool useOpenAllTags)
     {
         options.DefaultOpenAllTags = useOpenAllTags;
         return options;
     }
 
     /// <summary>
-    /// Adds a server to the list of servers in the <see cref="OpenApiScalarOptions" />.
+    /// Adds a server to the list of servers in the <see cref="ScalarOpenApiOptions" />.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
-    /// <param name="server">The <see cref="OpenApiScalarServer" /> to add.</param>
-    public static OpenApiScalarOptions AddServer(this OpenApiScalarOptions options, OpenApiScalarServer server)
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
+    /// <param name="server">The <see cref="ScalarOpenApiServer" /> to add.</param>
+    public static ScalarOpenApiOptions AddServer(this ScalarOpenApiOptions options, ScalarOpenApiServer server)
     {
-        options.Servers ??= new List<OpenApiScalarServer>();
+        options.Servers ??= new List<ScalarOpenApiServer>();
         options.Servers.Add(server);
         return options;
     }
 
     /// <summary>
-    /// Adds a server to the list of servers in the <see cref="OpenApiScalarOptions" /> using a URL.
+    /// Adds a server to the list of servers in the <see cref="ScalarOpenApiOptions" /> using a URL.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="url">The URL of the server to add.</param>
-    public static OpenApiScalarOptions AddServer(this OpenApiScalarOptions options, string url)
+    public static ScalarOpenApiOptions AddServer(this ScalarOpenApiOptions options, string url)
     {
-        return options.AddServer(new OpenApiScalarServer(url));
+        return options.AddServer(new ScalarOpenApiServer(url));
     }
 
     /// <summary>
     /// Adds metadata to the configuration.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="key">The metadata key.</param>
     /// <param name="value">The metadata value.</param>
-    public static OpenApiScalarOptions AddMetadata(this OpenApiScalarOptions options, string key, string value)
+    public static ScalarOpenApiOptions AddMetadata(this ScalarOpenApiOptions options, string key, string value)
     {
         options.Metadata ??= new Dictionary<string, string>();
         options.Metadata.Add(key, value);
@@ -223,11 +223,11 @@ public static class OpenApiScalarOptionsExtensions
     }
 
     /// <summary>
-    /// Sets the tag sorter for the <see cref="OpenApiScalarOptions" />.
+    /// Sets the tag sorter for the <see cref="ScalarOpenApiOptions" />.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="tagSorter">The <see cref="TagSorter" /> to use.</param>
-    public static OpenApiScalarOptions WithTagSorter(this OpenApiScalarOptions options, TagSorter tagSorter)
+    public static ScalarOpenApiOptions WithTagSorter(this ScalarOpenApiOptions options, TagSorter tagSorter)
     {
         options.TagSorter = tagSorter;
         return options;
@@ -236,11 +236,11 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the preferred authentication scheme.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="preferredScheme">The preferred authentication scheme.</param>
-    public static OpenApiScalarOptions WithPreferredScheme(this OpenApiScalarOptions options, string preferredScheme)
+    public static ScalarOpenApiOptions WithPreferredScheme(this ScalarOpenApiOptions options, string preferredScheme)
     {
-        options.Authentication ??= new OpenApiScalarAuthenticationOptions();
+        options.Authentication ??= new ScalarOpenApiAuthenticationOptions();
         options.Authentication.PreferredSecurityScheme = preferredScheme;
         return options;
     }
@@ -248,11 +248,11 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the API key authentication options.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="apiKeyOptions">The API key options to set.</param>
-    public static OpenApiScalarOptions WithApiKeyAuthentication(this OpenApiScalarOptions options, ApiKeyOptions apiKeyOptions)
+    public static ScalarOpenApiOptions WithApiKeyAuthentication(this ScalarOpenApiOptions options, ApiKeyOptions apiKeyOptions)
     {
-        options.Authentication ??= new OpenApiScalarAuthenticationOptions();
+        options.Authentication ??= new ScalarOpenApiAuthenticationOptions();
         options.Authentication.ApiKey = apiKeyOptions;
         return options;
     }
@@ -260,9 +260,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Configures the API key authentication options.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="configureApiKeyOptions">The action to configure the API key options.</param>
-    public static OpenApiScalarOptions WithApiKeyAuthentication(this OpenApiScalarOptions options, Action<ApiKeyOptions> configureApiKeyOptions)
+    public static ScalarOpenApiOptions WithApiKeyAuthentication(this ScalarOpenApiOptions options, Action<ApiKeyOptions> configureApiKeyOptions)
     {
         var apiKeyOptions = new ApiKeyOptions();
         configureApiKeyOptions(apiKeyOptions);
@@ -272,11 +272,11 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Configures the OAuth2 authentication options.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="oauth2Options">The OAuth2 options to set.</param>
-    public static OpenApiScalarOptions WithOAuth2Authentication(this OpenApiScalarOptions options, OAuth2Options oauth2Options)
+    public static ScalarOpenApiOptions WithOAuth2Authentication(this ScalarOpenApiOptions options, OAuth2Options oauth2Options)
     {
-        options.Authentication ??= new OpenApiScalarAuthenticationOptions();
+        options.Authentication ??= new ScalarOpenApiAuthenticationOptions();
         options.Authentication.OAuth2 = oauth2Options;
         return options;
     }
@@ -284,9 +284,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Configures the OAuth2 authentication options.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="configureOAuth2Options">The action to configure the OAuth2 options.</param>
-    public static OpenApiScalarOptions WithOAuth2Authentication(this OpenApiScalarOptions options, Action<OAuth2Options> configureOAuth2Options)
+    public static ScalarOpenApiOptions WithOAuth2Authentication(this ScalarOpenApiOptions options, Action<OAuth2Options> configureOAuth2Options)
     {
         var oauth2Options = new OAuth2Options();
         configureOAuth2Options(oauth2Options);
@@ -296,10 +296,10 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the default HTTP client.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="target">The target to set.</param>
     /// <param name="client">The client to set.</param>
-    public static OpenApiScalarOptions WithDefaultHttpClient(this OpenApiScalarOptions options, OpenApiScalarTarget target, OpenApiScalarClient client)
+    public static ScalarOpenApiOptions WithDefaultHttpClient(this ScalarOpenApiOptions options, OpenApiScalarTarget target, OpenApiScalarClient client)
     {
         options.DefaultHttpClient = new KeyValuePair<OpenApiScalarTarget, OpenApiScalarClient>(target, client);
         return options;
@@ -308,9 +308,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the route pattern of the OpenAPI document.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="pattern">The route pattern to set.</param>
-    public static OpenApiScalarOptions WithOpenApiRoutePattern(this OpenApiScalarOptions options, [StringSyntax("Route")] string pattern)
+    public static ScalarOpenApiOptions WithOpenApiRoutePattern(this ScalarOpenApiOptions options, [StringSyntax("Route")] string pattern)
     {
         options.OpenApiRoutePattern = pattern;
         return options;
@@ -319,9 +319,9 @@ public static class OpenApiScalarOptionsExtensions
     /// <summary>
     /// Sets the CDN URL for the API reference.
     /// </summary>
-    /// <param name="options"><see cref="OpenApiScalarOptions" />.</param>
+    /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="url">The CDN URL to set.</param>
-    public static OpenApiScalarOptions WithCdnUrl(this OpenApiScalarOptions options, string url)
+    public static ScalarOpenApiOptions WithCdnUrl(this ScalarOpenApiOptions options, string url)
     {
         options.CdnUrl = url;
         return options;

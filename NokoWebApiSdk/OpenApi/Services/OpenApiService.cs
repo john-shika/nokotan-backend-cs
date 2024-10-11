@@ -1,13 +1,13 @@
 ﻿using System.Security.Claims;
 using Microsoft.OpenApi;
 using NokoWebApiSdk.Annotations;
-using NokoWebApiSdk.Extensions.ApiService;
+using NokoWebApiSdk.Extensions.AppService;
 using NokoWebApiSdk.OpenApi.Transformers;
 
 namespace NokoWebApiSdk.OpenApi.Services;
 
-[ApiService]
-public class OpenApiService : ApiServiceInitialized
+[AppService]
+public class OpenApiService : AppServiceInitialized
 {
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {

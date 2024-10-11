@@ -1,4 +1,4 @@
-namespace NokoWebApiSdk.Extensions.OpenApi.Scalar.Options;
+namespace NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 
 /// <summary>
 /// Represents the options for OAuth2 authentication.

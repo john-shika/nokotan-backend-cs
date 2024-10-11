@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Schemas;
 using NokoWebApiSdk.Utils;
 using NokoWebApiSdk.Utils.Net;
