@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Schemas;
-using NokoWebApiSdk.Utils;
-using NokoWebApiSdk.Utils.Net;
 
 namespace NokoWebApiSdk.Filters;
 
@@ -16,15 +15,17 @@ public class HttpExceptionFilter : IExceptionFilter
         var exception = context.Exception;
         
         var response = context.HttpContext.Response;
-        response.StatusCode = (int)HttpStatusCodes.InternalServerError;
+        response.StatusCode = (int)HttpStatusCode.InternalServerError;
         response.ContentType = "application/json";
+        
+        var statusCode = (HttpStatusCode)response.StatusCode;
 
         var messageBody = new MessageBody<object>
         {
             StatusOk = false,
-            StatusCode = response.StatusCode,
-            Status = HttpStatusText.FromCode((HttpStatusCodes)response.StatusCode),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
+            StatusCode = (int)statusCode,
+            Status = statusCode.ToString(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
             Message = exception.Message,
             Data = null,
         };

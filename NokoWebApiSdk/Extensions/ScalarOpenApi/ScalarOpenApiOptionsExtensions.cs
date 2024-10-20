@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Enums;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Enums;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Schemas;
 
@@ -159,7 +159,7 @@ public static class ScalarOpenApiOptionsExtensions
     /// </summary>
     /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="theme">The theme to set.</param>
-    public static ScalarOpenApiOptions WithTheme(this ScalarOpenApiOptions options, OpenApiScalarTheme theme)
+    public static ScalarOpenApiOptions WithTheme(this ScalarOpenApiOptions options, ScalarOpenApiTheme theme)
     {
         options.Theme = theme;
         return options;
@@ -299,9 +299,9 @@ public static class ScalarOpenApiOptionsExtensions
     /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
     /// <param name="target">The target to set.</param>
     /// <param name="client">The client to set.</param>
-    public static ScalarOpenApiOptions WithDefaultHttpClient(this ScalarOpenApiOptions options, OpenApiScalarTarget target, OpenApiScalarClient client)
+    public static ScalarOpenApiOptions WithDefaultHttpClient(this ScalarOpenApiOptions options, ScalarOpenApiTarget target, ScalarOpenApiClient client)
     {
-        options.DefaultHttpClient = new KeyValuePair<OpenApiScalarTarget, OpenApiScalarClient>(target, client);
+        options.DefaultHttpClient = new KeyValuePair<ScalarOpenApiTarget, ScalarOpenApiClient>(target, client);
         return options;
     }
 

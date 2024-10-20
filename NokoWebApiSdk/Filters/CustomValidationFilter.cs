@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Schemas;
-using NokoWebApiSdk.Utils;
-using NokoWebApiSdk.Utils.Net;
 
 namespace NokoWebApiSdk.Filters;
 
@@ -21,15 +20,17 @@ public class CustomValidationFilter : IActionFilter
                 keyValuePair => keyValuePair.Value?.Errors.Select(e => e.ErrorMessage).ToArray());
 
         var response = context.HttpContext.Response;
-        response.StatusCode = (int)HttpStatusCodes.BadRequest;
+        response.StatusCode = (int)HttpStatusCode.BadRequest;
         response.ContentType = "application/json";
+        
+        var statusCode = (HttpStatusCode)response.StatusCode;
 
         var messageBody = new MessageBody<Dictionary<string, string[]?>>
         {
             StatusOk = false,
-            StatusCode = response.StatusCode,
-            Status = HttpStatusText.FromCode((HttpStatusCodes)response.StatusCode),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
+            StatusCode = (int)statusCode,
+            Status = statusCode.ToString(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
             Message = "One or more validation errors occurred.",
             Data = errors,
         };

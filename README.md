@@ -105,3 +105,9 @@ upgrade-assistant analyze
 ```shell
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 ```
+
+## dotnet build release with self-contained
+
+```shell
+dotnet build -c:Release --self-contained true
+```

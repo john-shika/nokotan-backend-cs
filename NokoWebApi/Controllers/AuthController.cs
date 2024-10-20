@@ -9,10 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
-using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
-using NokoWebApiSdk.OpenApi;
-using NokoWebApiSdk.Utils.Net;
 using JwtClaimTagNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
@@ -61,9 +59,9 @@ public class AuthController : ControllerBase
         var messageBody = new AccessJwtTokenMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)HttpStatusCodes.Created,
-            Status = HttpStatusText.FromCode(HttpStatusCodes.Created),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
+            StatusCode = (int)HttpStatusCode.Created,
+            Status = HttpStatusCode.Created.ToString(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
             Message = "Successfully create JWT Token.",
             Data = new AccessJwtTokenData {
                 AccessToken = token,
@@ -106,9 +104,10 @@ public class AuthController : ControllerBase
         var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]!);
         var issuer = jwtSettings["Issuer"]!;
         var audience = jwtSettings["Audience"]!;
+        var email = "user@mail.co";
         
         var tokenHandler = new JwtSecurityTokenHandler();
-
+        
         const string algorithm = SecurityAlgorithms.HmacSha256Signature;
 
         var symmetricSecurityKey = new SymmetricSecurityKey(secretKey);
@@ -118,7 +117,8 @@ public class AuthController : ControllerBase
             Subject = new ClaimsIdentity([
                 new Claim(JwtClaimTagNames.Jti, tokenId.ToString()),
                 new Claim(JwtClaimTagNames.Sid, sessionId.ToString()),
-                new Claim("username", username),
+                new Claim("name", username),
+                new Claim(JwtClaimTagNames.Email, email),
                 // new Claim("role", "user"),
                 new Claim("role", "Admin"),
             ]),
@@ -144,7 +144,7 @@ public class AuthController : ControllerBase
 
         var tokenId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtClaimTagNames.Jti).Value);
         var sessionId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtClaimTagNames.Sid).Value);
-        var username = jwtToken.Claims.First(claim => claim.Type == "username").Value;
+        var username = jwtToken.Claims.First(claim => claim.Type == "name").Value;
         var expires = jwtToken.ValidTo;
 
         return (tokenId, sessionId, username, expires);

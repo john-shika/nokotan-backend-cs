@@ -4,7 +4,6 @@ using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Models;
-using NokoWebApiSdk.Utils;
 
 namespace NokoWebApiSdk.Repositories;
 
@@ -56,8 +55,8 @@ public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TCon
             {
                 case EntityState.Added:
                     entry.Entity.Id = NokoWebCommon.GenerateUuidV7();
-                    entry.Entity.CreatedAt = NokoWebCommon.GetDateTimeUtcNowInMilliseconds();
-                    entry.Entity.UpdatedAt = NokoWebCommon.GetDateTimeUtcNowInMilliseconds();
+                    entry.Entity.CreatedAt = NokoWebCommon.GetDateTimeUtcNow();
+                    entry.Entity.UpdatedAt = NokoWebCommon.GetDateTimeUtcNow();
                     break;
                 case EntityState.Modified:
                     entry.Entity.UpdatedAt = DateTime.UtcNow;

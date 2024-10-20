@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using NokoWebApi.Models;
 using NokoWebApi.Repositories;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Schemas;
-using NokoWebApiSdk.Utils.Net;
 using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
 namespace NokoWebApi.Controllers;
@@ -35,9 +35,9 @@ public class AppController : ControllerBase
         var messageBody = new MessageBody<List<User>>
         {
             StatusOk = true,
-            StatusCode = (int)HttpStatusCodes.Ok,
-            Status = HttpStatusText.FromCode(HttpStatusCodes.Ok),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
+            StatusCode = (int)HttpStatusCode.Ok,
+            Status = HttpStatusCode.Ok.ToString(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
             Message = "Get All Users.",
             Data = users,
         };
@@ -54,9 +54,9 @@ public class AppController : ControllerBase
         var messageBody = new EmptyMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)HttpStatusCodes.Ok,
-            Status = HttpStatusText.FromCode(HttpStatusCodes.Ok),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
+            StatusCode = (int)HttpStatusCode.Ok,
+            Status = HttpStatusCode.Ok.ToString(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
             Message = "Hello World.",
             Data = null,
         };

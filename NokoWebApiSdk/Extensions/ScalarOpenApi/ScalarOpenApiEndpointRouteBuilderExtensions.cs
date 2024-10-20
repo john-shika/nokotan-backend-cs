@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Enums;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Mapper;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
 
@@ -40,6 +41,14 @@ public static class ScalarOpenApiEndpointRouteBuilderExtensions
         
         var config = JsonSerializer.Serialize(options.ToOpenApiScalarConfiguration(), new JsonSerializerOptions
         {
+            Converters =
+            {
+                new ScalarOpenApiClientSerializeConverter(),
+                new ScalarOpenApiTargetSerializeConverter(),
+                new ScalarOpenApiThemeSerializeConverter(),
+                new TagSorterSerializeConverter(),
+                new ThemeModeSerializeConverter(),
+            },
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = false,
@@ -60,15 +69,38 @@ public static class ScalarOpenApiEndpointRouteBuilderExtensions
                               <meta name="viewport" content="width=device-width, initial-scale=1" />
                               <title>{{title}}</title>
                               <link rel="icon" type="image/x-icon" href="{{options.Favicon}}" />
+                              
+                              <!-- must be distributed by options.CssBundlePathFile -->
+                              <link rel="stylesheet" href="/css/scalar.api-reference.css" />
                           </head>
                           <body>
                               <script id="api-reference" data-url="{{documentUrl}}"></script>
                               <script>
                                 function main() {
+                                
+                                  // inject scalar api reference configuration, maybe failed
+                                  const data = atob('{{dataConfig}}');
                                   const reference = document.getElementById('api-reference');
                                   if (typeof reference?.['dataset'] === 'object') {
-                                    reference['dataset'].configuration = atob('{{dataConfig}}');
+                                    reference['dataset'].configuration = data;
                                   }
+                                  
+                                  // reload scalar api reference configuration
+                                  const ev = new CustomEvent('scalar:update-references-config', {
+                                    detail: {
+                                      configuration: JSON.parse(data),
+                                    },
+                                  });
+                                  document.dispatchEvent(ev);
+                                  
+                                  // set border radius to zero
+                                  const styleElement = document.createElement('style');
+                                  document.head.appendChild(styleElement);
+                                  const cssStyleSheet = styleElement.sheet; 
+                                  
+                                  cssStyleSheet.addRule('*', 'border-radius: 0 !important;');
+                                  cssStyleSheet.addRule('*:focus', 'border-radius: 0 !important;');
+                                  cssStyleSheet.addRule('*:hover', 'border-radius: 0 !important;');
                                 }
                                 
                                 let called = false;
@@ -84,6 +116,8 @@ public static class ScalarOpenApiEndpointRouteBuilderExtensions
                                 document.addEventListener('load', preload);
                                 document.addEventListener('DOMContentLoaded', preload);
                               </script>
+                              
+                              <!-- must be distributed by options.JsBundlePathFile -->
                               <script src="{{options.CdnUrl}}"></script>
                           </body>
                       </html>

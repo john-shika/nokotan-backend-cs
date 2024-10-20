@@ -1,4 +1,4 @@
-using NokoWebApiSdk.Extensions.OpenApi.Scalar.Enums;
+using NokoWebApiSdk.Extensions.ScalarOpenApi.Enums;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Schemas;
 
 namespace NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
@@ -127,9 +127,9 @@ public sealed class ScalarOpenApiOptions
     /// <summary>
     /// Set color theme.
     /// </summary>
-    /// <value>The default value is <see cref="OpenApiScalarTheme.Purple" />.</value>
-    /// <remarks>Select your preferred <see cref="OpenApiScalarTheme.Purple">ScalarTheme</see>.</remarks>
-    public OpenApiScalarTheme Theme { get; set; } = OpenApiScalarTheme.Purple;
+    /// <value>The default value is <see cref="ScalarOpenApiTheme.Purple" />.</value>
+    /// <remarks>Select your preferred <see cref="ScalarOpenApiTheme.Purple">ScalarTheme</see>.</remarks>
+    public ScalarOpenApiTheme Theme { get; set; } = ScalarOpenApiTheme.Purple;
 
     /// <summary>
     /// By default, we are using Inter and JetBrains Mono, served by Google Fonts.
@@ -162,14 +162,14 @@ public sealed class ScalarOpenApiOptions
     /// </summary>
     /// <value>The default value is <see cref="Array.Empty{T}" />.</value>
     /// <remarks>If an empty array is sent, all options will be displayed.</remarks>
-    public OpenApiScalarClient[] EnabledClients { get; set; } = [];
+    public ScalarOpenApiClient[] EnabledClients { get; set; } = [];
 
     /// <summary>
     /// You can pass an array of HTTPSnippet targets that you want to display in the clients menu.
     /// </summary>
     /// <value>The default value is <see cref="Array.Empty{T}" />.</value>
     /// <remarks>If an empty array is sent, all options will be displayed.</remarks>
-    public OpenApiScalarTarget[] EnabledTargets { get; set; } = [];
+    public ScalarOpenApiTarget[] EnabledTargets { get; set; } = [];
 
     /// <summary>
     /// You can pass information to the config object to configure meta information out of the box.
@@ -185,8 +185,8 @@ public sealed class ScalarOpenApiOptions
     /// <summary>
     /// Gets or sets the default HTTP client.
     /// </summary>
-    /// <value>The default values are <see cref="OpenApiScalarTarget.Shell" /> and <see cref="OpenApiScalarClient.Curl" />.</value>
-    public KeyValuePair<OpenApiScalarTarget, OpenApiScalarClient> DefaultHttpClient { get; set; } = new(OpenApiScalarTarget.Shell, OpenApiScalarClient.Curl);
+    /// <value>The default values are <see cref="ScalarOpenApiTarget.Shell" /> and <see cref="ScalarOpenApiClient.Curl" />.</value>
+    public KeyValuePair<ScalarOpenApiTarget, ScalarOpenApiClient> DefaultHttpClient { get; set; } = new(ScalarOpenApiTarget.Shell, ScalarOpenApiClient.Curl);
 
     /// <summary>
     /// Gets or sets the CDN URL for the API reference.

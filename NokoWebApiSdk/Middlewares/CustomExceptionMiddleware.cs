@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
 using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Schemas;
-using NokoWebApiSdk.Utils;
-using NokoWebApiSdk.Utils.Net;
 
 namespace NokoWebApiSdk.Middlewares;
 
@@ -34,14 +33,16 @@ public class CustomExceptionMiddleware
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCodes.InternalServerError;
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        
+        var statusCode = (HttpStatusCode)context.Response.StatusCode;
 
         var messageBody = new MessageBody<object>
         {
             StatusOk = false,
-            StatusCode = context.Response.StatusCode,
-            Status = HttpStatusText.FromCode((HttpStatusCodes)context.Response.StatusCode),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNowInMilliseconds(),
+            StatusCode = (int)statusCode,
+            Status = statusCode.ToString(),
+            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
             Message = "An unexpected error occurred.",
             Data = null,
         };

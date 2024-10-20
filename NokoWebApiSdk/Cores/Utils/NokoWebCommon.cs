@@ -7,25 +7,35 @@ public static class NokoWebCommon
         return value is null || value.Length == 0;
     }
 
-    public static bool IsNoneOrWhiteSpace(string? value)
+    public static bool IsNoneOrEmptyWhiteSpace(string? value)
     {
-        return value is null || value.All(char.IsWhiteSpace);
+        if (IsNoneOrEmpty(value)) return true;
+        var temp = value!.Trim();
+        return temp == "" 
+               || temp == "\0"
+               || temp == "\xA0"
+               || temp == "\t"
+               || temp == "\r"
+               || temp == "\n"
+               || temp == "\r\n"
+               || temp.All(char.IsWhiteSpace);
     }
 
-    public static bool IsNoneOrEmptyOrWhiteSpace(string value)
+    public static DateTime GetDateTimeUtcNow()
     {
-        return IsNoneOrEmpty(value) || IsNoneOrWhiteSpace(value);
+        return DateTime.UtcNow;
     }
-
-    public static DateTime TruncateToMilliseconds(DateTime dateTime)
+    
+    public static long GetDateTimeUtcNowTimestamp()
     {
-        return new DateTime(dateTime.Ticks - (dateTime.Ticks % TimeSpan.TicksPerMillisecond), dateTime.Kind);
+        var dateTime = GetDateTimeUtcNow();
+        return GetDateTimeUtcNowTimestamp(dateTime);
     }
-
-    public static DateTime GetDateTimeUtcNowInMilliseconds()
+    
+    public static long GetDateTimeUtcNowTimestamp(DateTime dateTime)
     {
-        var dateTimeUtcNow = DateTime.UtcNow;
-        return TruncateToMilliseconds(dateTimeUtcNow);
+        dateTime = dateTime.ToUniversalTime();
+        return dateTime.Ticks - (dateTime.Ticks % TimeSpan.TicksPerMillisecond);
     }
 
     public static string GetDateTimeIso8601(DateTime dateTime)

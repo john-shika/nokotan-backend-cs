@@ -22,9 +22,9 @@ public record Session : BaseModel
     public string TokenId { get; set; }
     
     [UniqueKey]
-    [Column("new_token_id")]
-    [JsonPropertyName("newTokenId")]
-    public string? NewTokenId { get; set; }
+    [Column("refresh_token_id")]
+    [JsonPropertyName("refreshTokenId")]
+    public string? RefreshTokenId { get; set; }
     
     [Required]
     [Column("ip_addr")]
