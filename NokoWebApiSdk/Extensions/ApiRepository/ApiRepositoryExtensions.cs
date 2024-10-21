@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using NokoWebApiSdk.Annotations;
-using NokoWebApiSdk.Reflections;
+using NokoWebApiSdk.Cores.Utils;
 
 namespace NokoWebApiSdk.Extensions.ApiRepository;
 

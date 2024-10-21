@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace NokoWebApiSdk.Reflections;
+namespace NokoWebApiSdk.Cores.Utils;
 
 public class NokoWebReflection
 {
