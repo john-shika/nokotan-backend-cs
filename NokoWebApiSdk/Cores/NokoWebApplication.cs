@@ -45,7 +45,7 @@ public class NokoWebApplication : INokoWebApplication
         Listeners = [];
     }
 
-    protected void InvokeOrListen(NokoWebApplicationListenerDelegate listener)
+    protected void Listen(NokoWebApplicationListenerDelegate listener)
     {
         if (Application is null || Environment is null)
         {
@@ -100,7 +100,7 @@ public class NokoWebApplication : INokoWebApplication
             app.UseDeveloperExceptionPage();
         };
 
-        InvokeOrListen(action.Listener);
+        Listen(action.Listener);
 
         return Application;
     }
@@ -113,7 +113,7 @@ public class NokoWebApplication : INokoWebApplication
         return Application;
     }
 
-    public void BuildAndEmitListen()
+    public void DetachEvent()
     {
         Build();
         for (var i = 0; i < Listeners.Count; i++)
@@ -127,25 +127,25 @@ public class NokoWebApplication : INokoWebApplication
 
     public void Run()
     {
-        BuildAndEmitListen();
+        DetachEvent();
         Application!.Run();
     }
     
     public async Task RunAsync([StringSyntax("Uri")] string? url = null)
     {
-        BuildAndEmitListen();
+        DetachEvent();
         await Application!.RunAsync(url);
     }
     
     public void Start()
     {
-        BuildAndEmitListen();
+        DetachEvent();
         Application!.Start();
     }
 
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
-        BuildAndEmitListen();
+        DetachEvent();
         await Application!.StartAsync(cancellationToken);
     }
 }

@@ -24,48 +24,50 @@ public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TCon
         base.OnModelCreating(modelBuilder);
 
         var baseModelType = typeof(BaseModel);
-        const string baseModeIdName = nameof(BaseModel.Id);
+        // const string baseModeIdName = nameof(BaseModel.Id);
         
         // Apply configurations to all entities derived from BaseModel
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            if (!baseModelType.IsAssignableFrom(entityType.ClrType)) continue;
-            var entity = modelBuilder.Entity(entityType.ClrType);
-
-            // Model T Generic Has Key Base Model ID
-            entity.HasKey(baseModeIdName);
+            var modelType = entityType.ClrType;
+            
+            if (!baseModelType.IsAssignableFrom(modelType)) continue;
+            var entity = modelBuilder.Entity(modelType);
             
             // Apply UniqueKey configuration
-            foreach (var property in entityType.ClrType.GetProperties())
+            foreach (var property in modelType.GetProperties())
             {
                 var uniqueKeyAttr = property.GetCustomAttribute<UniqueKeyAttribute>();
-                if (uniqueKeyAttr is { IsUnique: true })
-                {
-                    entity.HasIndex(property.Name).IsUnique();
-                }
+                if (uniqueKeyAttr is null) continue; 
+                
+                // Set Index Column By Property Name With Unique Key Attribute
+                entity.HasIndex(property.Name).IsUnique(uniqueKeyAttr.IsUnique);
             }
         }
     }
 
     public override int SaveChanges()
     {
+        // Need T Generic with Assembly Reflection to get all Entries Inherit with Base Model 
+        
         foreach (var entry in ChangeTracker.Entries<BaseModel>())
         {
             switch (entry.State)
             {
-                case EntityState.Added:
-                    entry.Entity.Id = NokoWebCommon.GenerateUuidV7();
-                    entry.Entity.CreatedAt = NokoWebCommon.GetDateTimeUtcNow();
-                    entry.Entity.UpdatedAt = NokoWebCommon.GetDateTimeUtcNow();
-                    break;
-                case EntityState.Modified:
-                    entry.Entity.UpdatedAt = DateTime.UtcNow;
-                    break;
                 case EntityState.Detached:
                     break;
                 case EntityState.Unchanged:
                     break;
                 case EntityState.Deleted:
+                    entry.Entity.DeletedAt = NokoWebCommon.GetDateTimeUtcNow();
+                    break;
+                case EntityState.Modified:
+                    entry.Entity.UpdatedAt = NokoWebCommon.GetDateTimeUtcNow();
+                    break;
+                case EntityState.Added:
+                    entry.Entity.Id = NokoWebCommon.GenerateUuidV7();
+                    entry.Entity.CreatedAt = NokoWebCommon.GetDateTimeUtcNow();
+                    entry.Entity.UpdatedAt = NokoWebCommon.GetDateTimeUtcNow();
                     break;
                 default:
                     throw new Exception("Unknown EntityState");

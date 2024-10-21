@@ -77,9 +77,9 @@ public static class ScalarOpenApiEndpointRouteBuilderExtensions
                               <script id="api-reference" data-url="{{documentUrl}}"></script>
                               <script>
                                 function main() {
+                                  const data = atob('{{dataConfig}}');
                                 
                                   // inject scalar api reference configuration, maybe failed
-                                  const data = atob('{{dataConfig}}');
                                   const reference = document.getElementById('api-reference');
                                   if (typeof reference?.['dataset'] === 'object') {
                                     reference['dataset'].configuration = data;

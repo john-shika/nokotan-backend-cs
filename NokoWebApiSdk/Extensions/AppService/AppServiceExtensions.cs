@@ -40,17 +40,14 @@ public static class AppServiceExtensions
             // Create New Instance From App Service Type 
             var appService = Activator.CreateInstance(appServiceType)!;
             
-            // Check App Service Is Assignable From App Service Initialized Type
-            var isAssignableAppServiceInitialized = appServiceInitializedType.IsAssignableFrom(appServiceType);
-            if (isAssignableAppServiceInitialized && appService is IAppServiceInitialized appServiceInitialized)
-            {
+            // Get appServiceInitialized By Checking with Interface
+            if (appService is not IAppServiceInitialized appServiceInitialized) continue;
+            
+            // Initialized App Service With Service Collections
+            appServiceInitialized.OnInitialized(services, configuration);
                 
-                // Initialized App Service With Service Collections
-                appServiceInitialized.OnInitialized(services, configuration);
-                
-                // Add Singleton To Services
-                services.AddSingleton(appServiceInitializedType, appServiceInitialized);
-            }
+            // Add Singleton To Services
+            services.AddSingleton(appServiceInitializedType, appServiceInitialized);
         }
 
         return services;

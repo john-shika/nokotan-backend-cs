@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>NokoWebApiSdk</RootNamespace>
     <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
@@ -15,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\Feeders\" />
-    <Folder Include="Reflections\" />
     <Folder Include="Services\" />
   </ItemGroup>
 </Project>

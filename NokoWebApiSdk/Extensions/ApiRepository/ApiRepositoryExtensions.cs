@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Reflections;
 
 namespace NokoWebApiSdk.Extensions.ApiRepository;
 
@@ -28,7 +29,7 @@ public static class ApiRepositoryExtensions
         var serviceLifetimeType = typeof(ServiceLifetime);
         
         // Get Type of Entity Framework Service Collection Extensions
-        var entityFrameworkServiceCollectionExtensionsType = typeof(EntityFrameworkServiceCollectionExtensions);
+        var eType = typeof(EntityFrameworkServiceCollectionExtensions);
 
         // Get Types From Assemblies And Filtering With Api Repository Attribute
         var baseRepositoryTypes = assemblies
@@ -57,41 +58,25 @@ public static class ApiRepositoryExtensions
             // Create Base Repository New Instance
             var baseRepositoryInstance = (DbContext)Activator.CreateInstance(baseRepositoryType, dbContextOptionsBuilder.Options)!;
             var baseRepositoryInstanceType = baseRepositoryInstance.GetType();
+
+            var gData = new Dictionary<Type, Type>
+            {
+                [dbContextType] = baseRepositoryInstanceType,
+            };
             
-            // Services Add Database Context With Options Action, Context Lifetime, And Options Lifetime
-            // Type[] types = [
-            //     serviceCollectionType, 
-            //     actionDbContextOptionsBuilderType, 
-            //     serviceLifetimeType, 
-            //     serviceLifetimeType,
-            // ];
-            // var method = services.GetType().GetMethod("AddDbContext", types)!;
-            // var genericMethod = method.MakeGenericMethod(baseRepositoryInstanceType);
-            // genericMethod.Invoke(null, [services, optionsAction, contextLifetime, optionsLifetime]);
+            var pTypes = new[] {
+                serviceCollectionType, 
+                actionDbContextOptionsBuilderType, 
+                serviceLifetimeType, 
+                serviceLifetimeType,
+            };
+
+            var nokoWebReflection = new NokoWebReflection(eType);
+            var gMethod = nokoWebReflection.GetMethod("AddDbContext", gData, pTypes);
+            if (gMethod is null || !gMethod.IsStatic) throw new Exception("The provided method must be static and not null.");
             
-            var method = entityFrameworkServiceCollectionExtensionsType
-                .GetMethods()
-                .FirstOrDefault(m =>
-                {
-                    var genericArguments = m.GetGenericArguments();
-                    var parameters = m.GetParameters();
-                    var isAddDbContext = m is { Name: "AddDbContext", IsGenericMethodDefinition: true }
-                                        && genericArguments.Length == 1
-                                        && parameters.Length == 4;
-                    if (!isAddDbContext) return false;
-            
-                    var isAddDbContextGenericSpecify = dbContextType.IsAssignableFrom(genericArguments[0].BaseType);
-                    if (!isAddDbContextGenericSpecify) return false;
-                    
-                    var isAddDbContextSpecify = serviceCollectionType.IsAssignableFrom(parameters[0].ParameterType)
-                        && actionDbContextOptionsBuilderType.IsAssignableFrom(parameters[1].ParameterType)
-                        && serviceLifetimeType.IsAssignableFrom(parameters[2].ParameterType)
-                        && serviceLifetimeType.IsAssignableFrom(parameters[3].ParameterType);
-                    return isAddDbContextSpecify;
-                })!;
-            
-            var genericMethod = method.MakeGenericMethod(baseRepositoryInstanceType);
-            genericMethod.Invoke(null, [services, optionsAction, contextLifetime, optionsLifetime]);
+            // Call AddDbContent with Parameter Values
+            gMethod.Invoke(null, [services, optionsAction, contextLifetime, optionsLifetime]);
         }
         
         return services;
