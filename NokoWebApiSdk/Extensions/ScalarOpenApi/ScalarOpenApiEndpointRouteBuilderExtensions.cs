@@ -70,8 +70,8 @@ public static class ScalarOpenApiEndpointRouteBuilderExtensions
                               <title>{{title}}</title>
                               <link rel="icon" type="image/x-icon" href="{{options.Favicon}}" />
                               
-                              <!-- must be distributed by options.CssBundlePathFile -->
-                              <link rel="stylesheet" href="/css/scalar.api-reference.css" />
+                              <!-- distributed by options.CssBundlePathFile -->
+                              <!-- <link rel="stylesheet" href="/css/scalar.api-reference.css" /> -->
                           </head>
                           <body>
                               <script id="api-reference" data-url="{{documentUrl}}"></script>
@@ -117,7 +117,7 @@ public static class ScalarOpenApiEndpointRouteBuilderExtensions
                                 document.addEventListener('DOMContentLoaded', preload);
                               </script>
                               
-                              <!-- must be distributed by options.JsBundlePathFile -->
+                              <!-- distributed by options.JsBundlePathFile -->
                               <script src="{{options.CdnUrl}}"></script>
                           </body>
                       </html>
