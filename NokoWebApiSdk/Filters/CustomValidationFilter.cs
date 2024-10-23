@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
+using NokoWebApiSdk.Json.Converters;
 using NokoWebApiSdk.Schemas;
 
 namespace NokoWebApiSdk.Filters;
@@ -37,6 +38,7 @@ public class CustomValidationFilter : IActionFilter
         
         var jsonSerializerOptions = new JsonSerializerOptions
         {
+            Converters = { new JsonDateTimeConverter() },
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 

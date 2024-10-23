@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography;
+using System.Text;
 
 namespace NokoWebApiSdk.Cores.Utils;
 
@@ -125,5 +126,13 @@ public static class NokoWebCommonMod
         }
 
         return stringBuilder.ToString();
+    }
+
+    public static byte[] EncodeSha512(string value)
+    {
+        using (var sha512 = SHA512.Create())
+        {
+            return sha512.ComputeHash(Encoding.UTF8.GetBytes(value));
+        }
     }
 }

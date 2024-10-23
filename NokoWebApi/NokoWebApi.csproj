@@ -32,4 +32,8 @@
   <ItemGroup>
     <ProjectReference Include="..\NokoWebApiSdk\NokoWebApiSdk.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
 </Project>

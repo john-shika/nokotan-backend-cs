@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Extensions.AppService;
 using NokoWebApiSdk.Filters;
@@ -17,15 +18,13 @@ public class AppService : AppServiceInitialized
         {
             options.Filters.Add<CustomValidationFilter>();
             options.Filters.Add<HttpExceptionFilter>();
-        }).AddJsonOptions(options =>
-        {
-            // TODO: source codes moved into NokoWebApiSdk.Json.Services.JsonService
-            options.JsonSerializerOptions.Converters.Add(new JsonDateTimeConverter());
         });
+        
         services.Configure<ApiBehaviorOptions>(options =>
         {
             options.SuppressModelStateInvalidFilter = true;
         });
+        
         services.AddHsts((options) =>
         {
             options.IncludeSubDomains = true;
@@ -45,8 +44,10 @@ public class AppService : AppServiceInitialized
 
         app.UseHttpsRedirection();
         app.UseRouting();
+        
         app.UseAuthentication();
         app.UseAuthorization();
+        
         app.UseStaticFiles();
         
         // app.UseEndpoints(endpoints =>

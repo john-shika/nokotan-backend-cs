@@ -14,6 +14,7 @@ using NokoWebApi.Schemas;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Globals;
+using NokoWebApiSdk.Json.Services;
 using JwtClaimTagNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
@@ -43,7 +44,7 @@ public class AuthController : ControllerBase
     [Tags(TagNames.Anonymous, "Auth")]
     [EndpointSummary("LOGIN_USER")]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Produces(typeof(AccessJwtTokenMessageBody))]
+    [Produces<AccessJwtTokenMessageBody>]
     public async Task<IResult> Authenticate([FromBody] LoginFormBody loginFormBody)
     {
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
@@ -78,38 +79,51 @@ public class AuthController : ControllerBase
     [Tags(TagNames.BearerJwt, TagNames.RoleAdmin, "Auth")]
     [EndpointSummary("VALIDATE_USER")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
-    [Produces(MediaTypeNames.Application.Json)]
+    [Produces<ValidateJwtTokenMessageBody>]
     public async Task<IResult> ValidateToken([FromHeader(Name = "Authorization")] string authorization)
     {
         // var token = HttpContext.Request.Headers[HeaderNames.Authorization].FirstOrDefault()?
         var token = authorization.Split(" ").Last()!;
+
+        var messageBody = new ValidateJwtTokenMessageBody();
+        messageBody.StatusOk = true;
+        messageBody.StatusCode = (int)HttpStatusCode.Ok;
+        messageBody.Status = HttpStatusCode.Ok.GetValue();
+        messageBody.Timestamp = NokoWebCommonMod.GetDateTimeUtcNow();
+        messageBody.Message = "Successfully validate JWT Token.";
         
         try
         {
             var (tokenId, sessionId, username, expires) = ParseJwtToken(token);
-            return TypedResults.Ok(new
+            var data = new ValidateJwtTokenData
             {
                 TokenId = tokenId,
                 SessionId = sessionId,
                 Username = username,
-                ExpiredAt = expires
-            });
+                Expires = expires
+            };
+
+            messageBody.Data = data;
+            
+            var options = new JsonSerializerOptions();
+            JsonService.JsonSerializerConfigure(options);
+            return TypedResults.Json(data: messageBody, options: options, statusCode: messageBody.StatusCode);
         }
         catch (Exception ex)
         {
-            return TypedResults.BadRequest(new { Message = ex.Message });
+            messageBody.StatusOk = false;
+            messageBody.StatusCode = (int)HttpStatusCode.InternalServerError;
+            messageBody.Status = HttpStatusCode.InternalServerError.ToString();
+            messageBody.Message = ex.Message;
+            return TypedResults.BadRequest(messageBody);
         }
     }
 
     private string GenerateJwtToken(Guid tokenId, Guid sessionId, string username, DateTime? expires = null)
     {
-        var jwtSettings = _configuration.GetSection("JwtSettings");
-        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
-        var issuer = jwtSettings["Issuer"]!;
-        var audience = jwtSettings["Audience"]!;
-
-        var data = JsonSerializer.Serialize(NokoWebApplicationDefaults.JwtSettings);
-        Console.WriteLine($"JwtSettings: {data}");
+        var secretKey = NokoWebCommonMod.EncodeSha512(NokoWebApplicationDefaults.GetJwtSecretKey());
+        var issuer = NokoWebApplicationDefaults.GetJwtIssuer();
+        var audience = NokoWebApplicationDefaults.GetJwtAudience();
         
         var tokenHandler = new JwtSecurityTokenHandler();
         
@@ -137,7 +151,7 @@ public class AuthController : ControllerBase
         return tokenHandler.WriteToken(token);
     }
     
-    private (Guid TokenId, Guid SessionId, string Username, DateTime? Expires) ParseJwtToken(string token)
+    private (Guid TokenId, Guid SessionId, string Username, DateTime Expires) ParseJwtToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;

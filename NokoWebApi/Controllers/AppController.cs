@@ -1,10 +1,13 @@
 ﻿using System.Net.Mime;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using NokoWebApi.Models;
 using NokoWebApi.Repositories;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
+using NokoWebApiSdk.Json.Converters;
+using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Schemas;
 using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
@@ -25,30 +28,10 @@ public class AppController : ControllerBase
         _user = user;
     }
     
-    [HttpGet("users")]
-    [Tags(TagNames.Anonymous, "App")]
-    [EndpointSummary("GET_ALL_USERS")]
-    [Produces(typeof(MessageBody<List<User>>))]
-    public async Task<IResult> GetAllUsers()
-    {
-        var users = await _user.GetAllUsers();
-        var messageBody = new MessageBody<List<User>>
-        {
-            StatusOk = true,
-            StatusCode = (int)HttpStatusCode.Ok,
-            Status = HttpStatusCode.Ok.ToString(),
-            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
-            Message = "Get All Users.",
-            Data = users,
-        };
-        
-        return TypedResults.Ok(messageBody);
-    }
-    
     [HttpGet("message")]
     [Tags(TagNames.Anonymous, "App")]
     [EndpointSummary("GET_MESSAGE")]
-    [Produces(typeof(EmptyMessageBody))]
+    [Produces<EmptyMessageBody>]
     public async Task<IResult> GetMessage()
     {
         var messageBody = new EmptyMessageBody
@@ -60,7 +43,9 @@ public class AppController : ControllerBase
             Message = "Hello World.",
             Data = null,
         };
-        
-        return TypedResults.Ok(messageBody);
+
+        var options = new JsonSerializerOptions();
+        JsonService.JsonSerializerConfigure(options);
+        return Results.Json(data: messageBody, options: options, statusCode: (int)HttpStatusCode.Ok);
     }
 }

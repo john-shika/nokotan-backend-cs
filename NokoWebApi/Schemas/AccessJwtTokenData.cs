@@ -6,14 +6,14 @@ namespace NokoWebApi.Schemas;
 
 public interface IAccessJwtTokenData
 {
-    public string AccessToken { get; init; }
+    public string AccessToken { get; set; }
 }
 
 public record AccessJwtTokenData : IAccessJwtTokenData
 {
     [Required]
     [JsonPropertyName("accessToken")]
-    public string AccessToken { get; init; }
+    public string AccessToken { get; set; }
 }
 
 public record AccessJwtTokenMessageBody : MessageBody<AccessJwtTokenData>;

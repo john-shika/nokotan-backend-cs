@@ -5,34 +5,34 @@ namespace NokoWebApiSdk.Schemas;
 
 public interface IMessageBody<T>
 {
-    public bool StatusOk { get; init; }
-    public int StatusCode { get; init; }
-    public string Status { get; init; }
-    public string Message { get; init; }
-    public DateTime Timestamp { get; init; }
-    public T? Data { get; init; }
+    public bool StatusOk { get; set; }
+    public int StatusCode { get; set; }
+    public string Status { get; set; }
+    public string Message { get; set; }
+    public DateTime Timestamp { get; set; }
+    public T? Data { get; set; }
 }
 
 public record MessageBody<T> : IMessageBody<T> 
     where T : class
 {
     [JsonPropertyName("statusOk")] 
-    public bool StatusOk { get; init; }
+    public bool StatusOk { get; set; }
     
     [JsonPropertyName("statusCode")] 
-    public int StatusCode { get; init; }
+    public int StatusCode { get; set; }
     
     [Required]
     [JsonPropertyName("status")] 
-    public string Status { get; init; }
+    public string Status { get; set; }
     
     [JsonPropertyName("timestamp")]
-    public DateTime Timestamp { get; init; }
+    public DateTime Timestamp { get; set; }
     
     [Required]
     [JsonPropertyName("message")] 
-    public string Message { get; init; }
+    public string Message { get; set; }
     
     [JsonPropertyName("data")] 
-    public T? Data { get; init; }
+    public T? Data { get; set; }
 }

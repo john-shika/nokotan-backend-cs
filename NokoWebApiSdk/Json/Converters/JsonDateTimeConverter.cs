@@ -16,7 +16,6 @@ public class JsonDateTimeConverter : JsonConverter<DateTime>
 
         var dateString = reader.GetString();
         
-        // Parse the date string
         if (DateTime.TryParseExact(dateString, DateFormat, null, System.Globalization.DateTimeStyles.None, out var date))
         {
             return date;
