@@ -12,7 +12,7 @@ public class AuthService : AppServiceInitialized
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("JwtSettings");
-        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]!);
+        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
         var issuer = jwtSettings["Issuer"]!;
         var audience = jwtSettings["Audience"]!;
         

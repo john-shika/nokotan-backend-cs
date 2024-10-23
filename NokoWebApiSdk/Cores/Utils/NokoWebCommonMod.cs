@@ -1,7 +1,17 @@
-﻿namespace NokoWebApiSdk.Cores.Utils;
+﻿using System.Text;
 
-public static class NokoWebCommon
+namespace NokoWebApiSdk.Cores.Utils;
+
+public static class NokoWebCommonMod
 {
+    // python3: import string
+    public const string Digits = "0123456789";
+    public const string AlphaUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public const string AlphaLower = "abcdefghijklmnopqrstuvwxyz";
+    public const string Punctuation = "!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~";
+    public const string WhiteSpace = " \t\n\r\v\f";
+    public const string Printable = Digits + AlphaUpper + AlphaLower + Punctuation + WhiteSpace;
+    
     public static bool IsNoneOrEmpty(string? value)
     {
         return value is null || value.Length == 0;
@@ -12,12 +22,17 @@ public static class NokoWebCommon
         if (IsNoneOrEmpty(value)) return true;
         var temp = value!.Trim();
         return temp == "" 
-               || temp == "\0"
-               || temp == "\xA0"
-               || temp == "\t"
-               || temp == "\r"
-               || temp == "\n"
-               || temp == "\r\n"
+               || temp == "\0" // is NULL
+               || temp == "\xC2" // just NB
+               || temp == "\xA0" // just SP
+               || temp == "\xC2\xA0" // NBSP
+               || temp == "\t" // TAB
+               || temp == "\r" // CR
+               || temp == "\n" // LF
+               || temp == "\r\n" // CRLF
+               || temp == "\v" // Vertical Tab (VT) ASCII 11
+               || temp == "\f" // Form Feed (FF) ASCII 12
+               || temp == "\v\f" // maybe combine of them
                || temp.All(char.IsWhiteSpace);
     }
 
@@ -97,5 +112,18 @@ public static class NokoWebCommon
     {
         if (value is null) return string.Empty;
         return value.EndsWith(ends) ? value[..^ends.Length] : value;
+    }
+
+    public static string GenerateRandomString(int size, string sources = Printable)
+    {
+        var random = new Random();
+        var stringBuilder = new StringBuilder(size);
+
+        for (var i = 0; i < size; i++)
+        {
+            stringBuilder.Append(sources[random.Next(sources.Length)]);
+        }
+
+        return stringBuilder.ToString();
     }
 }

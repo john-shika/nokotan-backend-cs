@@ -1,8 +1,9 @@
 ﻿#!pwsh
 
-$currentWorkDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-Set-Location $currentWorkDir -ErrorAction Stop
-Set-Location ..
+$currentWorkDir = Get-Location
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+Set-Location $scriptDir -ErrorAction Stop
+Set-Location "../.."
 
 $contexts = @{
     User = @{
@@ -21,9 +22,8 @@ foreach ($context in $contexts.Keys) {
     # $timestamp = [DateTimeOffset]::Now.ToUnixTimeSeconds()
     # $message = "Add$context_$timestamp"
     $message = "Add$context"
-    dotnet ef migrations add $message --context $repository --project .. --output-dir $outputDir
-    dotnet ef database update --context $repository --project ..
+    dotnet ef migrations add $message --context $repository --project "." --output-dir $outputDir
+    dotnet ef database update --context $repository --project "."
 }
 
 Set-Location $currentWorkDir
-Set-Location ..

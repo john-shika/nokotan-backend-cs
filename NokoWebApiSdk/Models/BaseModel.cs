@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using NokoWebApiSdk.Annotations;
 
 namespace NokoWebApiSdk.Models;
 
@@ -14,7 +15,7 @@ public interface IBaseModel
 
 public abstract record BaseModel : IBaseModel
 {
-    [Key]
+    [PrimaryKey]
     [Column("id")]
     [JsonPropertyName("uuid")]
     public Guid Id { get; set; }

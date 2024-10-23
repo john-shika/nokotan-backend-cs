@@ -71,12 +71,12 @@ public static class ApiRepositoryExtensions
                 serviceLifetimeType,
             };
 
-            var nokoWebReflection = new NokoWebReflection(eType);
-            var gMethod = nokoWebReflection.GetMethod("AddDbContext", gData, pTypes);
-            if (gMethod is null || !gMethod.IsStatic) throw new Exception("The provided method must be static and not null.");
+            var nokoWebReflectionHelper = new NokoWebReflectionHelper(eType);
+            var dbContextMethod = nokoWebReflectionHelper.GetMethod("AddDbContext", gData, pTypes);
+            if (dbContextMethod is null || !dbContextMethod.IsStatic) throw new Exception("The provided method must be static and not null.");
             
             // Call AddDbContent with Parameter Values
-            gMethod.Invoke(null, [services, optionsAction, contextLifetime, optionsLifetime]);
+            dbContextMethod.Invoke(null, [services, optionsAction, contextLifetime, optionsLifetime]);
         }
         
         return services;

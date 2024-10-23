@@ -2,6 +2,8 @@
 using System.Net.Mime;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+using Azure.Core.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
+using NokoWebApiSdk.Globals;
 using JwtClaimTagNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
@@ -22,13 +25,13 @@ public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<AuthController> _logger;
-    private readonly SessionRepository _sessionRepository;
+    private readonly SessionRepository _session;
 
-    public AuthController(IConfiguration configuration, ILogger<AuthController> logger, SessionRepository sessionRepository)
+    public AuthController(IConfiguration configuration, ILogger<AuthController> logger, SessionRepository session)
     {
         _configuration = configuration;
         _logger = logger;
-        _sessionRepository = sessionRepository;
+        _session = session;
     }
     
     // <summary>
@@ -49,8 +52,8 @@ public class AuthController : ControllerBase
         _logger.LogInformation($"IpAddress: {ipAddress}");
         _logger.LogInformation($"UserAgent: {userAgent}");
 
-        var tokenId = NokoWebCommon.GenerateUuidV7(); // as JTI
-        var sessionId = NokoWebCommon.GenerateUuidV7(); // as SID
+        var tokenId = NokoWebCommonMod.GenerateUuidV7(); // as JTI
+        var sessionId = NokoWebCommonMod.GenerateUuidV7(); // as SID
         var username = loginFormBody.Username; // as USERNAME
         var expires = DateTime.UtcNow.AddDays(7); // as EXP
         
@@ -61,7 +64,7 @@ public class AuthController : ControllerBase
             StatusOk = true,
             StatusCode = (int)HttpStatusCode.Created,
             Status = HttpStatusCode.Created.ToString(),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
+            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "Successfully create JWT Token.",
             Data = new AccessJwtTokenData {
                 AccessToken = token,
@@ -101,27 +104,29 @@ public class AuthController : ControllerBase
     private string GenerateJwtToken(Guid tokenId, Guid sessionId, string username, DateTime? expires = null)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
-        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]!);
+        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
         var issuer = jwtSettings["Issuer"]!;
         var audience = jwtSettings["Audience"]!;
-        var email = "user@mail.co";
+
+        var data = JsonSerializer.Serialize(NokoWebApplicationDefaults.JwtSettings);
+        Console.WriteLine($"JwtSettings: {data}");
         
         var tokenHandler = new JwtSecurityTokenHandler();
         
         const string algorithm = SecurityAlgorithms.HmacSha256Signature;
 
+        var claims = new[] {
+            new Claim(JwtClaimTagNames.Jti, tokenId.ToString()),
+            new Claim(JwtClaimTagNames.Sid, sessionId.ToString()),
+            new Claim("name", username),
+            new Claim("role", "Admin"),
+        };
+        
         var symmetricSecurityKey = new SymmetricSecurityKey(secretKey);
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, algorithm);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity([
-                new Claim(JwtClaimTagNames.Jti, tokenId.ToString()),
-                new Claim(JwtClaimTagNames.Sid, sessionId.ToString()),
-                new Claim("name", username),
-                new Claim(JwtClaimTagNames.Email, email),
-                // new Claim("role", "user"),
-                new Claim("role", "Admin"),
-            ]),
+            Subject = new ClaimsIdentity(claims),
             Expires = expires,
             Issuer = issuer,
             Audience = audience,

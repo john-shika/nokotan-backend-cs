@@ -26,6 +26,6 @@ public class UserRepository(DbContextOptions<UserRepository> options) : BaseRepo
 
     public async Task<List<User>> GetAllUsers()
     {
-        return await Dataset.ToListAsync();
+        return await Db.ToListAsync();
     }
 }

@@ -7,7 +7,7 @@ public static class NokoWebTransformText
 {
     public static string ToTitleCase(string value)
     {
-        if (NokoWebCommon.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
+        if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
         var temp = Regex.Replace(value.Trim(), @"(?<!^)(?=[A-Z])", " ");
         temp = Regex.Replace(temp, @"[-_\s]+", " ");
         var textInfo = CultureInfo.CurrentCulture.TextInfo;
@@ -49,7 +49,7 @@ public static class NokoWebTransformText
     
     private static string ToSnakeCaseRaw(string value)
     {
-        if (NokoWebCommon.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
+        if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
         var temp = Regex.Replace(value.Trim(), @"(?<!^)(?=[A-Z])", "_");
         temp = Regex.Replace(temp, @"[-_\s]+", "_");
         return temp;
@@ -67,7 +67,7 @@ public static class NokoWebTransformText
     
     private static string ToKebabCaseRaw(string value)
     {
-        if (NokoWebCommon.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
+        if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
         var temp = Regex.Replace(value.Trim(), @"(?<!^)(?=[A-Z])", "-");
         temp = Regex.Replace(temp, @"[-_\s]+", "-");
         return temp;

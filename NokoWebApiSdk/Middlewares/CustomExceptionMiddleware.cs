@@ -42,7 +42,7 @@ public class CustomExceptionMiddleware
             StatusOk = false,
             StatusCode = (int)statusCode,
             Status = statusCode.ToString(),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
+            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "An unexpected error occurred.",
             Data = null,
         };

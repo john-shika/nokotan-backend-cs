@@ -98,9 +98,12 @@ public static class ScalarOpenApiEndpointRouteBuilderExtensions
                                   document.head.appendChild(styleElement);
                                   const cssStyleSheet = styleElement.sheet; 
                                   
-                                  cssStyleSheet.addRule('*', 'border-radius: 0 !important;');
-                                  cssStyleSheet.addRule('*:focus', 'border-radius: 0 !important;');
-                                  cssStyleSheet.addRule('*:hover', 'border-radius: 0 !important;');
+                                  cssStyleSheet.addRule(':root', '--scalar-radius: 0px !important; --scalar-radius-lg: 0px !important; --scalar-radius-xl: 0px !important;');
+                                  cssStyleSheet.addRule(':hover', 'border-radius: 0px !important;');
+                                  cssStyleSheet.addRule(':focus', 'border-radius: 0px !important;');
+                                  cssStyleSheet.addRule('::before', 'border-radius: 0px !important;');
+                                  cssStyleSheet.addRule('::after', 'border-radius: 0px !important;');
+                                  cssStyleSheet.addRule('select, optgroup, option', 'border-radius: 0px !important;');
                                 }
                                 
                                 let called = false;

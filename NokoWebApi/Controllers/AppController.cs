@@ -16,13 +16,13 @@ public class AppController : ControllerBase
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<AuthController> _logger;
-    private readonly UserRepository _userRepository;
+    private readonly UserRepository _user;
 
-    public AppController(IConfiguration configuration, ILogger<AuthController> logger, UserRepository userRepository)
+    public AppController(IConfiguration configuration, ILogger<AuthController> logger, UserRepository user)
     {
         _configuration = configuration;
         _logger = logger;
-        _userRepository = userRepository;
+        _user = user;
     }
     
     [HttpGet("users")]
@@ -31,13 +31,13 @@ public class AppController : ControllerBase
     [Produces(typeof(MessageBody<List<User>>))]
     public async Task<IResult> GetAllUsers()
     {
-        var users = await _userRepository.GetAllUsers();
+        var users = await _user.GetAllUsers();
         var messageBody = new MessageBody<List<User>>
         {
             StatusOk = true,
             StatusCode = (int)HttpStatusCode.Ok,
             Status = HttpStatusCode.Ok.ToString(),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
+            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "Get All Users.",
             Data = users,
         };
@@ -56,7 +56,7 @@ public class AppController : ControllerBase
             StatusOk = true,
             StatusCode = (int)HttpStatusCode.Ok,
             Status = HttpStatusCode.Ok.ToString(),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
+            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "Hello World.",
             Data = null,
         };

@@ -7,7 +7,7 @@ public class UniqueKeyAttribute : Attribute
 
     public UniqueKeyAttribute() : this(true)
     {
-        // Nothing Todo...
+        // do nothing...
     }
 
     public UniqueKeyAttribute(bool isUnique)

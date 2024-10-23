@@ -25,7 +25,7 @@ public class HttpExceptionFilter : IExceptionFilter
             StatusOk = false,
             StatusCode = (int)statusCode,
             Status = statusCode.ToString(),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
+            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = exception.Message,
             Data = null,
         };

@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using NokoWebApiSdk.Extensions.ApiRepository;
 using NokoWebApiSdk.Extensions.AppService;
+using NokoWebApiSdk.Extensions.NokoWebApi;
 using NokoWebApiSdk.Extensions.ScalarOpenApi;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Options;
+using NokoWebApiSdk.Globals;
 
 namespace NokoWebApiSdk.Cores;
 
@@ -31,6 +33,9 @@ public class NokoWebApplication : INokoWebApplication
     public IServiceCollection Services => Builder.Services;
     public WebApplication? Application { get; set; }
     
+    public NokoWebApplicationDefaults? Globals { get; set; }
+    
+    public IConfiguration? Configuration => Application?.Configuration;
     public IWebHostEnvironment? Environment => Application?.Environment;
     public IHostApplicationLifetime? Lifetime => Application?.Lifetime;
     public ILogger? Logger => Application?.Logger;
@@ -45,7 +50,7 @@ public class NokoWebApplication : INokoWebApplication
         Listeners = [];
     }
 
-    protected void Listen(NokoWebApplicationListenerDelegate listener)
+    public void Listen(NokoWebApplicationListenerDelegate listener)
     {
         if (Application is null || Environment is null)
         {
@@ -116,6 +121,7 @@ public class NokoWebApplication : INokoWebApplication
     public void DetachEvent()
     {
         Build();
+        // this.UseGlobals();
         for (var i = 0; i < Listeners.Count; i++)
         {
             var listener = Listeners[i];

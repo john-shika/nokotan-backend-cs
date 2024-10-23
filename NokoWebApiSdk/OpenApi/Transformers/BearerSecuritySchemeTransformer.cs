@@ -16,7 +16,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
         var authSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
         
         var defineAuthSchemeSecurities = NokoWebOpenApiDefaults.AuthSchemeBearerTagOpenApiSecuritySchemes;
-        var defineAuthSchemeFounds = NokoWebCommon.InsertAnyMapValues(defineAuthSchemeSecurities, false);
+        var defineAuthSchemeFounds = NokoWebCommonMod.InsertAnyMapValues(defineAuthSchemeSecurities, false);
 
         document.Preload();
 
@@ -44,7 +44,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
             };
             
             document.Components.SecuritySchemes[tagName] = securityScheme;
-            NokoWebCommon.InsertAnyItemList(document.SecurityRequirements, securityRequirement);
+            NokoWebCommonMod.InsertAnyItemList(document.SecurityRequirements, securityRequirement);
             
             foreach (var (path, item) in document.Paths)
             {
@@ -54,7 +54,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
                     if (tag is null) continue;
                     
                     Logger.Warning($"Set Scheme Security On Method: {operationType}, Path: '{path}'");
-                    NokoWebCommon.InsertAnyItemList(operation.Security, securityRequirement);
+                    NokoWebCommonMod.InsertAnyItemList(operation.Security, securityRequirement);
                 }
             }
         }

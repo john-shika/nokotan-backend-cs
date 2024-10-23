@@ -30,7 +30,7 @@ public class CustomValidationFilter : IActionFilter
             StatusOk = false,
             StatusCode = (int)statusCode,
             Status = statusCode.ToString(),
-            Timestamp = NokoWebCommon.GetDateTimeUtcNow(),
+            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "One or more validation errors occurred.",
             Data = errors,
         };

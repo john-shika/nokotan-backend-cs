@@ -1,8 +1,9 @@
 ﻿#!pwsh
 
-$currentWorkDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-Set-Location $currentWorkDir -ErrorAction Stop
-Set-Location ..
+$currentWorkDir = Get-Location
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+Set-Location $scriptDir -ErrorAction Stop
+Set-Location "../.."
 
 $contexts = @{
     User = @{
@@ -17,8 +18,7 @@ $contexts = @{
 
 foreach ($context in $contexts.Keys) {
     $repository = $contexts[$context].Repository
-    dotnet ef dbcontext info --context $repository --project ..
+    dotnet ef dbcontext info --context $repository --project "."
 }
 
 Set-Location $currentWorkDir
-Set-Location ..
