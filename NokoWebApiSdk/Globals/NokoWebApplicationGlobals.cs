@@ -4,11 +4,11 @@ using NokoWebApiSdk.Schemas;
 
 namespace NokoWebApiSdk.Globals;
 
-public class NokoWebApplicationDefaults
+public class NokoWebApplicationGlobals
 {
     public static JwtSettings? JwtSettings { get; set; }
 
-    public NokoWebApplicationDefaults(IConfiguration configuration)
+    public NokoWebApplicationGlobals(IConfiguration configuration)
     {
         JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
     }

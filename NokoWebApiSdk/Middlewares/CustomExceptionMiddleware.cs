@@ -2,6 +2,7 @@
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
+using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Schemas;
 
 namespace NokoWebApiSdk.Middlewares;
@@ -30,24 +31,27 @@ public class CustomExceptionMiddleware
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        var response = context.Response;
+        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        response.ContentType = "application/json";
         
-        var statusCode = (HttpStatusCode)context.Response.StatusCode;
-
-        var messageBody = new MessageBody<object>
+        var statusCode = (HttpStatusCode)response.StatusCode;
+        var messageBody = new EmptyMessageBody
         {
             StatusOk = false,
             StatusCode = (int)statusCode,
             Status = statusCode.ToString(),
             Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
-            Message = "An unexpected error occurred.",
+            Message = ex.Message,
             Data = null,
         };
-        
-        var errorJson = JsonSerializer.Serialize(messageBody);
-        return context.Response.WriteAsync(errorJson);
+            
+        var options = new JsonSerializerOptions();
+        JsonService.JsonSerializerConfigure(options);
+
+        var jsonResponse = JsonSerializer.Serialize(messageBody, options);
+        await response.WriteAsync(jsonResponse);
     }
 }

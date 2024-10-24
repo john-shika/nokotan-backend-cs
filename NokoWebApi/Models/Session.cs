@@ -7,7 +7,7 @@ using NokoWebApiSdk.Models;
 namespace NokoWebApi.Models;
 
 [Table("sessions")]
-public record Session : BaseModel
+public class Session : BaseModel
 {
     [Required]
     [Column("user_id")]

@@ -14,14 +14,14 @@ using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 namespace NokoWebApi.Controllers;
 
 [ApiController]
-[Route("")]
+[Route("api/v1")]
 public class AppController : ControllerBase
 {
     private readonly IConfiguration _configuration;
-    private readonly ILogger<AuthController> _logger;
+    private readonly ILogger<AppController> _logger;
     private readonly UserRepository _user;
 
-    public AppController(IConfiguration configuration, ILogger<AuthController> logger, UserRepository user)
+    public AppController(IConfiguration configuration, ILogger<AppController> logger, UserRepository user)
     {
         _configuration = configuration;
         _logger = logger;

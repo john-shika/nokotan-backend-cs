@@ -25,9 +25,4 @@ public class JsonService : AppServiceInitialized
             JsonSerializerConfigure(options.JsonSerializerOptions);
         });
     }
-    
-    public override void OnConfigure(WebApplication app, IWebHostEnvironment env)
-    {
-        // do nothing...
-    }
 }

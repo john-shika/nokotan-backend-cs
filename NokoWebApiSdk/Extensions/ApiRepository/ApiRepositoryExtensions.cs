@@ -32,7 +32,7 @@ public static class ApiRepositoryExtensions
         var eType = typeof(EntityFrameworkServiceCollectionExtensions);
 
         // Get Types From Assemblies And Filtering With Api Repository Attribute
-        var baseRepositoryTypes = assemblies
+        var bRepositoryTypes = assemblies
             .SelectMany(a => a.GetTypes())
             .Where(t =>
             {
@@ -41,27 +41,27 @@ public static class ApiRepositoryExtensions
                 return attribute is not null && isAssignable && t is { IsClass: true, IsPublic: true };
             });
 
-        foreach (var baseRepositoryType in baseRepositoryTypes)
+        foreach (var bRepositoryType in bRepositoryTypes)
         {
             // Create DbContextOptions
-            var dbContextOptionsBuilderType = typeof(DbContextOptionsBuilder<>).MakeGenericType(baseRepositoryType);
+            var dbContextOptionsBuilderType = typeof(DbContextOptionsBuilder<>).MakeGenericType(bRepositoryType);
             var dbContextOptionsBuilder = (DbContextOptionsBuilder)Activator.CreateInstance(dbContextOptionsBuilderType)!;
             optionsAction?.Invoke(dbContextOptionsBuilder);
 
             // Check Base Repository Have Constructor With Parameter Database Context Options
             var dbContextOptionsType = dbContextOptionsBuilder.Options.GetType();
-            if (baseRepositoryType.GetConstructor([dbContextOptionsType]) is null)
+            if (bRepositoryType.GetConstructor([dbContextOptionsType]) is null)
             {
                 throw new Exception("Cannot create a BaseRepository from a class that doesn't have a single parameter DbContextOptions constructor.");
             }
 
             // Create Base Repository New Instance
-            var baseRepositoryInstance = (DbContext)Activator.CreateInstance(baseRepositoryType, dbContextOptionsBuilder.Options)!;
-            var baseRepositoryInstanceType = baseRepositoryInstance.GetType();
+            var bRepositoryInstance = (DbContext)Activator.CreateInstance(bRepositoryType, dbContextOptionsBuilder.Options)!;
+            var bRepositoryInstanceType = bRepositoryInstance.GetType();
 
             var gData = new Dictionary<Type, Type>
             {
-                [dbContextType] = baseRepositoryInstanceType,
+                [dbContextType] = bRepositoryInstanceType,
             };
             
             var pTypes = new[] {

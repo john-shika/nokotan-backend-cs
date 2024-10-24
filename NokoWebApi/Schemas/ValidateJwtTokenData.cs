@@ -14,7 +14,7 @@ public interface IValidateJwtTokenData
     public DateTime Expires { get; set; }
 }
 
-public record ValidateJwtTokenData : IValidateJwtTokenData
+public class ValidateJwtTokenData : IValidateJwtTokenData
 {
     
     [Required]
@@ -42,4 +42,4 @@ public record ValidateJwtTokenData : IValidateJwtTokenData
     public DateTime Expires { get; set; }
 }
 
-public record ValidateJwtTokenMessageBody : MessageBody<ValidateJwtTokenData>;
+public class ValidateJwtTokenMessageBody : MessageBody<ValidateJwtTokenData>;

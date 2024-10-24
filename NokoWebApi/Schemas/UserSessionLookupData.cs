@@ -17,7 +17,7 @@ public interface IUserSessionLookupData
     public DateTime? DeletedAt { get; set; }
 }
 
-public record UserSessionLookupData : IUserSessionLookupData
+public class UserSessionLookupData : IUserSessionLookupData
 {
     [JsonPropertyName("sessionId")]
     public Guid SessionId { get; set; }
@@ -49,4 +49,4 @@ public record UserSessionLookupData : IUserSessionLookupData
     public DateTime? DeletedAt { get; set; }
 }
 
-public record UserSessionLookupManyMessageBody : MessageBody<UserSessionLookupData[]>;
+public class UserSessionLookupManyMessageBody : MessageBody<UserSessionLookupData[]>;

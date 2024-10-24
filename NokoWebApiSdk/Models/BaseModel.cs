@@ -13,7 +13,7 @@ public interface IBaseModel
     public DateTime? DeletedAt { get; set; }
 }
 
-public abstract record BaseModel : IBaseModel
+public abstract class BaseModel : IBaseModel
 {
     [PrimaryKey]
     [Column("id")]

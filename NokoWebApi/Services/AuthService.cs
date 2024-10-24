@@ -14,10 +14,10 @@ public class AuthService : AppServiceInitialized
 {
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {
-        NokoWebApplicationDefaults.JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-        var secretKey = NokoWebCommonMod.EncodeSha512(NokoWebApplicationDefaults.GetJwtSecretKey());
-        var issuer = NokoWebApplicationDefaults.GetJwtIssuer();
-        var audience = NokoWebApplicationDefaults.GetJwtAudience();
+        NokoWebApplicationGlobals.JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        var secretKey = NokoWebCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
+        var issuer = NokoWebApplicationGlobals.GetJwtIssuer();
+        var audience = NokoWebApplicationGlobals.GetJwtAudience();
         
         services.AddAuthentication((options) =>
             {

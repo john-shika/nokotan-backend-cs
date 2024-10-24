@@ -1,13 +1,36 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Json.Converters;
+using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Schemas;
 
 namespace NokoWebApiSdk.Filters;
+
+public class ReportInvalidField
+{
+    [Required]
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+    
+    [Required]
+    [JsonPropertyName("errors")]
+    public string[] Errors { get; set; }
+}
+
+public class ReportInvalidFields
+{
+    [Required]
+    [JsonPropertyName("fields")]
+    public IEnumerable<ReportInvalidField> Fields { get; set; }
+}
+
+public class ReportInvalidFieldsMessageBody : MessageBody<ReportInvalidFields>;
 
 public class CustomValidationFilter : IActionFilter
 {
@@ -16,9 +39,12 @@ public class CustomValidationFilter : IActionFilter
         if (context.ModelState.IsValid) return;
         var errors = context.ModelState
             .Where(x => x.Value is { Errors.Count: > 0 })
-            .ToDictionary(
-                keyValuePair => NokoWebTransformText.ToCamelCase(keyValuePair.Key), 
-                keyValuePair => keyValuePair.Value?.Errors.Select(e => e.ErrorMessage).ToArray());
+            .Select(kv => new ReportInvalidField
+            {
+                Name = NokoWebTransformText.ToCamelCase(kv.Key),
+                Errors = kv.Value?.Errors.Select(e => e.ErrorMessage).ToArray() ?? []
+            })
+            .ToArray();
 
         var response = context.HttpContext.Response;
         response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -26,23 +52,25 @@ public class CustomValidationFilter : IActionFilter
         
         var statusCode = (HttpStatusCode)response.StatusCode;
 
-        var messageBody = new MessageBody<Dictionary<string, string[]?>>
+        var reports = new ReportInvalidFields
+        {
+            Fields = errors,
+        };
+        
+        var messageBody = new ReportInvalidFieldsMessageBody
         {
             StatusOk = false,
             StatusCode = (int)statusCode,
             Status = statusCode.ToString(),
             Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "One or more validation errors occurred.",
-            Data = errors,
+            Data = reports,
         };
         
-        var jsonSerializerOptions = new JsonSerializerOptions
-        {
-            Converters = { new JsonDateTimeConverter() },
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
+        var options = new JsonSerializerOptions();
+        JsonService.JsonSerializerConfigure(options);
 
-        context.Result = new JsonResult(messageBody, jsonSerializerOptions)
+        context.Result = new JsonResult(messageBody, options)
         {
             StatusCode = response.StatusCode
         };

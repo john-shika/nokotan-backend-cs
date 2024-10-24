@@ -7,7 +7,7 @@ using NokoWebApiSdk.Models;
 namespace NokoWebApi.Models;
 
 [Table("users")]
-public record User : BaseModel
+public class User : BaseModel
 {
     [Column("fullname")]
     [JsonPropertyName("fullname")]

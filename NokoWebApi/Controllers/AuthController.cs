@@ -21,7 +21,7 @@ using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 namespace NokoWebApi.Controllers;
 
 [ApiController]
-[Route("auth")]
+[Route("api/v1/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IConfiguration _configuration;
@@ -121,9 +121,9 @@ public class AuthController : ControllerBase
 
     private string GenerateJwtToken(Guid tokenId, Guid sessionId, string username, DateTime? expires = null)
     {
-        var secretKey = NokoWebCommonMod.EncodeSha512(NokoWebApplicationDefaults.GetJwtSecretKey());
-        var issuer = NokoWebApplicationDefaults.GetJwtIssuer();
-        var audience = NokoWebApplicationDefaults.GetJwtAudience();
+        var secretKey = NokoWebCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
+        var issuer = NokoWebApplicationGlobals.GetJwtIssuer();
+        var audience = NokoWebApplicationGlobals.GetJwtAudience();
         
         var tokenHandler = new JwtSecurityTokenHandler();
         

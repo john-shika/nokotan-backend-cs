@@ -13,7 +13,7 @@ public interface IMessageBody<T>
     public T? Data { get; set; }
 }
 
-public record MessageBody<T> : IMessageBody<T> 
+public class MessageBody<T> : IMessageBody<T> 
     where T : class
 {
     [JsonPropertyName("statusOk")] 

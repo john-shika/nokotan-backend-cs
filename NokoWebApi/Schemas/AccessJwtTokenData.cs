@@ -9,11 +9,11 @@ public interface IAccessJwtTokenData
     public string AccessToken { get; set; }
 }
 
-public record AccessJwtTokenData : IAccessJwtTokenData
+public class AccessJwtTokenData : IAccessJwtTokenData
 {
     [Required]
     [JsonPropertyName("accessToken")]
     public string AccessToken { get; set; }
 }
 
-public record AccessJwtTokenMessageBody : MessageBody<AccessJwtTokenData>;
+public class AccessJwtTokenMessageBody : MessageBody<AccessJwtTokenData>;

@@ -21,7 +21,7 @@ public static class NokoWebApplicationExtensions
             config ??= nokoWebApplication.Configuration;
             if (config is null) return;
         
-            var nokoWebApplicationDefaults = new NokoWebApplicationDefaults(config);
+            var nokoWebApplicationDefaults = new NokoWebApplicationGlobals(config);
             nokoWebApplication.Globals = nokoWebApplicationDefaults;
         });
     }

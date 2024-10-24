@@ -14,11 +14,13 @@ public class AppService : AppServiceInitialized
     {
         // services.AddEndpointsApiExplorer();
         services.AddAntiforgery();
-        services.AddControllers((options) =>
-        {
-            options.Filters.Add<CustomValidationFilter>();
-            options.Filters.Add<HttpExceptionFilter>();
-        });
+        
+        // testing using NokoWebApi.Optimizes.EntryPoint with AspNetCore Minimal Api
+        // services.AddControllers((options) =>
+        // {
+        //     options.Filters.Add<CustomValidationFilter>();
+        //     options.Filters.Add<HttpExceptionFilter>();
+        // });
         
         services.Configure<ApiBehaviorOptions>(options =>
         {
@@ -59,7 +61,8 @@ public class AppService : AppServiceInitialized
 
         app.UseEndpoints((endpoints) =>
         {
-            endpoints.MapControllers();
+            // testing using NokoWebApi.Optimizes.EntryPoint with AspNetCore Minimal Api
+            // endpoints.MapControllers();
         });
 
         // app.MapControllers();

@@ -1,3 +1,3 @@
 ﻿namespace NokoWebApiSdk.Schemas;
 
-public record EmptyMessageBody : MessageBody<object>;
+public class EmptyMessageBody : MessageBody<object>;
