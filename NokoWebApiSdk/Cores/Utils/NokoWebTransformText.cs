@@ -8,7 +8,10 @@ public static class NokoWebTransformText
     public static string ToTitleCase(string value)
     {
         if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
-        var temp = Regex.Replace(value.Trim(), @"(?<!^)(?=[A-Z])", " ");
+        //var temp = Regex.Replace(value.Trim(), @"(?<=[a-zA-Z])([A-Z]([a-z]+)?|[0-9]+)|[-_\s]+", " $1");
+        var temp = Regex.Replace(value.Trim(), @"(?<=\w)([A-Z])", " $1");
+        temp = Regex.Replace(temp, @"^([-_\s]+)?([0-9]+)", "$1 ");
+        temp = Regex.Replace(temp, @"(?<=\w)([0-9]+)", " $1 ");
         temp = Regex.Replace(temp, @"[-_\s]+", " ");
         var textInfo = CultureInfo.CurrentCulture.TextInfo;
         return textInfo.ToTitleCase(temp);
@@ -43,14 +46,17 @@ public static class NokoWebTransformText
     
     public static string ToCamelCase(string value)
     {
-        var temp = ToPascalCase(value);
+        var temp = ToTitleCase(value);
+        temp = temp.Replace(" ", "");
         return ToStartCharLower(temp);
     }
     
     private static string ToSnakeCaseRaw(string value)
     {
         if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
-        var temp = Regex.Replace(value.Trim(), @"(?<!^)(?=[A-Z])", "_");
+        var temp = Regex.Replace(value.Trim(), @"(?<=\w)([A-Z])", "_$1");
+        temp = Regex.Replace(temp, @"^([-_\s]+)?([0-9]+)", "$1_");
+        temp = Regex.Replace(temp, @"(?<=\w)([0-9]+)", "_$1_");
         temp = Regex.Replace(temp, @"[-_\s]+", "_");
         return temp;
     }
@@ -68,7 +74,9 @@ public static class NokoWebTransformText
     private static string ToKebabCaseRaw(string value)
     {
         if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
-        var temp = Regex.Replace(value.Trim(), @"(?<!^)(?=[A-Z])", "-");
+        var temp = Regex.Replace(value.Trim(), @"(?<=\w)([A-Z])", "-$1");
+        temp = Regex.Replace(temp, @"^([-_\s]+)?([0-9]+)", "$1-");
+        temp = Regex.Replace(temp, @"(?<=\w)([0-9]+)", "-$1-");
         temp = Regex.Replace(temp, @"[-_\s]+", "-");
         return temp;
     }
