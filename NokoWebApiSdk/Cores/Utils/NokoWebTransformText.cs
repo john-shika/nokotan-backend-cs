@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace NokoWebApiSdk.Cores.Utils;
 
@@ -8,86 +7,87 @@ public static class NokoWebTransformText
     public static string ToTitleCase(string value)
     {
         if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
-        //var temp = Regex.Replace(value.Trim(), @"(?<=[a-zA-Z])([A-Z]([a-z]+)?|[0-9]+)|[-_\s]+", " $1");
-        var temp = Regex.Replace(value.Trim(), @"(?<=\w)([A-Z])", " $1");
-        temp = Regex.Replace(temp, @"^([-_\s]+)?([0-9]+)", "$1 ");
-        temp = Regex.Replace(temp, @"(?<=\w)([0-9]+)", " $1 ");
-        temp = Regex.Replace(temp, @"[-_\s]+", " ");
-        var textInfo = CultureInfo.CurrentCulture.TextInfo;
-        return textInfo.ToTitleCase(temp);
+        var val = Regex.Replace(value.Trim(), @"(?<=[a-z])([A-Z])|(?<=[a-zA-Z])([0-9])|(?<=[0-9])([a-zA-Z])", " $1$2$3");
+        val = Regex.Replace(val, @"[-_\s]+", " ");
+        val = Regex.Replace(val.ToLower(), @"\b\w", m => m.Value.ToUpper());
+        return val;
     }
 
-    public static string ToStartCharUpper(string value)
+    public static string ToUpperStart(string value)
     {
-        return value.Length switch
-        {
-            0 => string.Empty,
-            1 => string.Empty + char.ToUpper(value[0]),
-            _ => string.Empty + char.ToUpper(value[0]) + value[1..],
-        };
+        if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
+        var val = value.Trim();
+        return Regex.Replace(val, @"\b\w", m => m.Value.ToUpper());
     }
-    
-    public static string ToStartCharLower(string value)
+
+    public static string ToUpperEnd(string value)
     {
-        return value.Length switch
-        {
-            0 => string.Empty,
-            1 => string.Empty + char.ToLower(value[0]),
-            _ => string.Empty + char.ToLower(value[0]) + value[1..],
-        };
+        if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
+        var val = value.Trim();
+        return Regex.Replace(val, @"\w\b", m => m.Value.ToUpper());
+    }
+
+    public static string ToLowerStart(string value)
+    {
+        if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
+        var val = value.Trim();
+        return Regex.Replace(val, @"\b\w", m => m.Value.ToLower());
+    }
+
+    public static string ToLowerEnd(string value)
+    {
+        if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
+        var val = value.Trim();
+        return Regex.Replace(val, @"\w\b", m => m.Value.ToLower());
     }
 
     public static string ToPascalCase(string value)
     {
-        var temp = ToTitleCase(value);
-        temp = temp.Replace(" ", "");
-        return ToStartCharUpper(temp);
+        var val = ToTitleCase(value).Replace(" ", "");
+        return ToUpperStart(val);
     }
-    
+
     public static string ToCamelCase(string value)
     {
-        var temp = ToTitleCase(value);
-        temp = temp.Replace(" ", "");
-        return ToStartCharLower(temp);
+        var val = ToTitleCase(value).Replace(" ", "");
+        return ToLowerStart(val);
     }
-    
+
     private static string ToSnakeCaseRaw(string value)
     {
         if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
-        var temp = Regex.Replace(value.Trim(), @"(?<=\w)([A-Z])", "_$1");
-        temp = Regex.Replace(temp, @"^([-_\s]+)?([0-9]+)", "$1_");
-        temp = Regex.Replace(temp, @"(?<=\w)([0-9]+)", "_$1_");
-        temp = Regex.Replace(temp, @"[-_\s]+", "_");
-        return temp;
+        var val = Regex.Replace(value.Trim(), @"(?<=[a-z])([A-Z])|(?<=[a-zA-Z])([0-9])|(?<=[0-9])([a-zA-Z])", "_$1$2$3");
+        val = Regex.Replace(val, @"[-_\s]+", "_");
+        // val = Regex.Replace(val.ToLower(), @"\b\w", m => m.Value.ToUpper());
+        return val;
     }
-    
+
     public static string ToSnakeCase(string value)
     {
         return ToSnakeCaseRaw(value).ToLower();
     }
-    
+
     public static string ToSnakeCaseUpper(string value)
     {
         return ToSnakeCaseRaw(value).ToUpper();
     }
-    
+
     private static string ToKebabCaseRaw(string value)
     {
         if (NokoWebCommonMod.IsNoneOrEmptyWhiteSpace(value)) return string.Empty;
-        var temp = Regex.Replace(value.Trim(), @"(?<=\w)([A-Z])", "-$1");
-        temp = Regex.Replace(temp, @"^([-_\s]+)?([0-9]+)", "$1-");
-        temp = Regex.Replace(temp, @"(?<=\w)([0-9]+)", "-$1-");
-        temp = Regex.Replace(temp, @"[-_\s]+", "-");
-        return temp;
+        var val = Regex.Replace(value.Trim(), @"(?<=[a-z])([A-Z])|(?<=[a-zA-Z])([0-9])|(?<=[0-9])([a-zA-Z])", "-$1$2$3");
+        val = Regex.Replace(val, @"[-_\s]+", "-");
+        // val = Regex.Replace(val.ToLower(), @"\b\w", m => m.Value.ToUpper());
+        return val;
     }
-    
+
     public static string ToKebabCase(string value)
     {
         return ToKebabCaseRaw(value).ToLower();
     }
-    
+
     public static string ToKebabCaseUpper(string value)
     {
-        return ToKebabCaseRaw(value).ToUpper();
+        return ToKebabCaseRaw(value);
     }
 }
