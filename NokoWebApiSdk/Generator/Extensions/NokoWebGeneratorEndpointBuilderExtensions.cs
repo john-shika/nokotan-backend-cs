@@ -1,7 +1,7 @@
 ﻿using NokoWebApiSdk.Cores;
-using NokoWebApiSdk.Generators.Helper;
+using NokoWebApiSdk.Generator.Helper;
 
-namespace NokoWebApiSdk.Generators.Extensions;
+namespace NokoWebApiSdk.Generator.Extensions;
 
 public static class NokoWebGeneratorEndpointBuilderExtensions
 {

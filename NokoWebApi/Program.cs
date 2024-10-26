@@ -7,10 +7,11 @@ using NokoWebApi.Repositories;
 using NokoWebApiSdk;
 using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Net;
+using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Extensions.NokoWebApi;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Enums;
 using NokoWebApiSdk.Filters;
-using NokoWebApiSdk.Generators.Extensions;
+using NokoWebApiSdk.Generator.Extensions;
 using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Middlewares;
 using NokoWebApiSdk.Repositories;
@@ -46,6 +47,7 @@ noko.MapOpenApi((options) =>
 // });
 // then direct server using type generic
 // noko.Run<NokoWebApi.Optimizes.Program>()
+
 // load any environment variables and config files
 noko.UseGlobals();
 
@@ -67,14 +69,13 @@ noko.Application!.UseStatusCodePages(async context =>
     if (response.StatusCode == (int)HttpStatusCode.NotFound)
     {
         response.ContentType = "application/json";
-        var messageBody = new MessageBody<object>
+        var messageBody = new EmptyMessageBody
         {
             StatusOk = false,
             StatusCode = response.StatusCode,
             Status = HttpStatusCode.NotFound.ToString(),
-            Timestamp = DateTime.UtcNow,
+            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "Resource not found",
-            Data = null
         };
 
         var options = new JsonSerializerOptions();

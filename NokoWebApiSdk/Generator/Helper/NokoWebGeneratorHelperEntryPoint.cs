@@ -1,6 +1,6 @@
 ﻿using NokoWebApiSdk.Cores;
 
-namespace NokoWebApiSdk.Generators.Helper;
+namespace NokoWebApiSdk.Generator.Helper;
 
 public interface INokoWebGeneratorHelperEntryPoint
 {

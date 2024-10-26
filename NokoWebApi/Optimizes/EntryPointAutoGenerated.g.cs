@@ -1,7 +1,7 @@
 ﻿using NokoWebApi.Controllers;
 using NokoWebApi.Repositories;
 using NokoWebApiSdk.Cores;
-using NokoWebApiSdk.Generators.Helper;
+using NokoWebApiSdk.Generator.Helper;
 using NokoWebApiSdk.OpenApi;
 using NokoWebApiSdk.Schemas;
 

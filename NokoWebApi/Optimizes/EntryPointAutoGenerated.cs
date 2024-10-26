@@ -1,5 +1,5 @@
 ﻿using NokoWebApiSdk.Cores;
-using NokoWebApiSdk.Generators.Helper;
+using NokoWebApiSdk.Generator.Helper;
 
 namespace NokoWebApi.Optimizes;
 
