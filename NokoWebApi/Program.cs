@@ -1,21 +1,78 @@
-using System.Text.Json;
+using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using NokoWebApi.Controllers;
-using NokoWebApi.Models;
-using NokoWebApi.Repositories;
-using NokoWebApiSdk;
+using NokoWebApiSdk.Controllers;
 using NokoWebApiSdk.Cores;
-using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Extensions.NokoWebApi;
 using NokoWebApiSdk.Extensions.ScalarOpenApi.Enums;
 using NokoWebApiSdk.Filters;
 using NokoWebApiSdk.Generator.Extensions;
-using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Middlewares;
-using NokoWebApiSdk.Repositories;
-using NokoWebApiSdk.Schemas;
+
+// Get Assemblies In Current App Domain
+var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+        
+// Get Executing Assembly In Internal Assembly
+var executingAssembly = Assembly.GetExecutingAssembly();
+if (!assemblies.Contains(executingAssembly))
+{
+    assemblies.Add(executingAssembly);
+}
+
+var baseApiControllerType = typeof(BaseApiController);
+
+var types = assemblies
+    .SelectMany((assembly) => assembly.GetTypes())
+    .Where((type) =>
+    {
+        var isAssignable = baseApiControllerType.IsAssignableFrom(type); 
+        var hasAttribute = NokoWebCommonMod.HasAttribute<ApiControllerAttribute>(type);
+        return type is { IsClass: true, IsPublic: true } && hasAttribute && isAssignable;
+    });
+
+foreach (var type in types)
+{
+    var temp = new StringBuilder();
+    temp.AppendLine($"Namespace: {NokoWebCommonMod.TrimLastNamespaceSegment(type.Namespace)}");
+    temp.AppendLine($"Controller: {type.Namespace} {type.Name}");
+    
+    var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+        .Where((method) =>
+        {
+            var attributes = method.GetCustomAttributes();
+            return attributes.Any((attribute) => attribute is HttpMethodAttribute);
+        });
+
+    var constructor = type.GetConstructors().FirstOrDefault();
+
+    if (constructor is not null)
+    {
+        var parameters = constructor.GetParameters();
+        foreach (var parameter in parameters)
+        {
+            temp.AppendLine($" + {parameter.Name}: {parameter.ParameterType.Namespace} {NokoWebCommonMod.StripGenericMarker(parameter.ParameterType)}");
+            if (parameter.ParameterType.IsGenericType)
+            {
+                var arguments = parameter.ParameterType.GetGenericArguments();
+                foreach (var argument in arguments)
+                {
+                    temp.AppendLine($"  - {argument.Namespace} {argument.Name}");
+                }
+            }
+        }
+    }
+
+    foreach (var method in methods)
+    {
+        temp.AppendLine($"- Method: {method.Name}");
+    }
+    Console.WriteLine(temp.ToString());
+}
+
+return;
 
 var noko = NokoWebApplication.Create(args);
 
@@ -63,26 +120,5 @@ noko.Build();
 
 noko.Application!.Use(HttpExceptionMiddleware.Handler);
 noko.Application!.UseMiddleware<CustomExceptionMiddleware>();
-noko.Application!.UseStatusCodePages(async context =>
-{
-    var response = context.HttpContext.Response;
-    if (response.StatusCode == (int)HttpStatusCode.NotFound)
-    {
-        response.ContentType = "application/json";
-        var messageBody = new EmptyMessageBody
-        {
-            StatusOk = false,
-            StatusCode = response.StatusCode,
-            Status = HttpStatusCode.NotFound.ToString(),
-            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
-            Message = "Resource not found",
-        };
-
-        var options = new JsonSerializerOptions();
-        JsonService.JsonSerializerConfigure(options);
-        var jsonResponse = JsonSerializer.Serialize(messageBody, options);
-        await response.WriteAsync(jsonResponse);
-    }
-});
 
 noko.Run();

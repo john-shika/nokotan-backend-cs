@@ -1,12 +1,9 @@
-﻿using System.Net.Mime;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using NokoWebApi.Models;
 using NokoWebApi.Repositories;
-using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Controllers;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
-using NokoWebApiSdk.Json.Converters;
 using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Schemas;
 using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
@@ -15,7 +12,7 @@ namespace NokoWebApi.Controllers;
 
 [ApiController]
 [Route("api/v1")]
-public class AppController : ControllerBase
+public class AppController : BaseApiController
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<AppController> _logger;
@@ -37,15 +34,15 @@ public class AppController : ControllerBase
         var messageBody = new EmptyMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)HttpStatusCode.Ok,
-            Status = HttpStatusCode.Ok.ToString(),
+            StatusCode = (int)NokoWebHttpStatusCode.Ok,
+            Status = NokoWebHttpStatusCode.Ok.ToString(),
             Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "Hello World.",
             Data = null,
         };
 
         var options = new JsonSerializerOptions();
-        JsonService.JsonSerializerConfigure(options);
-        return Results.Json(data: messageBody, options: options, statusCode: (int)HttpStatusCode.Ok);
+        JsonSerializerService.Apply(options);
+        return Results.Json(data: messageBody, options: options, statusCode: (int)NokoWebHttpStatusCode.Ok);
     }
 }

@@ -45,10 +45,10 @@ public class CustomValidationFilter : IActionFilter
             .ToArray();
 
         var response = context.HttpContext.Response;
-        response.StatusCode = (int)HttpStatusCode.BadRequest;
+        response.StatusCode = (int)NokoWebHttpStatusCode.BadRequest;
         response.ContentType = "application/json";
         
-        var statusCode = (HttpStatusCode)response.StatusCode;
+        var statusCode = (NokoWebHttpStatusCode)response.StatusCode;
 
         var reports = new ReportInvalidFields
         {
@@ -66,7 +66,7 @@ public class CustomValidationFilter : IActionFilter
         };
         
         var options = new JsonSerializerOptions();
-        JsonService.JsonSerializerConfigure(options);
+        JsonSerializerService.Apply(options);
 
         context.Result = new JsonResult(messageBody, options)
         {

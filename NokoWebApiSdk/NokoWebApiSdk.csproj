@@ -15,8 +15,7 @@
     <PackageReference Include="Serilog" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Database\Feeders\" />
+    <Folder Include="Database\" />
     <Folder Include="Reflections\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 </Project>

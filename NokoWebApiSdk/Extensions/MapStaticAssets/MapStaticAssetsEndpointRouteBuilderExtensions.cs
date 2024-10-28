@@ -1,6 +1,6 @@
-﻿namespace NokoWebApiSdk.Extensions.StaticAssets;
+﻿namespace NokoWebApiSdk.Extensions.MapStaticAssets;
 
-public static class StaticAssetsEndpointRouteBuilderExtensions
+public static class MapStaticAssetsEndpointRouteBuilderExtensions
 {
     public static IEndpointRouteBuilder MapStaticAssets(this IEndpointRouteBuilder endpoints, string path = "public")
     {

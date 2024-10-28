@@ -17,10 +17,10 @@ public class HttpExceptionFilter : IExceptionFilter
         var exception = context.Exception;
         
         var response = context.HttpContext.Response;
-        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        response.StatusCode = (int)NokoWebHttpStatusCode.InternalServerError;
         response.ContentType = "application/json";
         
-        var statusCode = (HttpStatusCode)response.StatusCode;
+        var statusCode = (NokoWebHttpStatusCode)response.StatusCode;
 
         var messageBody = new EmptyMessageBody
         {
@@ -33,7 +33,7 @@ public class HttpExceptionFilter : IExceptionFilter
         };
 
         var options = new JsonSerializerOptions();
-        JsonService.JsonSerializerConfigure(options);
+        JsonSerializerService.Apply(options);
 
         context.Result = new JsonResult(messageBody, options)
         {
@@ -57,10 +57,10 @@ public static class HttpExceptionMiddleware
         catch (Exception ex)
         {
             var response = context.Response;
-            response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            response.StatusCode = (int)NokoWebHttpStatusCode.InternalServerError;
             response.ContentType = "application/json";
         
-            var statusCode = (HttpStatusCode)response.StatusCode;
+            var statusCode = (NokoWebHttpStatusCode)response.StatusCode;
             var messageBody = new EmptyMessageBody
             {
                 StatusOk = false,
@@ -72,7 +72,7 @@ public static class HttpExceptionMiddleware
             };
             
             var options = new JsonSerializerOptions();
-            JsonService.JsonSerializerConfigure(options);
+            JsonSerializerService.Apply(options);
 
             var jsonResponse = JsonSerializer.Serialize(messageBody, options);
             await response.WriteAsync(jsonResponse);

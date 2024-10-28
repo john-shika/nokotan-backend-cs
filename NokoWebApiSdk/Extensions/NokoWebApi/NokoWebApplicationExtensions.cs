@@ -14,9 +14,9 @@ public static class NokoWebApplicationExtensions
     {
     }
 
-    public static void UseGlobals(this NokoWebApplication app, IConfiguration? config = null)
+    public static void UseGlobals(this NokoWebApplication application, IConfiguration? config = null)
     {
-        app.Listen((nokoWebApplication) =>
+        application.Listen((nokoWebApplication) =>
         {
             config ??= nokoWebApplication.Configuration;
             if (config is null) return;

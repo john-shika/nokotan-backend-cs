@@ -29,19 +29,19 @@ public static class ApiRepositoryExtensions
         var serviceLifetimeType = typeof(ServiceLifetime);
         
         // Get Type of Entity Framework Service Collection Extensions
-        var eType = typeof(EntityFrameworkServiceCollectionExtensions);
+        var entityFrameworkServiceCollectionExtensionsType = typeof(EntityFrameworkServiceCollectionExtensions);
 
         // Get Types From Assemblies And Filtering With Api Repository Attribute
-        var bRepositoryTypes = assemblies
-            .SelectMany(a => a.GetTypes())
-            .Where(t =>
+        var baseRepositoryTypes = assemblies
+            .SelectMany((assembly) => assembly.GetTypes())
+            .Where((type) =>
             {
-                var attribute = t.GetCustomAttribute<ApiRepositoryAttribute>();
-                var isAssignable = dbContextType.IsAssignableFrom(t);
-                return attribute is not null && isAssignable && t is { IsClass: true, IsPublic: true };
+                var isAssignable = dbContextType.IsAssignableFrom(type);
+                var hasAttribute = NokoWebCommonMod.HasAttribute<ApiRepositoryAttribute>(type);
+                return type is { IsClass: true, IsPublic: true } && hasAttribute && isAssignable;
             });
 
-        foreach (var bRepositoryType in bRepositoryTypes)
+        foreach (var bRepositoryType in baseRepositoryTypes)
         {
             // Create DbContextOptions
             var dbContextOptionsBuilderType = typeof(DbContextOptionsBuilder<>).MakeGenericType(bRepositoryType);
@@ -71,7 +71,7 @@ public static class ApiRepositoryExtensions
                 serviceLifetimeType,
             };
 
-            var nokoWebReflectionHelper = new NokoWebReflectionHelper(eType);
+            var nokoWebReflectionHelper = new NokoWebReflectionHelper(entityFrameworkServiceCollectionExtensionsType);
             var dbContextMethod = nokoWebReflectionHelper.GetMethod("AddDbContext", gData, pTypes);
             if (dbContextMethod is null || !dbContextMethod.IsStatic) throw new Exception("The provided method must be static and not null.");
             

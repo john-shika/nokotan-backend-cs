@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Cores.Utils;
 
 namespace NokoWebApiSdk.Extensions.AppService;
 
@@ -22,12 +23,12 @@ public static class AppServiceExtensions
 
         // Get Types From Assemblies And Filtering With App Service Attribute
         var appServiceTypes = assemblies
-            .SelectMany(a => a.GetTypes())
-            .Where(t =>
+            .SelectMany((assembly) => assembly.GetTypes())
+            .Where((type) =>
             {
-                var attribute = t.GetCustomAttribute<AppServiceAttribute>();
-                var isAssignable = appServiceInitializedType.IsAssignableFrom(t);
-                return attribute is not null && isAssignable && t is { IsClass: true, IsPublic: true };
+                var isAssignable = appServiceInitializedType.IsAssignableFrom(type);
+                var hasAttribute = NokoWebCommonMod.HasAttribute<AppServiceAttribute>(type);
+                return type is { IsClass: true, IsPublic: true } && hasAttribute && isAssignable;
             });
 
         foreach (var appServiceType in appServiceTypes)
@@ -53,18 +54,18 @@ public static class AppServiceExtensions
         return services;
     }
 
-    public static void UseAppServices(this WebApplication app, IWebHostEnvironment? env = null)
+    public static void UseAppServices(this WebApplication application, IWebHostEnvironment? env = null)
     {
         // Get App Services From App Service Collections
-        var appServiceConfigurables = app.Services.GetServices<IAppServiceInitialized>();
+        var appServiceConfigurables = application.Services.GetServices<IAppServiceInitialized>();
         
         // Get Web Host Environment
-        env ??= app.Environment;
+        env ??= application.Environment;
         
         foreach (var appServiceConfigurable in appServiceConfigurables)
         {
             // Configuring App Service With Web Application Context And Web Host Environment
-            appServiceConfigurable.OnConfigure(app, env);
+            appServiceConfigurable.OnConfigure(application, env);
         }
     }
 }

@@ -64,7 +64,7 @@ public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TCon
     {
         base.OnModelCreating(modelBuilder);
 
-        var bModelType = typeof(BaseModel);
+        var baseModelType = typeof(BaseModel);
         // const string bModeIdName = nameof(BaseModel.Id);
         
         // Apply configurations to all entities derived from BaseModel
@@ -72,7 +72,7 @@ public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TCon
         {
             var modelType = entityType.ClrType;
             
-            if (!bModelType.IsAssignableFrom(modelType)) continue;
+            if (!baseModelType.IsAssignableFrom(modelType)) continue;
             var entity = modelBuilder.Entity(modelType);
             
             // Apply UniqueKey configuration

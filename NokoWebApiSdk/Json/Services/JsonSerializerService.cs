@@ -8,9 +8,9 @@ using NokoWebApiSdk.Json.Converters;
 namespace NokoWebApiSdk.Json.Services;
 
 [AppService]
-public class JsonService : AppServiceInitialized
+public class JsonSerializerService : AppServiceInitialized
 {
-    public static void JsonSerializerConfigure(JsonSerializerOptions options)
+    public static void Apply(JsonSerializerOptions options)
     {
         options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         
@@ -22,7 +22,7 @@ public class JsonService : AppServiceInitialized
     {
         services.Configure<JsonOptions>((options) =>
         {
-            JsonSerializerConfigure(options.JsonSerializerOptions);
+            Apply(options.JsonSerializerOptions);
         });
     }
 }

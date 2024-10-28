@@ -34,10 +34,10 @@ public class CustomExceptionMiddleware
     private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         var response = context.Response;
-        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        response.StatusCode = (int)NokoWebHttpStatusCode.InternalServerError;
         response.ContentType = "application/json";
         
-        var statusCode = (HttpStatusCode)response.StatusCode;
+        var statusCode = (NokoWebHttpStatusCode)response.StatusCode;
         var messageBody = new EmptyMessageBody
         {
             StatusOk = false,
@@ -49,7 +49,7 @@ public class CustomExceptionMiddleware
         };
             
         var options = new JsonSerializerOptions();
-        JsonService.JsonSerializerConfigure(options);
+        JsonSerializerService.Apply(options);
 
         var jsonResponse = JsonSerializer.Serialize(messageBody, options);
         await response.WriteAsync(jsonResponse);

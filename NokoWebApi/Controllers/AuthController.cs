@@ -1,9 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mime;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
-using Azure.Core.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
+using NokoWebApiSdk.Controllers;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Globals;
@@ -22,7 +21,7 @@ namespace NokoWebApi.Controllers;
 
 [ApiController]
 [Route("api/v1/auth")]
-public class AuthController : ControllerBase
+public class AuthController : BaseApiController
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<AuthController> _logger;
@@ -63,8 +62,8 @@ public class AuthController : ControllerBase
         var messageBody = new AccessJwtTokenMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)HttpStatusCode.Created,
-            Status = HttpStatusCode.Created.ToString(),
+            StatusCode = (int)NokoWebHttpStatusCode.Created,
+            Status = NokoWebHttpStatusCode.Created.ToString(),
             Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
             Message = "Successfully create JWT Token.",
             Data = new AccessJwtTokenData {
@@ -87,8 +86,8 @@ public class AuthController : ControllerBase
 
         var messageBody = new ValidateJwtTokenMessageBody();
         messageBody.StatusOk = true;
-        messageBody.StatusCode = (int)HttpStatusCode.Ok;
-        messageBody.Status = HttpStatusCode.Ok.GetValue();
+        messageBody.StatusCode = (int)NokoWebHttpStatusCode.Ok;
+        messageBody.Status = NokoWebHttpStatusCode.Ok.GetValue();
         messageBody.Timestamp = NokoWebCommonMod.GetDateTimeUtcNow();
         messageBody.Message = "Successfully validate JWT Token.";
         
@@ -106,14 +105,14 @@ public class AuthController : ControllerBase
             messageBody.Data = data;
             
             var options = new JsonSerializerOptions();
-            JsonService.JsonSerializerConfigure(options);
+            JsonSerializerService.Apply(options);
             return TypedResults.Json(data: messageBody, options: options, statusCode: messageBody.StatusCode);
         }
         catch (Exception ex)
         {
             messageBody.StatusOk = false;
-            messageBody.StatusCode = (int)HttpStatusCode.InternalServerError;
-            messageBody.Status = HttpStatusCode.InternalServerError.ToString();
+            messageBody.StatusCode = (int)NokoWebHttpStatusCode.InternalServerError;
+            messageBody.Status = NokoWebHttpStatusCode.InternalServerError.ToString();
             messageBody.Message = ex.Message;
             return TypedResults.BadRequest(messageBody);
         }
