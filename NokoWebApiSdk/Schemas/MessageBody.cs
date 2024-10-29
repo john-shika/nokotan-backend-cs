@@ -16,7 +16,7 @@ public interface IMessageBody<T>
 public class MessageBody<T>(bool statusOk, int statusCode, string status, DateTime timestamp, string message, T? data) : IMessageBody<T> 
     where T : class
 {
-    public MessageBody() : this(true, 200, "OK", DateTime.UtcNow, "Successfully Send Message Body.", default) 
+    public MessageBody() : this(false, 0, "", default, "", null) 
     {
         // do nothing...
     }

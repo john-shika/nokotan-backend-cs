@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace NokoWebApiSdk.Cores.Utils;
 
@@ -276,57 +277,293 @@ public static class NokoWebCommonMod
         using var sha512 = SHA512.Create();
         return sha512.ComputeHash(encoding.GetBytes(value));
     }
-    
-    /// <summary>
-    /// Determines if the specified type has the given attribute.
-    /// Generic version to check for a specific attribute type.
-    /// </summary>
-    /// <typeparam name="TAttribute">The type of the attribute to check for.</typeparam>
-    /// <param name="type">The type to inspect for the attribute.</param>
-    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
-    public static bool HasAttribute<TAttribute>(Type type)
-        where TAttribute : Attribute
-    {
-        return type.GetCustomAttribute<TAttribute>() is not null;
-    }
 
     /// <summary>
     /// Determines if the specified type has the given attribute.
     /// Non-generic version using Type to check for a specific attribute type.
     /// </summary>
-    /// <param name="type">The type to inspect for the attribute.</param>
+    /// <param name="element">The type to inspect for the attribute.</param>
     /// <param name="attributeType">The type of the attribute to check for.</param>
     /// <returns>True if the specified attribute is present; otherwise, false.</returns>
-    public static bool HasAttribute(Type type, Type attributeType)
+    public static bool HasAttribute(Assembly element, Type attributeType)
     {
-        return type.GetCustomAttribute(attributeType) is not null;
+        return element.GetCustomAttribute(attributeType) is not null;
     }
-
-
+    
     /// <summary>
-    /// Gets the specified attribute from the given type.
-    /// Generic version to get a specific attribute type.
+    /// Determines if the specified type has the given attribute.
+    /// Non-generic version using Type to check for a specific attribute type.
     /// </summary>
-    /// <typeparam name="TAttribute">The type of the attribute to retrieve.</typeparam>
-    /// <param name="type">The type to inspect for the attribute.</param>
-    /// <returns>The specified attribute if present; otherwise, null.</returns>
-    public static TAttribute? GetAttribute<TAttribute>(Type type)
-        where TAttribute : Attribute
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <param name="attributeType">The type of the attribute to check for.</param>
+    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
+    public static bool HasAttribute(Module element, Type attributeType)
     {
-        return type.GetCustomAttribute<TAttribute>();
+        return element.GetCustomAttribute(attributeType) is not null;
     }
-
+    
+    /// <summary>
+    /// Determines if the specified type has the given attribute.
+    /// Non-generic version using Type to check for a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <param name="attributeType">The type of the attribute to check for.</param>
+    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
+    public static bool HasAttribute(MemberInfo element, Type attributeType)
+    {
+        return element.GetCustomAttribute(attributeType) is not null;
+    }
+    
+    /// <summary>
+    /// Determines if the specified type has the given attribute.
+    /// Non-generic version using Type to check for a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <param name="attributeType">The type of the attribute to check for.</param>
+    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
+    public static bool HasAttribute(ParameterInfo element, Type attributeType)
+    {
+        return element.GetCustomAttribute(attributeType) is not null;
+    }
+    
+    /// <summary>
+    /// Determines if the specified type has the given attribute.
+    /// Non-generic version using Type to check for a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
+    public static bool HasAttribute<T>(Assembly element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>() is not null;
+    }
+    
+    /// <summary>
+    /// Determines if the specified type has the given attribute.
+    /// Non-generic version using Type to check for a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
+    public static bool HasAttribute<T>(Module element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>() is not null;
+    }
+    
+    /// <summary>
+    /// Determines if the specified type has the given attribute.
+    /// Non-generic version using Type to check for a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
+    public static bool HasAttribute<T>(MemberInfo element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>() is not null;
+    }
+    
+    /// <summary>
+    /// Determines if the specified type has the given attribute.
+    /// Non-generic version using Type to check for a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>True if the specified attribute is present; otherwise, false.</returns>
+    public static bool HasAttribute<T>(ParameterInfo element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>() is not null;
+    }
 
     /// <summary>
     /// Gets the specified attribute from the given type.
     /// Non-generic version using Type to get a specific attribute type.
     /// </summary>
-    /// <param name="type">The type to inspect for the attribute.</param>
+    /// <param name="element">The type to inspect for the attribute.</param>
     /// <param name="attributeType">The type of the attribute to retrieve.</param>
     /// <returns>The specified attribute if present; otherwise, null.</returns>
-    public static Attribute? GetAttribute(Type type, Type attributeType)
+    public static Attribute? GetAttribute(Assembly element, Type attributeType)
     {
-        return type.GetCustomAttribute(attributeType);
+        return element.GetCustomAttribute(attributeType);
+    }
+    
+    /// <summary>
+    /// Gets the specified attribute from the given type.
+    /// Non-generic version using Type to get a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <param name="attributeType">The type of the attribute to retrieve.</param>
+    /// <returns>The specified attribute if present; otherwise, null.</returns>
+    public static Attribute? GetAttribute(Module element, Type attributeType)
+    {
+        return element.GetCustomAttribute(attributeType);
+    }
+    
+    /// <summary>
+    /// Gets the specified attribute from the given type.
+    /// Non-generic version using Type to get a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <param name="attributeType">The type of the attribute to retrieve.</param>
+    /// <returns>The specified attribute if present; otherwise, null.</returns>
+    public static Attribute? GetAttribute(MemberInfo element, Type attributeType)
+    {
+        return element.GetCustomAttribute(attributeType);
+    }
+    
+    /// <summary>
+    /// Gets the specified attribute from the given type.
+    /// Non-generic version using Type to get a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <param name="attributeType">The type of the attribute to retrieve.</param>
+    /// <returns>The specified attribute if present; otherwise, null.</returns>
+    public static Attribute? GetAttribute(ParameterInfo element, Type attributeType)
+    {
+        return element.GetCustomAttribute(attributeType);
+    }
+    
+    /// <summary>
+    /// Gets the specified attribute from the given type.
+    /// Non-generic version using Type to get a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>The specified attribute if present; otherwise, null.</returns>
+    public static Attribute? GetAttribute<T>(Assembly element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>();
+    }
+    
+    /// <summary>
+    /// Gets the specified attribute from the given type.
+    /// Non-generic version using Type to get a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>The specified attribute if present; otherwise, null.</returns>
+    public static Attribute? GetAttribute<T>(Module element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>();
+    }
+    
+    /// <summary>
+    /// Gets the specified attribute from the given type.
+    /// Non-generic version using Type to get a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>The specified attribute if present; otherwise, null.</returns>
+    public static Attribute? GetAttribute<T>(MemberInfo element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>();
+    }
+    
+    /// <summary>
+    /// Gets the specified attribute from the given type.
+    /// Non-generic version using Type to get a specific attribute type.
+    /// </summary>
+    /// <param name="element">The type to inspect for the attribute.</param>
+    /// <returns>The specified attribute if present; otherwise, null.</returns>
+    public static Attribute? GetAttribute<T>(ParameterInfo element) 
+        where T : Attribute
+    {
+        return element.GetCustomAttribute<T>();
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <param name="attributeType">The type of attribute to retrieve.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<Attribute> GetAttributes(Assembly element, Type attributeType) 
+    {
+        var attributes = Attribute.GetCustomAttributes(element, attributeType);
+        return attributes.Where(attributeType.IsInstanceOfType);
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <param name="attributeType">The type of attribute to retrieve.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<Attribute> GetAttributes(Module element, Type attributeType) 
+    {
+        var attributes = Attribute.GetCustomAttributes(element, attributeType);
+        return attributes.Where(attributeType.IsInstanceOfType);
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <param name="attributeType">The type of attribute to retrieve.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<Attribute> GetAttributes(MemberInfo element, Type attributeType) 
+    {
+        var attributes = Attribute.GetCustomAttributes(element, attributeType);
+        return attributes.Where(attributeType.IsInstanceOfType);
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <param name="attributeType">The type of attribute to retrieve.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<Attribute> GetAttributes(ParameterInfo element, Type attributeType) 
+    {
+        var attributes = Attribute.GetCustomAttributes(element, attributeType);
+        return attributes.Where(attributeType.IsInstanceOfType);
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<T> GetAttributes<T>(Assembly element) 
+        where T : Attribute
+    {
+        var attributes = Attribute.GetCustomAttributes(element);
+        return attributes.Where((attribute) => attribute is T).Select((attribute) => (attribute as T)!);
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<T> GetAttributes<T>(Module element) 
+        where T : Attribute
+    {
+        var attributes = Attribute.GetCustomAttributes(element);
+        return attributes.Where((attribute) => attribute is T).Select((attribute) => (attribute as T)!);
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<T> GetAttributes<T>(MemberInfo element) 
+        where T : Attribute
+    {
+        var attributes = Attribute.GetCustomAttributes(element);
+        return attributes.Where((attribute) => attribute is T).Select((attribute) => (attribute as T)!);
+    }
+    
+    /// <summary>
+    /// Retrieves the custom attributes of a specified type from an assembly and returns them as an enumerable collection.
+    /// </summary>
+    /// <param name="element">The assembly from which to retrieve the custom attributes.</param>
+    /// <returns>An enumerable collection of attributes of the specified type from the assembly.</returns>
+    public static IEnumerable<T> GetAttributes<T>(ParameterInfo element) 
+        where T : Attribute
+    {
+        var attributes = Attribute.GetCustomAttributes(element);
+        return attributes.Where((attribute) => attribute is T).Select((attribute) => (attribute as T)!);
     }
 
     /// <summary>
@@ -374,15 +611,5 @@ public static class NokoWebCommonMod
     
         var parts = value!.Split('.');
         return parts.Length > 1 ? string.Join('.', parts, 0, parts.Length - 1) : value;
-    }
-
-    /// <summary>
-    /// PrintAssemblyName debug test to get Root Namespace
-    /// </summary>
-    public static void PrintAssemblyName()
-    {
-        var entryAssembly = Assembly.GetEntryAssembly()!;
-        var @namespace = entryAssembly.GetName().Name;
-        Console.WriteLine($"Namespace (AssemblyName): {@namespace}");
     }
 }

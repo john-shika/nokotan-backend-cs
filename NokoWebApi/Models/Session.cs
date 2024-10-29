@@ -7,37 +7,46 @@ using NokoWebApiSdk.Models;
 namespace NokoWebApi.Models;
 
 [Table("sessions")]
-public class Session : BaseModel
+public class Session(Guid userId, string tokenId, string? refreshTokenId, string ipAddr, string userAgent, DateTime expires) : BaseModel
 {
+    public Session() : this(default, "", null, "", "", default)
+    {
+        // do nothing...
+    }
+
     [Required]
     [Column("user_id")]
     [ForeignKey("User")]
     [JsonPropertyName("userId")]
-    public Guid UserId { get; set; }
+    public Guid UserId { get; set; } = userId;
     
     [Required]
     [UniqueKey]
+    [StringLength(128)]
     [Column("token_id")]
     [JsonPropertyName("tokenId")]
-    public string TokenId { get; set; }
+    public string TokenId { get; set; } = tokenId;
     
     [UniqueKey]
+    [StringLength(128)]
     [Column("refresh_token_id")]
     [JsonPropertyName("refreshTokenId")]
-    public string? RefreshTokenId { get; set; }
+    public string? RefreshTokenId { get; set; } = refreshTokenId;
     
     [Required]
+    [StringLength(64)]
     [Column("ip_addr")]
     [JsonPropertyName("ipAddr")]
-    public string IpAddr { get; set; }
+    public string IpAddr { get; set; } = ipAddr;
     
     [Required]
+    [StringLength(256)]
     [Column("user_agent")]
     [JsonPropertyName("userAgent")]
-    public string UserAgent { get; set; }
+    public string UserAgent { get; set; } = userAgent;
     
     [Required]
-    [Column("expired_at")]
-    [JsonPropertyName("expiredAt")]
-    public DateTime ExpiredAt { get; set; }
+    [Column("expires")]
+    [JsonPropertyName("expires")]
+    public DateTime Expires { get; set; } = expires;
 }

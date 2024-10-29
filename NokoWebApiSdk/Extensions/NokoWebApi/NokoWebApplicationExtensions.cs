@@ -7,11 +7,13 @@ public static class NokoWebApplicationExtensions
 {
     public static IServiceCollection AddNokoWebApi(this IServiceCollection services)
     {
+        // do nothing...
         return services;
     }
     
     public static void UseNokoWebApi(this WebApplication app)
     {
+        // do nothing...
     }
 
     public static void UseGlobals(this NokoWebApplication application, IConfiguration? config = null)

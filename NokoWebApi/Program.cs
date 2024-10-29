@@ -12,13 +12,15 @@ using NokoWebApiSdk.Filters;
 using NokoWebApiSdk.Generator.Extensions;
 using NokoWebApiSdk.Middlewares;
 
-NokoWebCommonMod.PrintAssemblyName();
-
 var currDomainBaseDir = AppDomain.CurrentDomain.BaseDirectory;
 Console.WriteLine("Program Directory: " + currDomainBaseDir);
 
 var currWorkDir = Directory.GetCurrentDirectory();
 Console.WriteLine("Current Working Directory: " + currWorkDir);
+
+var entryAssembly = Assembly.GetEntryAssembly()!;
+var @namespace = entryAssembly.GetName().Name;
+Console.WriteLine($"Namespace (AssemblyName): {@namespace}");
 
 // Get Assemblies In Current App Domain
 var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
@@ -75,8 +77,7 @@ foreach (var type in types)
 
     foreach (var method in methods)
     {
-        var attributes = method.GetCustomAttributes();
-        attributes = attributes.Where((attribute) => attribute is HttpMethodAttribute);
+        var attributes = NokoWebCommonMod.GetAttributes<HttpMethodAttribute>(method);
         temp.AppendLine($"- Method: {method.Name} Attribute: {attributes.FirstOrDefault()}");
     }
     Console.WriteLine(temp.ToString());

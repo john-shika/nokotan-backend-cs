@@ -1,16 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
 
 namespace NokoWebApiSdk.Generator.Schemas;
 
-public class ApiControllerParameterInfo(string name, string @namespace, string[] genericTypes)
+public class NokoWebApiControllerBaseInfo(string name, string @namespace, string[] genericTypes) 
 {
-    public ApiControllerParameterInfo() : this("", "", [])
+    public NokoWebApiControllerBaseInfo() : this("", "", [])
     {
         // do nothing...
     }
-
+    
     [Required]
     [JsonPropertyName("name")]
     public string Name { get; set; } = name;
@@ -24,29 +25,13 @@ public class ApiControllerParameterInfo(string name, string @namespace, string[]
     public string[] GenericTypes { get; set; } = genericTypes;
 }
 
-public class ApiControllerProduceInfo(string name, string @namespace, string[] genericTypes)
-{
-    public ApiControllerProduceInfo() : this("", "", [])
-    {
-        // do nothing...
-    }
+public class NokoWebApiControllerParameterInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
 
-    [Required]
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = name;
-    
-    [Required]
-    [JsonPropertyName("namespace")]
-    public string Namespace { get; set; } = @namespace;
-    
-    [Required]
-    [JsonPropertyName("genericTypes")]
-    public string[] GenericTypes { get; set; } = genericTypes;
-}
+public class NokoWebApiControllerProduceInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
 
-public class ApiControllerMethodInfo(string name, string method, string summary, string description, string[] tags, ApiControllerProduceInfo[] produces)
+public class NokoWebApiControllerMethodInfo(string name, string method, string summary, string description, string[] tags, NokoWebApiControllerProduceInfo[] produces)
 {
-    public ApiControllerMethodInfo() : this("", "", "", "", [], [])
+    public NokoWebApiControllerMethodInfo() : this("", "", "", "", [], [])
     {
         // do nothing...
     }
@@ -73,12 +58,12 @@ public class ApiControllerMethodInfo(string name, string method, string summary,
     
     [Required]
     [JsonPropertyName("produces")]
-    public ApiControllerProduceInfo[] Produces { get; set; } = produces;
+    public NokoWebApiControllerProduceInfo[] Produces { get; set; } = produces;
 }
 
-public class ApiControllerInfo(string name, string @namespace, ApiControllerParameterInfo[] parameters, ApiControllerMethodInfo[] methods)
+public class NokoWebApiControllerInfo(string name, string @namespace, NokoWebApiControllerParameterInfo[] parameters, NokoWebApiControllerMethodInfo[] methods)
 {
-    public ApiControllerInfo() : this("", "", [], [])
+    public NokoWebApiControllerInfo() : this("", "", [], [])
     {
         // do nothing...
     }
@@ -93,11 +78,9 @@ public class ApiControllerInfo(string name, string @namespace, ApiControllerPara
 
     [Required]
     [JsonPropertyName("parameters")]
-    public ApiControllerParameterInfo[] Parameters { get; set; } = parameters;
+    public NokoWebApiControllerParameterInfo[] Parameters { get; set; } = parameters;
 
     [Required]
     [JsonPropertyName("methods")]
-    public ApiControllerMethodInfo[] Methods { get; set; } = methods;
-    
-    
+    public NokoWebApiControllerMethodInfo[] Methods { get; set; } = methods;
 }

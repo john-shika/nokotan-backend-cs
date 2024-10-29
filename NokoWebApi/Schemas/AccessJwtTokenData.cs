@@ -9,11 +9,16 @@ public interface IAccessJwtTokenData
     public string AccessToken { get; set; }
 }
 
-public class AccessJwtTokenData : IAccessJwtTokenData
+public class AccessJwtTokenData(string accessToken) : IAccessJwtTokenData
 {
+    public AccessJwtTokenData() : this("")
+    {
+        // do nothing...
+    }
+
     [Required]
     [JsonPropertyName("accessToken")]
-    public string AccessToken { get; set; }
+    public string AccessToken { get; set; } = accessToken;
 }
 
 public class AccessJwtTokenMessageBody : MessageBody<AccessJwtTokenData>;

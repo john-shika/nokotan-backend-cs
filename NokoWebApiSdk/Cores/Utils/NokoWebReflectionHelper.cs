@@ -2,14 +2,9 @@
 
 namespace NokoWebApiSdk.Cores.Utils;
 
-public class NokoWebReflectionHelper
+public class NokoWebReflectionHelper(Type baseType)
 {
-    public readonly Type BaseType;
-
-    public NokoWebReflectionHelper(Type baseType)
-    {
-        BaseType = baseType;
-    }
+    public Type BaseType => baseType;
     
     public MethodInfo? GetMethod(string mName, IDictionary<Type, Type>? gData, params Type[] pTypes)
     {
