@@ -18,7 +18,7 @@ public class User : BaseModel
     [Column("username")]
     [JsonPropertyName("username")]
     public string Username { get; set; }
-    
+
     [Required]
     [Column("password")]
     [JsonPropertyName("password")]

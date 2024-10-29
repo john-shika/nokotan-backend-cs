@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using NokoWebApiSdk.Cores.Utils;
+using NokoWebApiSdk.Extensions;
+using NokoWebApiSdk.Extensions.ConfigurationBinder;
 using NokoWebApiSdk.Schemas;
 
 namespace NokoWebApiSdk.Globals;
@@ -10,7 +12,7 @@ public class NokoWebApplicationGlobals
 
     public NokoWebApplicationGlobals(IConfiguration configuration)
     {
-        JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        JwtSettings = configuration.GetConfig<JwtSettings>();
     }
 
     public static string GetJwtSecretKey() 

@@ -5,7 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <RootNamespace>NokoWebApi</RootNamespace>
-    <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
+    <!-- <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack> -->
+    <!-- <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract> -->
+    <!-- <SelfContained>true</SelfContained> -->
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>

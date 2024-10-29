@@ -119,7 +119,7 @@ public static class NokoWebCommonMod
             // Was Updated
             if (item is null) return false;
 
-            // Update Process
+            // Replace Current Item
             var found = false;
             for (var i = 0; i < items.Count; i++)
             {
@@ -148,8 +148,8 @@ public static class NokoWebCommonMod
     /// <returns>True if the item was successfully inserted; otherwise, false.</returns>
     public static bool InsertAnyItemList<T>(IList<T> items, T item)
     {
-        // Insert New Item Using Update With Default Value
-        return UpdateAnyItemList(items, default, item);
+        items.Add(item);
+        return true;
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ public static class NokoWebCommonMod
     /// <param name="items">The input dictionary with keys and values.</param>
     /// <param name="value">The value to set for all keys in the new dictionary.</param>
     /// <returns>A new dictionary with the same keys but with all values set to the provided value.</returns>
-    public static IDictionary<TKey, TOut> InsertAnyMapValues<TKey, TIn, TOut>(IDictionary<TKey, TIn> items, TOut value)
+    public static IDictionary<TKey, TOut> MergeAnyMapValues<TKey, TIn, TOut>(IDictionary<TKey, TIn> items, TOut value)
         where TKey : notnull
     {
         var m = new Dictionary<TKey, TOut>();
@@ -181,7 +181,7 @@ public static class NokoWebCommonMod
     /// <param name="value">The original string to be processed.</param>
     /// <param name="ends">The ending substring to check for and remove.</param>
     /// <returns>The original string without the ending if it matches; otherwise, the original string.</returns>
-    public static string EndsCut(string? value, string ends)
+    public static string EndsCutString(string? value, string ends)
     {
         if (value is null) return string.Empty;
         return value.EndsWith(ends) ? value[..^ends.Length] : value;
@@ -374,5 +374,15 @@ public static class NokoWebCommonMod
     
         var parts = value!.Split('.');
         return parts.Length > 1 ? string.Join('.', parts, 0, parts.Length - 1) : value;
+    }
+
+    /// <summary>
+    /// PrintAssemblyName debug test to get Root Namespace
+    /// </summary>
+    public static void PrintAssemblyName()
+    {
+        var entryAssembly = Assembly.GetEntryAssembly()!;
+        var @namespace = entryAssembly.GetName().Name;
+        Console.WriteLine($"Namespace (AssemblyName): {@namespace}");
     }
 }

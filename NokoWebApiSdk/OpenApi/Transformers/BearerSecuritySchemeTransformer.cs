@@ -16,7 +16,7 @@ public sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvide
         var authSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
         
         var defineAuthSchemeSecurities = NokoWebOpenApiDefaults.AuthSchemeBearerTagOpenApiSecuritySchemes;
-        var defineAuthSchemeFounds = NokoWebCommonMod.InsertAnyMapValues(defineAuthSchemeSecurities, false);
+        var defineAuthSchemeFounds = NokoWebCommonMod.MergeAnyMapValues(defineAuthSchemeSecurities, false);
 
         document.Preload();
 

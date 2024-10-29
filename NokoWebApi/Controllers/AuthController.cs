@@ -44,7 +44,7 @@ public class AuthController : BaseApiController
     [EndpointSummary("LOGIN_USER")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces<AccessJwtTokenMessageBody>]
-    public async Task<IResult> Authenticate([FromBody] LoginFormBody loginFormBody)
+    public Task<IResult> Authenticate([FromBody] LoginFormBody loginFormBody)
     {
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
         var userAgent = HttpContext.Request.Headers[HeaderNames.UserAgent].ToString();
@@ -71,7 +71,7 @@ public class AuthController : BaseApiController
             },
         };
         
-        return TypedResults.Ok(messageBody);
+        return Task.FromResult<IResult>(TypedResults.Ok(messageBody));
     }
     
     [HttpGet("validate")]
@@ -79,7 +79,7 @@ public class AuthController : BaseApiController
     [EndpointSummary("VALIDATE_USER")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Admin")]
     [Produces<ValidateJwtTokenMessageBody>]
-    public async Task<IResult> ValidateToken([FromHeader(Name = "Authorization")] string authorization)
+    public Task<IResult> ValidateToken([FromHeader(Name = "Authorization")] string authorization)
     {
         // var token = HttpContext.Request.Headers[HeaderNames.Authorization].FirstOrDefault()?
         var token = authorization.Split(" ").Last()!;
@@ -106,7 +106,7 @@ public class AuthController : BaseApiController
             
             var options = new JsonSerializerOptions();
             JsonSerializerService.Apply(options);
-            return TypedResults.Json(data: messageBody, options: options, statusCode: messageBody.StatusCode);
+            return Task.FromResult<IResult>(TypedResults.Json(data: messageBody, options: options, statusCode: messageBody.StatusCode));
         }
         catch (Exception ex)
         {
@@ -114,7 +114,7 @@ public class AuthController : BaseApiController
             messageBody.StatusCode = (int)NokoWebHttpStatusCode.InternalServerError;
             messageBody.Status = NokoWebHttpStatusCode.InternalServerError.ToString();
             messageBody.Message = ex.Message;
-            return TypedResults.BadRequest(messageBody);
+            return Task.FromResult<IResult>(TypedResults.BadRequest(messageBody));
         }
     }
 

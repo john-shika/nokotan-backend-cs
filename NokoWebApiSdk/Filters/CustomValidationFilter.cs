@@ -10,22 +10,32 @@ using NokoWebApiSdk.Schemas;
 
 namespace NokoWebApiSdk.Filters;
 
-public class ReportInvalidField
+public class ReportInvalidField(string name, string[] errors)
 {
-    [Required]
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-    
+    public ReportInvalidField() : this("", [])
+    {
+        // do nothing...
+    }
+
+    [Required] 
+    [JsonPropertyName("name")] 
+    public string Name { get; set; } = name;
+
     [Required]
     [JsonPropertyName("errors")]
-    public string[] Errors { get; set; }
+    public string[] Errors { get; set; } = errors;
 }
 
-public class ReportInvalidFields
+public class ReportInvalidFields(IEnumerable<ReportInvalidField> fields)
 {
+    public ReportInvalidFields() : this([])
+    {
+        // do nothing...
+    }
+
     [Required]
     [JsonPropertyName("fields")]
-    public IEnumerable<ReportInvalidField> Fields { get; set; }
+    public IEnumerable<ReportInvalidField> Fields { get; set; } = fields;
 }
 
 public class ReportInvalidFieldsMessageBody : MessageBody<ReportInvalidFields>;

@@ -5,6 +5,7 @@ using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Json.Converters;
+using NokoWebApiSdk.Json.Serializers;
 using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Schemas;
 

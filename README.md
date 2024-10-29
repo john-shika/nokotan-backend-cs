@@ -100,7 +100,7 @@ upgrade-assistant upgrade
 upgrade-assistant analyze
 ```
 
-# dotnet add package Authentication JwtBearer
+## dotnet add package Authentication JwtBearer
 
 ```shell
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer

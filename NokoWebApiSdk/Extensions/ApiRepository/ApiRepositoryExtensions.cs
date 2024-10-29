@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Cores.Utils;
@@ -41,22 +42,22 @@ public static class ApiRepositoryExtensions
                 return type is { IsClass: true, IsPublic: true } && hasAttribute && isAssignable;
             });
 
-        foreach (var bRepositoryType in baseRepositoryTypes)
+        foreach (var baseRepositoryType in baseRepositoryTypes)
         {
             // Create DbContextOptions
-            var dbContextOptionsBuilderType = typeof(DbContextOptionsBuilder<>).MakeGenericType(bRepositoryType);
+            var dbContextOptionsBuilderType = typeof(DbContextOptionsBuilder<>).MakeGenericType(baseRepositoryType);
             var dbContextOptionsBuilder = (DbContextOptionsBuilder)Activator.CreateInstance(dbContextOptionsBuilderType)!;
             optionsAction?.Invoke(dbContextOptionsBuilder);
 
             // Check Base Repository Have Constructor With Parameter Database Context Options
             var dbContextOptionsType = dbContextOptionsBuilder.Options.GetType();
-            if (bRepositoryType.GetConstructor([dbContextOptionsType]) is null)
+            if (baseRepositoryType.GetConstructor([dbContextOptionsType]) is null)
             {
                 throw new Exception("Cannot create a BaseRepository from a class that doesn't have a single parameter DbContextOptions constructor.");
             }
 
             // Create Base Repository New Instance
-            var bRepositoryInstance = (DbContext)Activator.CreateInstance(bRepositoryType, dbContextOptionsBuilder.Options)!;
+            var bRepositoryInstance = (DbContext)Activator.CreateInstance(baseRepositoryType, dbContextOptionsBuilder.Options)!;
             var bRepositoryInstanceType = bRepositoryInstance.GetType();
 
             var gData = new Dictionary<Type, Type>
@@ -72,7 +73,7 @@ public static class ApiRepositoryExtensions
             };
 
             var nokoWebReflectionHelper = new NokoWebReflectionHelper(entityFrameworkServiceCollectionExtensionsType);
-            var dbContextMethod = nokoWebReflectionHelper.GetMethod("AddDbContext", gData, pTypes);
+            var dbContextMethod = nokoWebReflectionHelper.GetMethod("AddDbContextPool", gData, pTypes);
             if (dbContextMethod is null || !dbContextMethod.IsStatic) throw new Exception("The provided method must be static and not null.");
             
             // Call AddDbContent with Parameter Values

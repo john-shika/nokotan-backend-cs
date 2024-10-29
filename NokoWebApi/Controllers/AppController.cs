@@ -29,7 +29,7 @@ public class AppController : BaseApiController
     [Tags(TagNames.Anonymous, "App")]
     [EndpointSummary("GET_MESSAGE")]
     [Produces<EmptyMessageBody>]
-    public async Task<IResult> GetMessage()
+    public Task<IResult> GetMessage()
     {
         var messageBody = new EmptyMessageBody
         {
@@ -43,6 +43,6 @@ public class AppController : BaseApiController
 
         var options = new JsonSerializerOptions();
         JsonSerializerService.Apply(options);
-        return Results.Json(data: messageBody, options: options, statusCode: (int)NokoWebHttpStatusCode.Ok);
+        return Task.FromResult(Results.Json(data: messageBody, options: options, statusCode: (int)NokoWebHttpStatusCode.Ok));
     }
 }

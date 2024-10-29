@@ -4,7 +4,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>NokoWebApiSdk</RootNamespace>
-    <PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
+    <!-- <IsAotCompatible>true</IsAotCompatible> -->
+    <!-- <IsTrimmable>true</IsTrimmable> -->
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup>

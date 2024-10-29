@@ -59,11 +59,11 @@ public class AppService : AppServiceInitialized
         //         pattern: "{controller=Home}/{action=Index}/{id?}");
         // });
 
-        app.UseEndpoints((endpoints) =>
-        {
+        // app.UseEndpoints((endpoints) =>
+        // {
             // testing using NokoWebApi.Optimizes.EntryPoint with AspNetCore Minimal Api
             // endpoints.MapControllers();
-        });
+        // });
 
         // app.MapControllers();
         // app.MapStaticAssets();
