@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
@@ -77,8 +78,20 @@ foreach (var type in types)
 
     foreach (var method in methods)
     {
-        var attributes = NokoWebCommonMod.GetAttributes<HttpMethodAttribute>(method);
-        temp.AppendLine($"- Method: {method.Name} Attribute: {attributes.FirstOrDefault()}");
+        var httpMethodAttribute = NokoWebCommonMod.GetAttribute<HttpMethodAttribute>(method);
+        var httpMethods = httpMethodAttribute!.HttpMethods;
+
+        foreach (var httpMethod in httpMethods)
+        {
+            temp.AppendLine($"- Method: {method.Name} HttpMethod: {httpMethod}");
+        }
+
+        var authorizeAttribute = NokoWebCommonMod.GetAttribute<AuthorizeAttribute>(method);
+
+        if (authorizeAttribute is not null)
+        {
+            temp.AppendLine($"- Method: {method.Name} Authorize");
+        }
     }
     Console.WriteLine(temp.ToString());
 }

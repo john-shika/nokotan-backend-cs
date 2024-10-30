@@ -29,9 +29,9 @@ public class NokoWebApiControllerParameterInfo(string name, string @namespace, s
 
 public class NokoWebApiControllerProduceInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
 
-public class NokoWebApiControllerMethodInfo(string name, string method, string summary, string description, string[] tags, NokoWebApiControllerProduceInfo[] produces)
+public class NokoWebApiControllerMethodInfo(string name, string summary, string description, string[] tags, string[] httpMethods, NokoWebApiControllerProduceInfo[] produces, bool authorization)
 {
-    public NokoWebApiControllerMethodInfo() : this("", "", "", "", [], [])
+    public NokoWebApiControllerMethodInfo() : this("", "", "", [], [], [], false)
     {
         // do nothing...
     }
@@ -39,10 +39,6 @@ public class NokoWebApiControllerMethodInfo(string name, string method, string s
     [Required]
     [JsonPropertyName("name")]
     public string Name { get; set; } = name;
-    
-    [Required]
-    [JsonPropertyName("method")]
-    public string Method { get; set; } = method;
     
     [Required]
     [JsonPropertyName("summary")]
@@ -57,8 +53,16 @@ public class NokoWebApiControllerMethodInfo(string name, string method, string s
     public string[] Tags { get; set; } = tags;
     
     [Required]
+    [JsonPropertyName("httpMethods")]
+    public string[] HttpHttpMethods { get; set; } = httpMethods;
+    
+    [Required]
     [JsonPropertyName("produces")]
     public NokoWebApiControllerProduceInfo[] Produces { get; set; } = produces;
+    
+    [Required]
+    [JsonPropertyName("authorization")]
+    public bool Authorization { get; set; } = authorization;
 }
 
 public class NokoWebApiControllerInfo(string name, string @namespace, NokoWebApiControllerParameterInfo[] parameters, NokoWebApiControllerMethodInfo[] methods)

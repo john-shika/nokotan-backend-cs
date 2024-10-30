@@ -428,7 +428,7 @@ public static class NokoWebCommonMod
     /// </summary>
     /// <param name="element">The type to inspect for the attribute.</param>
     /// <returns>The specified attribute if present; otherwise, null.</returns>
-    public static Attribute? GetAttribute<T>(Assembly element) 
+    public static T? GetAttribute<T>(Assembly element) 
         where T : Attribute
     {
         return element.GetCustomAttribute<T>();
@@ -440,7 +440,7 @@ public static class NokoWebCommonMod
     /// </summary>
     /// <param name="element">The type to inspect for the attribute.</param>
     /// <returns>The specified attribute if present; otherwise, null.</returns>
-    public static Attribute? GetAttribute<T>(Module element) 
+    public static T? GetAttribute<T>(Module element) 
         where T : Attribute
     {
         return element.GetCustomAttribute<T>();
@@ -452,7 +452,7 @@ public static class NokoWebCommonMod
     /// </summary>
     /// <param name="element">The type to inspect for the attribute.</param>
     /// <returns>The specified attribute if present; otherwise, null.</returns>
-    public static Attribute? GetAttribute<T>(MemberInfo element) 
+    public static T? GetAttribute<T>(MemberInfo element) 
         where T : Attribute
     {
         return element.GetCustomAttribute<T>();
@@ -464,7 +464,7 @@ public static class NokoWebCommonMod
     /// </summary>
     /// <param name="element">The type to inspect for the attribute.</param>
     /// <returns>The specified attribute if present; otherwise, null.</returns>
-    public static Attribute? GetAttribute<T>(ParameterInfo element) 
+    public static T? GetAttribute<T>(ParameterInfo element) 
         where T : Attribute
     {
         return element.GetCustomAttribute<T>();
