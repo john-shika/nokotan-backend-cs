@@ -27,11 +27,11 @@ public class NokoWebApiControllerBaseInfo(string name, string @namespace, string
 
 public class NokoWebApiControllerParameterInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
 
-public class NokoWebApiControllerProduceInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
+public class NokoWebApiControllerMethodProduceInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
 
-public class NokoWebApiControllerMethodInfo(string name, string summary, string description, string[] tags, string[] httpMethods, NokoWebApiControllerProduceInfo[] produces, bool authorization)
+public class NokoWebApiControllerMethodInfo(string name, string path, string summary, string description, string[] tags, string[] httpMethods, NokoWebApiControllerMethodProduceInfo[] produces, bool authorization)
 {
-    public NokoWebApiControllerMethodInfo() : this("", "", "", [], [], [], false)
+    public NokoWebApiControllerMethodInfo() : this("", "", "", "", [], [], [], false)
     {
         // do nothing...
     }
@@ -39,6 +39,10 @@ public class NokoWebApiControllerMethodInfo(string name, string summary, string 
     [Required]
     [JsonPropertyName("name")]
     public string Name { get; set; } = name;
+    
+    [Required]
+    [JsonPropertyName("path")]
+    public string Path { get; set; } = path;
     
     [Required]
     [JsonPropertyName("summary")]
@@ -58,16 +62,16 @@ public class NokoWebApiControllerMethodInfo(string name, string summary, string 
     
     [Required]
     [JsonPropertyName("produces")]
-    public NokoWebApiControllerProduceInfo[] Produces { get; set; } = produces;
+    public NokoWebApiControllerMethodProduceInfo[] Produces { get; set; } = produces;
     
     [Required]
     [JsonPropertyName("authorization")]
     public bool Authorization { get; set; } = authorization;
 }
 
-public class NokoWebApiControllerInfo(string name, string @namespace, NokoWebApiControllerParameterInfo[] parameters, NokoWebApiControllerMethodInfo[] methods)
+public class NokoWebApiControllerInfo(string name, string @namespace, string path, NokoWebApiControllerParameterInfo[] parameters, NokoWebApiControllerMethodInfo[] methods)
 {
-    public NokoWebApiControllerInfo() : this("", "", [], [])
+    public NokoWebApiControllerInfo() : this("", "", "", [], [])
     {
         // do nothing...
     }
@@ -81,9 +85,13 @@ public class NokoWebApiControllerInfo(string name, string @namespace, NokoWebApi
     public string Namespace { get; set; } = @namespace;
 
     [Required]
+    [JsonPropertyName("path")]
+    public string Path { get; set; } = path;
+    
+    [Required]
     [JsonPropertyName("parameters")]
     public NokoWebApiControllerParameterInfo[] Parameters { get; set; } = parameters;
-
+    
     [Required]
     [JsonPropertyName("methods")]
     public NokoWebApiControllerMethodInfo[] Methods { get; set; } = methods;

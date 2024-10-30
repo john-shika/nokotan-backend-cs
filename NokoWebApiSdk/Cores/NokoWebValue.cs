@@ -1,15 +1,16 @@
 ﻿namespace NokoWebApiSdk.Cores;
 
-public interface ICloneable<T> 
+public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable<NokoWebValue<T>>
+    where T : IComparable<T>, IEquatable<T>
 {
-    public T Clone();
-}
+    private readonly T[] _memoize = [value];
 
-public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable<NokoWebValue<T>>, ICloneable<NokoWebValue<T>>
-    where T : IComparable<T>, IEquatable<T>, ICloneable<T>
-{
-    public T Value => value;
-    
+    public T Value
+    {
+        get => _memoize[0];
+        set => _memoize[0] = value;
+    }
+
     public int CompareTo(T other)
     {
         return Value.CompareTo(other);
@@ -30,11 +31,6 @@ public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable
         return other is not null && Value.Equals(other.Value);
     }
 
-    public NokoWebValue<T> Clone()
-    {
-        return new NokoWebValue<T>(Value.Clone());
-    }
-
     public override bool Equals(object? obj)
     {
         return obj switch
@@ -50,6 +46,12 @@ public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable
     {
         return Value.GetHashCode();
     }
+
+    public override string? ToString()
+    {
+        return Value.ToString();
+    }
+    
     
     public static bool operator <(NokoWebValue<T> left, T right)
     {
