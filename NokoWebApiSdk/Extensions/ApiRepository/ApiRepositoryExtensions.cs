@@ -38,7 +38,7 @@ public static class ApiRepositoryExtensions
             .Where((type) =>
             {
                 var isAssignable = dbContextType.IsAssignableFrom(type);
-                var hasAttribute = NokoWebCommonMod.HasAttribute<ApiRepositoryAttribute>(type);
+                var hasAttribute = NokoCommonMod.HasAttribute<ApiRepositoryAttribute>(type);
                 return type is { IsClass: true, IsPublic: true } && hasAttribute && isAssignable;
             });
 
@@ -72,7 +72,7 @@ public static class ApiRepositoryExtensions
                 serviceLifetimeType,
             };
 
-            var nokoWebReflectionHelper = new NokoWebReflectionHelper(entityFrameworkServiceCollectionExtensionsType);
+            var nokoWebReflectionHelper = new NokoReflectionHelper(entityFrameworkServiceCollectionExtensionsType);
             var dbContextMethod = nokoWebReflectionHelper.GetMethod("AddDbContextPool", gData, pTypes);
             if (dbContextMethod is null || !dbContextMethod.IsStatic) throw new Exception("The provided method must be static and not null.");
             

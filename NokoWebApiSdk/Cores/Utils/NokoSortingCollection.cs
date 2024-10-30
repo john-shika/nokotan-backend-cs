@@ -1,6 +1,6 @@
 ﻿namespace NokoWebApiSdk.Cores.Utils;
 
-public static class NokoWebSort
+public static class NokoSortingCollection
 {
     public class MergeSort<T> 
         where T : IComparable<T>, IEquatable<T>

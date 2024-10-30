@@ -49,16 +49,16 @@ public class CustomValidationFilter : IActionFilter
             .Where(x => x.Value is { Errors.Count: > 0 })
             .Select(kv => new ReportInvalidField
             {
-                Name = NokoWebTransformText.ToCamelCase(kv.Key),
+                Name = NokoTransformText.ToCamelCase(kv.Key),
                 Errors = kv.Value?.Errors.Select(e => e.ErrorMessage).ToArray() ?? []
             })
             .ToArray();
 
         var response = context.HttpContext.Response;
-        response.StatusCode = (int)NokoWebHttpStatusCode.BadRequest;
+        response.StatusCode = (int)NokoHttpStatusCode.BadRequest;
         response.ContentType = "application/json";
         
-        var statusCode = (NokoWebHttpStatusCode)response.StatusCode;
+        var statusCode = (NokoHttpStatusCode)response.StatusCode;
 
         var reports = new ReportInvalidFields
         {
@@ -70,7 +70,7 @@ public class CustomValidationFilter : IActionFilter
             StatusOk = false,
             StatusCode = (int)statusCode,
             Status = statusCode.ToString(),
-            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
+            Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "One or more validation errors occurred.",
             Data = reports,
         };

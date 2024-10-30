@@ -18,15 +18,15 @@ public class NokoWebHttpStatusCodeService : AppServiceInitialized
             var response = context.HttpContext.Response;
             switch (response.StatusCode)
             {
-                case (int)NokoWebHttpStatusCode.NotFound:
+                case (int)NokoHttpStatusCode.NotFound:
                     response.ContentType = "application/json";
                     
                     var messageBody = new EmptyMessageBody
                     {
                         StatusOk = false,
                         StatusCode = response.StatusCode,
-                        Status = NokoWebHttpStatusCode.NotFound.ToString(),
-                        Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
+                        Status = NokoHttpStatusCode.NotFound.ToString(),
+                        Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
                         Message = "Resource not found",
                     };
 

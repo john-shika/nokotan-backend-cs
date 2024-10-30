@@ -27,7 +27,7 @@ public static class AppServiceExtensions
             .Where((type) =>
             {
                 var isAssignable = appServiceInitializedType.IsAssignableFrom(type);
-                var hasAttribute = NokoWebCommonMod.HasAttribute<AppServiceAttribute>(type);
+                var hasAttribute = NokoCommonMod.HasAttribute<AppServiceAttribute>(type);
                 return type is { IsClass: true, IsPublic: true } && hasAttribute && isAssignable;
             });
 

@@ -4,7 +4,7 @@ using ILogger = Serilog.ILogger;
 
 namespace NokoWebApiSdk.Cores;
 
-public interface INokoWebLogger : ILogger
+public interface INokoLogger : ILogger
 {
     new void Write(LogEventLevel level, string message);
     new void Warning(string message);
@@ -12,7 +12,7 @@ public interface INokoWebLogger : ILogger
     new void Information(string message);
 }
 
-public sealed class NokoWebLogger : INokoWebLogger
+public sealed class NokoLogger : INokoLogger
 {
     private static readonly object[] NoPropertyValues = [];
     private static ILogger Logger => Log.Logger;

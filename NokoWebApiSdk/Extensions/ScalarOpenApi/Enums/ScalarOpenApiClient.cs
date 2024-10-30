@@ -73,7 +73,7 @@ public sealed class ScalarOpenApiClientValues
 
     public static ScalarOpenApiClient ParseCode(string code)
     {
-        return (NokoWebTransformText.ToSnakeCase(code)) switch
+        return (NokoTransformText.ToSnakeCase(code)) switch
         {
             Libcurl => ScalarOpenApiClient.Libcurl,
             CljHttp => ScalarOpenApiClient.CljHttp,

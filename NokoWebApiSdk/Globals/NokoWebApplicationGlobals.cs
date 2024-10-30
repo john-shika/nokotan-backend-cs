@@ -18,7 +18,7 @@ public class NokoWebApplicationGlobals
     public static string GetJwtSecretKey() 
     {
         var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY");
-        return jwtSecretKey ?? JwtSettings?.SecretKey ?? NokoWebCommonMod.GenerateRandomString(128);
+        return jwtSecretKey ?? JwtSettings?.SecretKey ?? NokoCommonMod.GenerateRandomString(128);
     }
     
     public static string GetJwtIssuer() 

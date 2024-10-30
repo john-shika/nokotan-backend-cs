@@ -2,7 +2,7 @@
 
 namespace NokoWebApiSdk.Cores.Utils;
 
-public class NokoWebReflectionHelper(Type baseType)
+public class NokoReflectionHelper(Type baseType)
 {
     public Type BaseType => baseType;
     

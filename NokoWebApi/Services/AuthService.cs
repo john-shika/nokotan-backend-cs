@@ -15,7 +15,7 @@ public class AuthService : AppServiceInitialized
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {
         NokoWebApplicationGlobals.JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-        var secretKey = NokoWebCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
+        var secretKey = NokoCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
         var issuer = NokoWebApplicationGlobals.GetJwtIssuer();
         var audience = NokoWebApplicationGlobals.GetJwtAudience();
         

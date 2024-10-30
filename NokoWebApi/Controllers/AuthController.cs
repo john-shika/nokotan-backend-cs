@@ -52,8 +52,8 @@ public class AuthController : BaseApiController
         _logger.LogInformation($"IpAddress: {ipAddress}");
         _logger.LogInformation($"UserAgent: {userAgent}");
 
-        var tokenId = NokoWebCommonMod.GenerateUuidV7(); // as JTI
-        var sessionId = NokoWebCommonMod.GenerateUuidV7(); // as SID
+        var tokenId = NokoCommonMod.GenerateUuidV7(); // as JTI
+        var sessionId = NokoCommonMod.GenerateUuidV7(); // as SID
         var username = loginFormBody.Username; // as USERNAME
         var expires = DateTime.UtcNow.AddDays(7); // as EXP
         
@@ -62,9 +62,9 @@ public class AuthController : BaseApiController
         var messageBody = new AccessJwtTokenMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)NokoWebHttpStatusCode.Created,
-            Status = NokoWebHttpStatusCode.Created.ToString(),
-            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
+            StatusCode = (int)NokoHttpStatusCode.Created,
+            Status = NokoHttpStatusCode.Created.ToString(),
+            Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "Successfully create JWT Token.",
             Data = new AccessJwtTokenData {
                 AccessToken = token,
@@ -86,9 +86,9 @@ public class AuthController : BaseApiController
 
         var messageBody = new ValidateJwtTokenMessageBody();
         messageBody.StatusOk = true;
-        messageBody.StatusCode = (int)NokoWebHttpStatusCode.Ok;
-        messageBody.Status = NokoWebHttpStatusCode.Ok.GetValue();
-        messageBody.Timestamp = NokoWebCommonMod.GetDateTimeUtcNow();
+        messageBody.StatusCode = (int)NokoHttpStatusCode.Ok;
+        messageBody.Status = NokoHttpStatusCode.Ok.GetValue();
+        messageBody.Timestamp = NokoCommonMod.GetDateTimeUtcNow();
         messageBody.Message = "Successfully validate JWT Token.";
         
         try
@@ -111,8 +111,8 @@ public class AuthController : BaseApiController
         catch (Exception ex)
         {
             messageBody.StatusOk = false;
-            messageBody.StatusCode = (int)NokoWebHttpStatusCode.InternalServerError;
-            messageBody.Status = NokoWebHttpStatusCode.InternalServerError.ToString();
+            messageBody.StatusCode = (int)NokoHttpStatusCode.InternalServerError;
+            messageBody.Status = NokoHttpStatusCode.InternalServerError.ToString();
             messageBody.Message = ex.Message;
             return Task.FromResult<IResult>(TypedResults.BadRequest(messageBody));
         }
@@ -120,7 +120,7 @@ public class AuthController : BaseApiController
 
     private string GenerateJwtToken(Guid tokenId, Guid sessionId, string username, DateTime? expires = null)
     {
-        var secretKey = NokoWebCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
+        var secretKey = NokoCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
         var issuer = NokoWebApplicationGlobals.GetJwtIssuer();
         var audience = NokoWebApplicationGlobals.GetJwtAudience();
         

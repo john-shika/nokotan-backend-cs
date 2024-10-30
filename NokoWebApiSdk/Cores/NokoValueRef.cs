@@ -1,6 +1,6 @@
 ﻿namespace NokoWebApiSdk.Cores;
 
-public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable<NokoWebValue<T>>
+public class NokoValueRef<T>(T value) : IComparable<NokoValueRef<T>>, IEquatable<NokoValueRef<T>>
     where T : IComparable<T>, IEquatable<T>
 {
     private readonly T[] _memoize = [value];
@@ -16,7 +16,7 @@ public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable
         return Value.CompareTo(other);
     }
     
-    public int CompareTo(NokoWebValue<T>? other)
+    public int CompareTo(NokoValueRef<T>? other)
     {
         return other is not null ? Value.CompareTo(other.Value) : 1;
     }
@@ -26,7 +26,7 @@ public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable
         return Value.Equals(other);
     }
     
-    public bool Equals(NokoWebValue<T>? other)
+    public bool Equals(NokoValueRef<T>? other)
     {
         return other is not null && Value.Equals(other.Value);
     }
@@ -36,7 +36,7 @@ public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable
         return obj switch
         {
             null => false,
-            NokoWebValue<T> other => Equals(other),
+            NokoValueRef<T> other => Equals(other),
             T other => Equals(other),
             _ => false
         };
@@ -53,127 +53,127 @@ public class NokoWebValue<T>(T value) : IComparable<NokoWebValue<T>>, IEquatable
     }
     
     
-    public static bool operator <(NokoWebValue<T> left, T right)
+    public static bool operator <(NokoValueRef<T> left, T right)
     {
         return left.CompareTo(right) < 0;
     }
     
-    public static bool operator <(NokoWebValue<T> left, NokoWebValue<T>? right)
+    public static bool operator <(NokoValueRef<T> left, NokoValueRef<T>? right)
     {
         return right is not null && left.CompareTo(right.Value) < 0;
     }
     
-    public static bool operator <(NokoWebValue<T> left, object? right)
+    public static bool operator <(NokoValueRef<T> left, object? right)
     {
         return right switch
         {
             null => false,
-            NokoWebValue<T> other => left < other,
+            NokoValueRef<T> other => left < other,
             T other => left < other,
             _ => false
         };
     }
 
-    public static bool operator >(NokoWebValue<T> left, T right)
+    public static bool operator >(NokoValueRef<T> left, T right)
     {
         return left.CompareTo(right) > 0;
     }
     
-    public static bool operator >(NokoWebValue<T> left, NokoWebValue<T>? right)
+    public static bool operator >(NokoValueRef<T> left, NokoValueRef<T>? right)
     {
         return right is null || left.CompareTo(right.Value) > 0;
     }
     
-    public static bool operator >(NokoWebValue<T> left, object? right)
+    public static bool operator >(NokoValueRef<T> left, object? right)
     {
         return right switch
         {
             null => true,
-            NokoWebValue<T> other => left > other,
+            NokoValueRef<T> other => left > other,
             T other => left > other,
             _ => false
         };
     }
     
-    public static bool operator ==(NokoWebValue<T> left, T right)
+    public static bool operator ==(NokoValueRef<T> left, T right)
     {
         return left.CompareTo(right) == 0;
     }
     
-    public static bool operator ==(NokoWebValue<T> left, NokoWebValue<T>? right)
+    public static bool operator ==(NokoValueRef<T> left, NokoValueRef<T>? right)
     {
         return right is not null && left.CompareTo(right) == 0;
     }
     
-    public static bool operator ==(NokoWebValue<T> left, object? right)
+    public static bool operator ==(NokoValueRef<T> left, object? right)
     {
         return right switch
         {
             null => false,
-            NokoWebValue<T> other => left == other,
+            NokoValueRef<T> other => left == other,
             T other => left == other,
             _ => false
         };
     }
     
-    public static bool operator !=(NokoWebValue<T> left, T right)
+    public static bool operator !=(NokoValueRef<T> left, T right)
     {
         return left.CompareTo(right) != 0;
     }
     
-    public static bool operator !=(NokoWebValue<T> left, NokoWebValue<T>? right)
+    public static bool operator !=(NokoValueRef<T> left, NokoValueRef<T>? right)
     {
         return right is null || left.CompareTo(right) != 0;
     }
     
-    public static bool operator !=(NokoWebValue<T> left, object? right)
+    public static bool operator !=(NokoValueRef<T> left, object? right)
     {
         return right switch
         {
             null => true,
-            NokoWebValue<T> other => left != other,
+            NokoValueRef<T> other => left != other,
             T other => left != other,
             _ => true
         };
     }
 
-    public static bool operator <=(NokoWebValue<T> left, T right)
+    public static bool operator <=(NokoValueRef<T> left, T right)
     {
         return left.CompareTo(right) <= 0;
     }
     
-    public static bool operator <=(NokoWebValue<T> left, NokoWebValue<T>? right)
+    public static bool operator <=(NokoValueRef<T> left, NokoValueRef<T>? right)
     {
         return right is not null && left.CompareTo(right) <= 0;
     }
     
-    public static bool operator <=(NokoWebValue<T> left, object? right)
+    public static bool operator <=(NokoValueRef<T> left, object? right)
     {
         return right switch
         {
             null => false,
-            NokoWebValue<T> other => left <= other,
+            NokoValueRef<T> other => left <= other,
             T other => left <= other,
             _ => false
         };
     }
 
-    public static bool operator >=(NokoWebValue<T> left, T right)
+    public static bool operator >=(NokoValueRef<T> left, T right)
     {
         return left.CompareTo(right) >= 0;
     }
     
-    public static bool operator >=(NokoWebValue<T> left, NokoWebValue<T>? right)
+    public static bool operator >=(NokoValueRef<T> left, NokoValueRef<T>? right)
     {
         return right is null || left.CompareTo(right) >= 0;
     }
     
-    public static bool operator >=(NokoWebValue<T> left, object? right)
+    public static bool operator >=(NokoValueRef<T> left, object? right)
     {
         return right switch
         {
             null => true,
-            NokoWebValue<T> other => left >= other,
+            NokoValueRef<T> other => left >= other,
             T other => left >= other,
             _ => false
         };

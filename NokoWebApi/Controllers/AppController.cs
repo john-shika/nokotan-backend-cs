@@ -34,15 +34,15 @@ public class AppController : BaseApiController
         var messageBody = new EmptyMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)NokoWebHttpStatusCode.Ok,
-            Status = NokoWebHttpStatusCode.Ok.ToString(),
-            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
+            StatusCode = (int)NokoHttpStatusCode.Ok,
+            Status = NokoHttpStatusCode.Ok.ToString(),
+            Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "Hello World.",
             Data = null,
         };
 
         var options = new JsonSerializerOptions();
         JsonSerializerService.Apply(options);
-        return Task.FromResult(Results.Json(data: messageBody, options: options, statusCode: (int)NokoWebHttpStatusCode.Ok));
+        return Task.FromResult(Results.Json(data: messageBody, options: options, statusCode: (int)NokoHttpStatusCode.Ok));
     }
 }

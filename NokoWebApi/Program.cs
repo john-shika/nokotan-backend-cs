@@ -40,14 +40,14 @@ var types = assemblies
     .Where((type) =>
     {
         var isAssignable = baseApiControllerType.IsAssignableFrom(type); 
-        var hasAttribute = NokoWebCommonMod.HasAttribute<ApiControllerAttribute>(type);
+        var hasAttribute = NokoCommonMod.HasAttribute<ApiControllerAttribute>(type);
         return type is { IsClass: true, IsPublic: true } && hasAttribute && isAssignable;
     });
 
 foreach (var type in types)
 {
     var temp = new StringBuilder();
-    temp.AppendLine($"Namespace: {NokoWebCommonMod.TrimLastNamespaceSegment(type.Namespace)}");
+    temp.AppendLine($"Namespace: {NokoCommonMod.TrimLastNamespaceSegment(type.Namespace)}");
     temp.AppendLine($"Controller: {type.Namespace} {type.Name}");
     
     var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
@@ -64,7 +64,7 @@ foreach (var type in types)
         var parameters = constructor.GetParameters();
         foreach (var parameter in parameters)
         {
-            temp.AppendLine($" + {parameter.Name}: {parameter.ParameterType.Namespace} {NokoWebCommonMod.StripGenericMarker(parameter.ParameterType)}");
+            temp.AppendLine($" + {parameter.Name}: {parameter.ParameterType.Namespace} {NokoCommonMod.StripGenericMarker(parameter.ParameterType)}");
             if (parameter.ParameterType.IsGenericType)
             {
                 var arguments = parameter.ParameterType.GetGenericArguments();
@@ -78,7 +78,7 @@ foreach (var type in types)
 
     foreach (var method in methods)
     {
-        var httpMethodAttribute = NokoWebCommonMod.GetAttribute<HttpMethodAttribute>(method);
+        var httpMethodAttribute = NokoCommonMod.GetAttribute<HttpMethodAttribute>(method);
         var httpMethods = httpMethodAttribute!.HttpMethods;
 
         foreach (var httpMethod in httpMethods)
@@ -86,7 +86,7 @@ foreach (var type in types)
             temp.AppendLine($"- Method: {method.Name} HttpMethod: {httpMethod}");
         }
 
-        var authorizeAttribute = NokoWebCommonMod.GetAttribute<AuthorizeAttribute>(method);
+        var authorizeAttribute = NokoCommonMod.GetAttribute<AuthorizeAttribute>(method);
 
         if (authorizeAttribute is not null)
         {

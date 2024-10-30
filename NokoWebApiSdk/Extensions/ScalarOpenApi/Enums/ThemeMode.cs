@@ -19,7 +19,7 @@ public sealed class ThemeModeValues
 
     public static ThemeMode ParseCode(string code)
     {
-        return (NokoWebTransformText.ToSnakeCase(code)) switch
+        return (NokoTransformText.ToSnakeCase(code)) switch
         {
             Dark => ThemeMode.Dark,
             Light => ThemeMode.Light,

@@ -34,16 +34,16 @@ public class CustomExceptionMiddleware
     private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         var response = context.Response;
-        response.StatusCode = (int)NokoWebHttpStatusCode.InternalServerError;
+        response.StatusCode = (int)NokoHttpStatusCode.InternalServerError;
         response.ContentType = "application/json";
         
-        var statusCode = (NokoWebHttpStatusCode)response.StatusCode;
+        var statusCode = (NokoHttpStatusCode)response.StatusCode;
         var messageBody = new EmptyMessageBody
         {
             StatusOk = false,
             StatusCode = (int)statusCode,
             Status = statusCode.ToString(),
-            Timestamp = NokoWebCommonMod.GetDateTimeUtcNow(),
+            Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = ex.Message,
             Data = null,
         };

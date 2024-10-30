@@ -51,7 +51,7 @@ public sealed class ScalarOpenApiTargetValues
 
     public static ScalarOpenApiTarget ParseCode(string code)
     {
-        return (NokoWebTransformText.ToSnakeCase(code)) switch {
+        return (NokoTransformText.ToSnakeCase(code)) switch {
             C => ScalarOpenApiTarget.C,
             Clojure => ScalarOpenApiTarget.Clojure,
             CSharp => ScalarOpenApiTarget.CSharp,

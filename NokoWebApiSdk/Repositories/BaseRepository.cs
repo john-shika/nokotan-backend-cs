@@ -110,15 +110,15 @@ public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TCon
                 case EntityState.Unchanged:
                     break;
                 case EntityState.Deleted:
-                    entry.Entity.DeletedAt = NokoWebCommonMod.GetDateTimeUtcNow();
+                    entry.Entity.DeletedAt = NokoCommonMod.GetDateTimeUtcNow();
                     break;
                 case EntityState.Modified:
-                    entry.Entity.UpdatedAt = NokoWebCommonMod.GetDateTimeUtcNow();
+                    entry.Entity.UpdatedAt = NokoCommonMod.GetDateTimeUtcNow();
                     break;
                 case EntityState.Added:
-                    entry.Entity.Id = NokoWebCommonMod.GenerateUuidV7();
-                    entry.Entity.CreatedAt = NokoWebCommonMod.GetDateTimeUtcNow();
-                    entry.Entity.UpdatedAt = NokoWebCommonMod.GetDateTimeUtcNow();
+                    entry.Entity.Id = NokoCommonMod.GenerateUuidV7();
+                    entry.Entity.CreatedAt = NokoCommonMod.GetDateTimeUtcNow();
+                    entry.Entity.UpdatedAt = NokoCommonMod.GetDateTimeUtcNow();
                     break;
                 default:
                     throw new Exception("Unknown EntityState");

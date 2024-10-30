@@ -17,7 +17,7 @@ public sealed class TagSorterValues
 
     public static TagSorter ParseCode(string code)
     {
-        return (NokoWebTransformText.ToSnakeCase(code)) switch
+        return (NokoTransformText.ToSnakeCase(code)) switch
         {
             Alpha => TagSorter.Alpha,
             _ => throw new FormatException($"Invalid tag sorter code {code}"),

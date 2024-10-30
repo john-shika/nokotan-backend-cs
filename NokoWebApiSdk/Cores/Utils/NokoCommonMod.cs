@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace NokoWebApiSdk.Cores.Utils;
 
-public static class NokoWebCommonMod
+public static class NokoCommonMod
 {
     // like python3, import string module
     public const string Digits = "0123456789";
@@ -22,7 +22,7 @@ public static class NokoWebCommonMod
     /// <returns>True if the string is null or empty; otherwise, false.</returns>
     public static bool IsNoneOrEmpty(string? value)
     {
-        return value is null || value.Length == 0;
+        return value is null or "";
     }
 
     /// <summary>

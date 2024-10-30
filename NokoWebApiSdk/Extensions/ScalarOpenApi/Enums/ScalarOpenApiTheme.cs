@@ -37,7 +37,7 @@ public sealed class ScalarOpenApiThemeValues
 
     public static ScalarOpenApiTheme ParseCode(string code)
     {
-        return (NokoWebTransformText.ToCamelCase(code)) switch
+        return (NokoTransformText.ToCamelCase(code)) switch
         {
             None => ScalarOpenApiTheme.None,
             Alternate => ScalarOpenApiTheme.Alternate,
