@@ -12,7 +12,7 @@ public class NokoWebToken(Guid id, Guid sessionId, string? user, string? role, s
 
     [Required]
     [JsonPropertyName("id")]
-    public Guid Id { get; set; } = id;
+    public Guid Id { get; set; } = id; // web token identity
     
     [Required]
     [JsonPropertyName("sessionId")]
