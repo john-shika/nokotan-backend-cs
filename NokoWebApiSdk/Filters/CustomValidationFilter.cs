@@ -55,10 +55,10 @@ public class CustomValidationFilter : IActionFilter
             .ToArray();
 
         var response = context.HttpContext.Response;
-        response.StatusCode = (int)NokoHttpStatusCode.BadRequest;
+        response.StatusCode = (int)NokoHttpStatusCodes.BadRequest;
         response.ContentType = "application/json";
         
-        var statusCode = (NokoHttpStatusCode)response.StatusCode;
+        var statusCode = (NokoHttpStatusCodes)response.StatusCode;
 
         var reports = new ReportInvalidFields
         {
@@ -68,7 +68,7 @@ public class CustomValidationFilter : IActionFilter
         var messageBody = new ReportInvalidFieldsMessageBody
         {
             StatusOk = false,
-            StatusCode = statusCode,
+            StatusCodes = statusCode,
             Status = statusCode.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "One or more validation errors occurred.",

@@ -18,18 +18,33 @@ public class NokoWebApplicationGlobals
     public static string GetJwtSecretKey() 
     {
         var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY");
-        return jwtSecretKey ?? JwtSettings?.SecretKey ?? NokoCommonMod.GenerateRandomString(128);
+        if (NokoCommonMod.IsNoneOrEmptyWhiteSpace(jwtSecretKey))
+        {
+            return JwtSettings?.SecretKey ?? NokoCommonMod.GenerateRandomString(128);
+        }
+
+        return jwtSecretKey!;
     }
     
     public static string GetJwtIssuer() 
     {
         var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
-        return jwtIssuer ?? JwtSettings?.Issuer ?? "localhost";
+        if (NokoCommonMod.IsNoneOrEmptyWhiteSpace(jwtIssuer))
+        {
+            return JwtSettings?.Issuer ?? "localhost";
+        }
+
+        return jwtIssuer!;
     }
     
     public static string GetJwtAudience() 
     {
         var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
-        return jwtAudience ?? JwtSettings?.Audience ?? "localhost";
+        if (NokoCommonMod.IsNoneOrEmptyWhiteSpace(jwtAudience))
+        {
+            return JwtSettings?.Audience ?? "localhost";
+        }
+
+        return jwtAudience!;
     }
 }

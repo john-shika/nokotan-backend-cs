@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace NokoWebApiSdk.Cores;
+namespace NokoWebApiSdk.Cores.Authentication;
 
-public class NokoWebToken(Guid id, Guid sessionId, string? user, string? role, string? email, string? phone, string? issuer, string[] audiences, DateTime expires, DateTime issuedAt)
+public class NokoWebToken(Guid id, Guid sessionId, string? subject, string? user, string? role, string? email, string? phone, string? issuer, string[] audiences, DateTime? notBefore, DateTime expires, DateTime issuedAt)
 {
-    public NokoWebToken() : this(default, default, "", "", null, null, null, [], default, default)
+    public NokoWebToken() : this(default, default, "", "", "", null, null, null, [], default, default, default)
     {
         // do nothing...
     }
@@ -17,6 +17,10 @@ public class NokoWebToken(Guid id, Guid sessionId, string? user, string? role, s
     [Required]
     [JsonPropertyName("sessionId")]
     public Guid SessionId { get; set; } = sessionId;
+    
+    [Required]
+    [JsonPropertyName("subject")]
+    public string? Subject { get; set; } = subject;
     
     [Required]
     [JsonPropertyName("user")]
@@ -39,7 +43,11 @@ public class NokoWebToken(Guid id, Guid sessionId, string? user, string? role, s
     public string[] Audiences { get; set; } = audiences; // optional
     
     [Required]
-    [JsonPropertyName("Expires")]
+    [JsonPropertyName("notBefore")]
+    public DateTime? NotBefore { get; set; } = notBefore;
+    
+    [Required]
+    [JsonPropertyName("expires")]
     public DateTime Expires { get; set; } = expires;
     
     [Required]

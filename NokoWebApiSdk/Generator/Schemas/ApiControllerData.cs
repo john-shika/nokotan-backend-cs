@@ -52,7 +52,7 @@ public class ApiControllerEndpointProduceData(int statusCode, string name, strin
     public int StatusCode { get; set; } = statusCode;
 }
 
-public class ApiControllerEndpointData(string name, string path, string summary, string description, string[] tags, NokoHttpMethod[] methods, ApiControllerEndpointProduceData[] produces, bool authorization)
+public class ApiControllerEndpointData(string name, string path, string summary, string description, string[] tags, NokoHttpMethods[] methods, ApiControllerEndpointProduceData[] produces, bool authorization)
 {
     public ApiControllerEndpointData() : this("", "", "", "", [], [], [], false)
     {
@@ -81,7 +81,7 @@ public class ApiControllerEndpointData(string name, string path, string summary,
     
     [Required]
     [JsonPropertyName("methods")]
-    public NokoHttpMethod[] Methods { get; set; } = methods;
+    public NokoHttpMethods[] Methods { get; set; } = methods;
     
     [Required]
     [JsonPropertyName("produces")]

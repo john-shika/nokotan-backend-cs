@@ -10,10 +10,13 @@ using Microsoft.Net.Http.Headers;
 using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
 using NokoWebApiSdk.Controllers;
+using NokoWebApiSdk.Cores.Authentication;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
+using NokoWebApiSdk.Extensions.ConfigurationBinder;
 using NokoWebApiSdk.Globals;
 using NokoWebApiSdk.Json.Services;
+using NokoWebApiSdk.Schemas;
 using JwtClaimTagNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 using TagNames = NokoWebApiSdk.OpenApi.NokoWebOpenApiSecuritySchemeTagNames;
 
@@ -54,16 +57,26 @@ public class AuthController : BaseApiController
 
         var tokenId = NokoCommonMod.GenerateUuidV7(); // as JTI
         var sessionId = NokoCommonMod.GenerateUuidV7(); // as SID
-        var username = loginFormBody.Username; // as USERNAME
+        var user = loginFormBody.Username; // as USERNAME
         var expires = DateTime.UtcNow.AddDays(7); // as EXP
+
+        var nokoWebToken = new NokoWebToken
+        {
+            Id = tokenId,
+            SessionId = sessionId,
+            User = user,
+            Role = "Admin",
+            Expires = expires,
+            Audiences = ["localhost:80", "localhost:3000", "localhost:5000"],
+        };
         
-        var token = GenerateJwtToken(tokenId, sessionId, username, expires);
+        var token = NokoAuthenticationMod.GenerateJwtToken(nokoWebToken);
         
         var messageBody = new AccessJwtTokenMessageBody
         {
             StatusOk = true,
-            StatusCode = NokoHttpStatusCode.Created,
-            Status = NokoHttpStatusCode.Created.ToString(),
+            StatusCodes = NokoHttpStatusCodes.Created,
+            Status = NokoHttpStatusCodes.Created.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "Successfully create JWT Token.",
             Data = new AccessJwtTokenData {
@@ -86,34 +99,36 @@ public class AuthController : BaseApiController
 
         var messageBody = new ValidateJwtTokenMessageBody();
         messageBody.StatusOk = true;
-        messageBody.StatusCode = NokoHttpStatusCode.Ok;
-        messageBody.Status = NokoHttpStatusCode.Ok.GetValue();
+        messageBody.StatusCodes = NokoHttpStatusCodes.Ok;
+        messageBody.Status = NokoHttpStatusCodes.Ok.GetValue();
         messageBody.Timestamp = NokoCommonMod.GetDateTimeUtcNow();
         messageBody.Message = "Successfully validate JWT Token.";
         
         try
         {
+            NokoAuthenticationMod.ParseJwtToken(token);
             var (tokenId, sessionId, username, expires) = ParseJwtToken(token);
             var data = new ValidateJwtTokenData
             {
                 TokenId = tokenId,
                 SessionId = sessionId,
                 Username = username,
-                Expires = expires
+                Expires = expires,
+                // IssuedAt = 
             };
 
             messageBody.Data = data;
             
             var options = new JsonSerializerOptions();
             JsonSerializerService.Apply(options);
-            var result = TypedResults.Json(data: messageBody, options: options, statusCode: (int)messageBody.StatusCode);
+            var result = TypedResults.Json(data: messageBody, options: options, statusCode: (int)messageBody.StatusCodes);
             return Task.FromResult<IResult>(result);
         }
         catch (Exception ex)
         {
             messageBody.StatusOk = false;
-            messageBody.StatusCode = NokoHttpStatusCode.InternalServerError;
-            messageBody.Status = NokoHttpStatusCode.InternalServerError.ToString();
+            messageBody.StatusCodes = NokoHttpStatusCodes.InternalServerError;
+            messageBody.Status = NokoHttpStatusCodes.InternalServerError.ToString();
             messageBody.Message = ex.Message;
             return Task.FromResult<IResult>(TypedResults.BadRequest(messageBody));
         }
@@ -168,5 +183,4 @@ public class AuthController : BaseApiController
 
         return (tokenId, sessionId, username, expires);
     }
-
 }

@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace NokoWebApiSdk.Cores.Utils;
 
@@ -880,5 +879,25 @@ public static class NokoCommonMod
             throw new ArgumentException("List must contain exactly 13 elements");
         }
         return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6], (T8)items[7], (T9)items[8], (T10)items[9], (T11)items[10], (T12)items[11], (T13)items[12]);
+    }
+
+    /// <summary>
+    /// Merges new items into an existing list if they do not already exist in the list.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the lists. Must implement IComparable<T> and IEquatable<T>.</typeparam>
+    /// <param name="items">The existing list of items.</param>
+    /// <param name="newItems">The list of new items to be added if they are not already present in the existing list.</param>
+    /// <returns>The merged list with all unique items.</returns>
+    public static IList<T> MergeAnyListItems<T>(IList<T> items, IList<T> newItems)
+        where T : IComparable<T>, IEquatable<T>
+    {
+        foreach (var item in newItems)
+        {
+            if (!items.Contains(item))
+            {
+                items.Add(item);
+            }
+        }
+        return items;
     }
 }

@@ -18,15 +18,15 @@ public class HttpExceptionFilter : IExceptionFilter
         var exception = context.Exception;
         
         var response = context.HttpContext.Response;
-        response.StatusCode = (int)NokoHttpStatusCode.InternalServerError;
+        response.StatusCode = (int)NokoHttpStatusCodes.InternalServerError;
         response.ContentType = "application/json";
         
-        var statusCode = (NokoHttpStatusCode)response.StatusCode;
+        var statusCode = (NokoHttpStatusCodes)response.StatusCode;
 
         var messageBody = new EmptyMessageBody
         {
             StatusOk = false,
-            StatusCode = statusCode,
+            StatusCodes = statusCode,
             Status = statusCode.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = exception.Message,
@@ -58,14 +58,14 @@ public static class HttpExceptionMiddleware
         catch (Exception ex)
         {
             var response = context.Response;
-            response.StatusCode = (int)NokoHttpStatusCode.InternalServerError;
+            response.StatusCode = (int)NokoHttpStatusCodes.InternalServerError;
             response.ContentType = "application/json";
         
-            var statusCode = (NokoHttpStatusCode)response.StatusCode;
+            var statusCode = (NokoHttpStatusCodes)response.StatusCode;
             var messageBody = new EmptyMessageBody
             {
                 StatusOk = false,
-                StatusCode = statusCode,
+                StatusCodes = statusCode,
                 Status = statusCode.ToString(),
                 Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
                 Message = ex.Message,

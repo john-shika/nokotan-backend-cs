@@ -1,5 +1,7 @@
 ﻿using NokoWebApiSdk.Cores;
+using NokoWebApiSdk.Extensions.ConfigurationBinder;
 using NokoWebApiSdk.Globals;
+using NokoWebApiSdk.Schemas;
 
 namespace NokoWebApiSdk.Extensions.NokoWebApi;
 
@@ -14,14 +16,14 @@ public static class NokoWebApplicationExtensions
     // {
     // }
 
-    public static void UseGlobals(this NokoWebApplication application, IConfiguration? config = null)
+    public static void UseGlobals(this NokoWebApplication application, IConfiguration? configuration = null)
     {
         application.Listen((nokoWebApplication) =>
         {
-            config ??= nokoWebApplication.Configuration;
-            if (config is null) return;
+            configuration ??= nokoWebApplication.Configuration;
+            if (configuration is null) return;
         
-            var nokoWebApplicationDefaults = new NokoWebApplicationGlobals(config);
+            var nokoWebApplicationDefaults = new NokoWebApplicationGlobals(configuration);
             nokoWebApplication.Globals = nokoWebApplicationDefaults;
         });
     }

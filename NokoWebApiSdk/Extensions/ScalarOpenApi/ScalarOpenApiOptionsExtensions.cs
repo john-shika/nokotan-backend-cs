@@ -113,11 +113,11 @@ public static class ScalarOpenApiOptionsExtensions
     /// Forces the theme mode to always be the specified state.
     /// </summary>
     /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
-    /// <param name="forceThemeMode">The theme mode to force.</param>
+    /// <param name="forceScalarOpenApiThemeModes">The theme mode to force.</param>
     /// <returns></returns>
-    public static ScalarOpenApiOptions WithForceThemeMode(this ScalarOpenApiOptions options, ThemeMode forceThemeMode)
+    public static ScalarOpenApiOptions WithForceThemeMode(this ScalarOpenApiOptions options, ScalarOpenApiThemeModes forceScalarOpenApiThemeModes)
     {
-        options.ForceThemeMode = forceThemeMode;
+        options.ForceThemeMode = forceScalarOpenApiThemeModes;
         return options;
     }
 
@@ -158,10 +158,10 @@ public static class ScalarOpenApiOptionsExtensions
     /// Sets the color theme.
     /// </summary>
     /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
-    /// <param name="theme">The theme to set.</param>
-    public static ScalarOpenApiOptions WithTheme(this ScalarOpenApiOptions options, ScalarOpenApiTheme theme)
+    /// <param name="themes">The theme to set.</param>
+    public static ScalarOpenApiOptions WithTheme(this ScalarOpenApiOptions options, ScalarOpenApiThemes themes)
     {
-        options.Theme = theme;
+        options.Themes = themes;
         return options;
     }
 
@@ -226,10 +226,10 @@ public static class ScalarOpenApiOptionsExtensions
     /// Sets the tag sorter for the <see cref="ScalarOpenApiOptions" />.
     /// </summary>
     /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
-    /// <param name="tagSorter">The <see cref="TagSorter" /> to use.</param>
-    public static ScalarOpenApiOptions WithTagSorter(this ScalarOpenApiOptions options, TagSorter tagSorter)
+    /// <param name="scalarOpenApiTagSorters">The <see cref="ScalarOpenApiTagSorters" /> to use.</param>
+    public static ScalarOpenApiOptions WithTagSorter(this ScalarOpenApiOptions options, ScalarOpenApiTagSorters scalarOpenApiTagSorters)
     {
-        options.TagSorter = tagSorter;
+        options.TagSorter = scalarOpenApiTagSorters;
         return options;
     }
 
@@ -297,11 +297,11 @@ public static class ScalarOpenApiOptionsExtensions
     /// Sets the default HTTP client.
     /// </summary>
     /// <param name="options"><see cref="ScalarOpenApiOptions" />.</param>
-    /// <param name="target">The target to set.</param>
-    /// <param name="client">The client to set.</param>
-    public static ScalarOpenApiOptions WithDefaultHttpClient(this ScalarOpenApiOptions options, ScalarOpenApiTarget target, ScalarOpenApiClient client)
+    /// <param name="targets">The target to set.</param>
+    /// <param name="clients">The client to set.</param>
+    public static ScalarOpenApiOptions WithDefaultHttpClient(this ScalarOpenApiOptions options, ScalarOpenApiTargets targets, ScalarOpenApiClients clients)
     {
-        options.DefaultHttpClient = new KeyValuePair<ScalarOpenApiTarget, ScalarOpenApiClient>(target, client);
+        options.DefaultHttpClient = new KeyValuePair<ScalarOpenApiTargets, ScalarOpenApiClients>(targets, clients);
         return options;
     }
 

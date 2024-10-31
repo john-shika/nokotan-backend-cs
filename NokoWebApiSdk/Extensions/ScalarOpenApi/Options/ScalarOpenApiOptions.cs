@@ -25,7 +25,7 @@ public sealed class ScalarOpenApiOptions
         HideDarkModeToggle = other.HideDarkModeToggle;
         CustomCss = other.CustomCss;
         SearchHotKey = other.SearchHotKey;
-        Theme = other.Theme;
+        Themes = other.Themes;
         WithDefaultFonts = other.WithDefaultFonts;
         DefaultOpenAllTags = other.DefaultOpenAllTags;
         TagSorter = other.TagSorter;
@@ -104,7 +104,7 @@ public sealed class ScalarOpenApiOptions
     /// ForceDarkModeState makes it always this state no matter what <c>'dark' | 'light'</c>.
     /// </summary>
     /// <value>The default value is <c>null</c>.</value>
-    public ThemeMode? ForceThemeMode { get; set; }
+    public ScalarOpenApiThemeModes? ForceThemeMode { get; set; }
 
     /// <summary>
     /// Whether to hide the dark mode toggle.
@@ -127,9 +127,9 @@ public sealed class ScalarOpenApiOptions
     /// <summary>
     /// Set color theme.
     /// </summary>
-    /// <value>The default value is <see cref="ScalarOpenApiTheme.Purple" />.</value>
-    /// <remarks>Select your preferred <see cref="ScalarOpenApiTheme.Purple">ScalarTheme</see>.</remarks>
-    public ScalarOpenApiTheme Theme { get; set; } = ScalarOpenApiTheme.Purple;
+    /// <value>The default value is <see cref="ScalarOpenApiThemes.Purple" />.</value>
+    /// <remarks>Select your preferred <see cref="ScalarOpenApiThemes.Purple">ScalarTheme</see>.</remarks>
+    public ScalarOpenApiThemes Themes { get; set; } = ScalarOpenApiThemes.Purple;
 
     /// <summary>
     /// By default, we are using Inter and JetBrains Mono, served by Google Fonts.
@@ -149,7 +149,7 @@ public sealed class ScalarOpenApiOptions
     /// Represents a sorter for tags in the Scalar API reference.
     /// </summary>
     /// <value>The default value is <c>null</c>.</value>
-    public TagSorter? TagSorter { get; set; }
+    public ScalarOpenApiTagSorters? TagSorter { get; set; }
     
     /// <summary>
     /// You can pass an array of HTTPSnippet clients to hide from the clients menu.
@@ -162,14 +162,14 @@ public sealed class ScalarOpenApiOptions
     /// </summary>
     /// <value>The default value is <see cref="Array.Empty{T}" />.</value>
     /// <remarks>If an empty array is sent, all options will be displayed.</remarks>
-    public ScalarOpenApiClient[] EnabledClients { get; set; } = [];
+    public ScalarOpenApiClients[] EnabledClients { get; set; } = [];
 
     /// <summary>
     /// You can pass an array of HTTPSnippet targets that you want to display in the clients menu.
     /// </summary>
     /// <value>The default value is <see cref="Array.Empty{T}" />.</value>
     /// <remarks>If an empty array is sent, all options will be displayed.</remarks>
-    public ScalarOpenApiTarget[] EnabledTargets { get; set; } = [];
+    public ScalarOpenApiTargets[] EnabledTargets { get; set; } = [];
 
     /// <summary>
     /// You can pass information to the config object to configure meta information out of the box.
@@ -185,8 +185,8 @@ public sealed class ScalarOpenApiOptions
     /// <summary>
     /// Gets or sets the default HTTP client.
     /// </summary>
-    /// <value>The default values are <see cref="ScalarOpenApiTarget.Shell" /> and <see cref="ScalarOpenApiClient.Curl" />.</value>
-    public KeyValuePair<ScalarOpenApiTarget, ScalarOpenApiClient> DefaultHttpClient { get; set; } = new(ScalarOpenApiTarget.Shell, ScalarOpenApiClient.Curl);
+    /// <value>The default values are <see cref="ScalarOpenApiTargets.Shell" /> and <see cref="ScalarOpenApiClients.Curl" />.</value>
+    public KeyValuePair<ScalarOpenApiTargets, ScalarOpenApiClients> DefaultHttpClient { get; set; } = new(ScalarOpenApiTargets.Shell, ScalarOpenApiClients.Curl);
 
     /// <summary>
     /// Gets or sets the CDN URL for the API reference.

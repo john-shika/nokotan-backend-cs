@@ -1,9 +1,11 @@
 ﻿using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Extensions.AppService;
+using NokoWebApiSdk.Extensions.ConfigurationBinder;
 using NokoWebApiSdk.Globals;
 using NokoWebApiSdk.Schemas;
 
@@ -14,7 +16,8 @@ public class AuthService : AppServiceInitialized
 {
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {
-        NokoWebApplicationGlobals.JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        NokoWebApplicationGlobals.JwtSettings = configuration.GetConfig<JwtSettings>();
+        
         var secretKey = NokoWebApplicationGlobals.GetJwtSecretKey();
         var issuer = NokoWebApplicationGlobals.GetJwtIssuer();
         var audience = NokoWebApplicationGlobals.GetJwtAudience();
@@ -32,7 +35,7 @@ public class AuthService : AppServiceInitialized
                 {
                     ClockSkew = TimeSpan.Zero,
                     ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = issuer,

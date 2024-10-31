@@ -16,11 +16,11 @@ public class AppService : AppServiceInitialized
         services.AddAntiforgery();
         
         // testing using NokoWebApi.Optimizes.EntryPoint with AspNetCore Minimal Api
-        // services.AddControllers((options) =>
-        // {
-        //     options.Filters.Add<CustomValidationFilter>();
-        //     options.Filters.Add<HttpExceptionFilter>();
-        // });
+        services.AddControllers((options) =>
+        {
+            options.Filters.Add<CustomValidationFilter>();
+            options.Filters.Add<HttpExceptionFilter>();
+        });
         
         services.Configure<ApiBehaviorOptions>(options =>
         {
@@ -65,7 +65,7 @@ public class AppService : AppServiceInitialized
             // endpoints.MapControllers();
         // });
 
-        // app.MapControllers();
+        app.MapControllers();
         // app.MapStaticAssets();
     }
 }

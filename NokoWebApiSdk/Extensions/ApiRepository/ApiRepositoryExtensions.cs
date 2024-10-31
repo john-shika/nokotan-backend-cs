@@ -65,11 +65,17 @@ public static class ApiRepositoryExtensions
                 [dbContextType] = bRepositoryInstanceType,
             };
             
+            // var pTypes = new[] {
+            //     serviceCollectionType, 
+            //     actionDbContextOptionsBuilderType, 
+            //     serviceLifetimeType, 
+            //     serviceLifetimeType,
+            // };
+            
             var pTypes = new[] {
                 serviceCollectionType, 
                 actionDbContextOptionsBuilderType, 
-                serviceLifetimeType, 
-                serviceLifetimeType,
+                typeof(int),
             };
 
             var nokoWebReflectionHelper = new NokoReflectionHelper(entityFrameworkServiceCollectionExtensionsType);
@@ -77,7 +83,8 @@ public static class ApiRepositoryExtensions
             if (dbContextMethod is null || !dbContextMethod.IsStatic) throw new Exception("The provided method must be static and not null.");
             
             // Call AddDbContent with Parameter Values
-            dbContextMethod.Invoke(null, [services, optionsAction, contextLifetime, optionsLifetime]);
+            // dbContextMethod.Invoke(null, [services, optionsAction, contextLifetime, optionsLifetime]);
+            dbContextMethod.Invoke(null, [services, optionsAction, 1024]);
         }
         
         return services;
