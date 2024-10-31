@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NokoWebApi.Repositories;
 using NokoWebApiSdk.Controllers;
-using NokoWebApiSdk.Cores.Net;
+using NokoWebApiSdk.Cores.Networking;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Json.Services;
 using NokoWebApiSdk.Schemas;

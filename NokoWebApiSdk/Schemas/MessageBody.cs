@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using NokoWebApiSdk.Cores.Net;
+using NokoWebApiSdk.Cores.Networking;
 
 namespace NokoWebApiSdk.Schemas;
 

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using NokoWebApiSdk.Annotations;
-using NokoWebApiSdk.Cores.Net;
+using NokoWebApiSdk.Cores.Networking;
 using NokoWebApiSdk.Extensions.AppService;
 using NokoWebApiSdk.Filters;
 using NokoWebApiSdk.Json.Converters;

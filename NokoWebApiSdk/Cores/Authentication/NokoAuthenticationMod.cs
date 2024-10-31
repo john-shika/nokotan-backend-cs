@@ -33,6 +33,7 @@ public static class NokoAuthenticationMod
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
+            // Audience = audience,
             Issuer = issuer,
             Expires = nokoWebToken.Expires,
             SigningCredentials = signingCredentials,

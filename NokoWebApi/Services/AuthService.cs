@@ -35,7 +35,7 @@ public class AuthService : AppServiceInitialized
                 {
                     ClockSkew = TimeSpan.Zero,
                     ValidateIssuer = true,
-                    ValidateAudience = false,
+                    ValidateAudience = false, // disabling audience validation as multiple audience values are managed independently
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = issuer,

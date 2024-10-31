@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
-using NokoWebApiSdk.Cores.Net;
+using NokoWebApiSdk.Cores.Networking;
 
 namespace NokoWebApiSdk.Generator.Schemas;
 

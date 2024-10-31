@@ -1,9 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using NokoWebApiSdk.Cores.Utils;
 
-namespace NokoWebApiSdk.Cores.Net;
+namespace NokoWebApiSdk.Cores.Networking;
 
 public enum NokoHttpStatusCodes
 {

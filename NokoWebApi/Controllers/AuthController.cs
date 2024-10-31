@@ -11,7 +11,7 @@ using NokoWebApi.Repositories;
 using NokoWebApi.Schemas;
 using NokoWebApiSdk.Controllers;
 using NokoWebApiSdk.Cores.Authentication;
-using NokoWebApiSdk.Cores.Net;
+using NokoWebApiSdk.Cores.Networking;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Extensions.ConfigurationBinder;
 using NokoWebApiSdk.Globals;

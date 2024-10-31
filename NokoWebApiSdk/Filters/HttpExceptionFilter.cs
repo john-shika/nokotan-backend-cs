@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NokoWebApiSdk.Cores;
-using NokoWebApiSdk.Cores.Net;
+using NokoWebApiSdk.Cores.Networking;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Json.Converters;
 using NokoWebApiSdk.Json.Serializers;
