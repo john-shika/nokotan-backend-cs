@@ -34,12 +34,12 @@ public class AuthService : AppServiceInitialized
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ClockSkew = TimeSpan.Zero,
-                    ValidateIssuer = true,
+                    ValidAudience = audience,
+                    ValidIssuer = issuer,
                     ValidateAudience = false, // disabling audience validation as multiple audience values are managed independently
+                    ValidateIssuer = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = issuer,
-                    ValidAudience = audience,
                     IssuerSigningKey = new SymmetricSecurityKey(NokoCommonMod.EncodeSha512(secretKey)),
                 };
             });
