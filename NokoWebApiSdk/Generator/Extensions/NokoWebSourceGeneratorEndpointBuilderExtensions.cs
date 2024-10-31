@@ -3,10 +3,10 @@ using NokoWebApiSdk.Generator.Helper;
 
 namespace NokoWebApiSdk.Generator.Extensions;
 
-public static class NokoWebGeneratorEndpointBuilderExtensions
+public static class NokoWebSourceGeneratorEndpointBuilderExtensions
 {
     public static void EntryPoint<TEntryPoint>(this NokoWebApplication nokoWebApplication) 
-        where TEntryPoint : class, INokoWebGeneratorHelperEntryPoint, new()
+        where TEntryPoint : class, INokoWebSourceGeneratorEntryPoint, new()
     {
         var entryPoint = new TEntryPoint();
         var action = (NokoWebApplication application) =>

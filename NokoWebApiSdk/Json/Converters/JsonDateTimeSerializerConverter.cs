@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace NokoWebApiSdk.Json.Converters;
 
-public class JsonDateTimeConverter : JsonConverter<DateTime>
+public class JsonDateTimeSerializerConverter : JsonConverter<DateTime>
 {
     private const string DateFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
     

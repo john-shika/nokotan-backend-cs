@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using NokoWebApiSdk.Cores;
 using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Cores.Utils;
 using NokoWebApiSdk.Json.Services;
@@ -41,7 +40,7 @@ public class CustomExceptionMiddleware
         var messageBody = new EmptyMessageBody
         {
             StatusOk = false,
-            StatusCode = (int)statusCode,
+            StatusCode = statusCode,
             Status = statusCode.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = ex.Message,

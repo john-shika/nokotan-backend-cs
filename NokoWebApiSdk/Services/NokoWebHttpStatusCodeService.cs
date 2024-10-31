@@ -24,7 +24,7 @@ public class NokoWebHttpStatusCodeService : AppServiceInitialized
                     var messageBody = new EmptyMessageBody
                     {
                         StatusOk = false,
-                        StatusCode = response.StatusCode,
+                        StatusCode = NokoHttpStatusCode.NotFound,
                         Status = NokoHttpStatusCode.NotFound.ToString(),
                         Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
                         Message = "Resource not found",

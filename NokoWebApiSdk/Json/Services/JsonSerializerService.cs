@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using NokoWebApiSdk.Annotations;
+using NokoWebApiSdk.Cores.Net;
 using NokoWebApiSdk.Extensions.AppService;
 using NokoWebApiSdk.Filters;
 using NokoWebApiSdk.Json.Converters;
@@ -15,7 +16,9 @@ public class JsonSerializerService : AppServiceInitialized
         options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         
         var converters = options.Converters;
-        converters.Add(new JsonDateTimeConverter());
+        converters.Add(new JsonDateTimeSerializerConverter());
+        converters.Add(new NokoJsonHttpMethodSerializerConverter());
+        converters.Add(new NokoJsonHttpStatusCodeSerializerConverter());
     }
 
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)

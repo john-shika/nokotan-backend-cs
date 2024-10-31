@@ -34,7 +34,7 @@ public class AppController : BaseApiController
         var messageBody = new EmptyMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)NokoHttpStatusCode.Ok,
+            StatusCode = NokoHttpStatusCode.Ok,
             Status = NokoHttpStatusCode.Ok.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "Hello World.",

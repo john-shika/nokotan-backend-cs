@@ -1,6 +1,11 @@
-# NokoWebApi (Nokotan) ASP.Net 9.0
+# NokoWebApi (Nokotan) AspNetCore .NET 9
 
-## created by <ahmadasysyafiq@proton.me>
+## dotnet workload
+
+```shell
+dotnet workload list
+dotnet workload update
+```
 
 ## dotnet run
 

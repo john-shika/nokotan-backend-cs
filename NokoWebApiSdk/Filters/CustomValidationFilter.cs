@@ -68,7 +68,7 @@ public class CustomValidationFilter : IActionFilter
         var messageBody = new ReportInvalidFieldsMessageBody
         {
             StatusOk = false,
-            StatusCode = (int)statusCode,
+            StatusCode = statusCode,
             Status = statusCode.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "One or more validation errors occurred.",

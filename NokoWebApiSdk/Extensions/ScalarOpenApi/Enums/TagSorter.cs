@@ -10,14 +10,13 @@ public enum TagSorter
     Alpha
 }
 
-[StructLayout(LayoutKind.Sequential, Size = 1)]
-public sealed class TagSorterValues
+public sealed class TagSorterValue
 {
     public const string Alpha = "alpha";
 
     public static TagSorter ParseCode(string code)
     {
-        return (NokoTransformText.ToSnakeCase(code)) switch
+        return (NokoTransformText.ToCamelCase(code)) switch
         {
             Alpha => TagSorter.Alpha,
             _ => throw new FormatException($"Invalid tag sorter code {code}"),
@@ -44,7 +43,7 @@ public static class TagSorterExtensions
     
     public static string GetValue(this TagSorter code)
     {
-        return TagSorterValues.FromCode(code);
+        return TagSorterValue.FromCode(code);
     }
 }
 

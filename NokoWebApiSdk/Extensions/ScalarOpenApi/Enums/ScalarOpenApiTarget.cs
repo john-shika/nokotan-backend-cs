@@ -27,8 +27,7 @@ public enum ScalarOpenApiTarget
     Swift,
 }
 
-[StructLayout(LayoutKind.Sequential, Size = 1)]
-public sealed class ScalarOpenApiTargetValues
+public sealed class ScalarOpenApiTargetValue
 {
     public const string C = "c";
     public const string Clojure = "clojure";
@@ -51,7 +50,7 @@ public sealed class ScalarOpenApiTargetValues
 
     public static ScalarOpenApiTarget ParseCode(string code)
     {
-        return (NokoTransformText.ToSnakeCase(code)) switch {
+        return (NokoTransformText.ToCamelCase(code)) switch {
             C => ScalarOpenApiTarget.C,
             Clojure => ScalarOpenApiTarget.Clojure,
             CSharp => ScalarOpenApiTarget.CSharp,
@@ -111,7 +110,7 @@ public static class ScalarOpenApiTargetExtensions
     
     public static string GetValue(this ScalarOpenApiTarget code)
     {
-        return ScalarOpenApiTargetValues.FromCode(code);
+        return ScalarOpenApiTargetValue.FromCode(code);
     }
 }
 

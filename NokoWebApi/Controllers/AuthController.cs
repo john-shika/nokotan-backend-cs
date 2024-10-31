@@ -62,7 +62,7 @@ public class AuthController : BaseApiController
         var messageBody = new AccessJwtTokenMessageBody
         {
             StatusOk = true,
-            StatusCode = (int)NokoHttpStatusCode.Created,
+            StatusCode = NokoHttpStatusCode.Created,
             Status = NokoHttpStatusCode.Created.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = "Successfully create JWT Token.",
@@ -86,7 +86,7 @@ public class AuthController : BaseApiController
 
         var messageBody = new ValidateJwtTokenMessageBody();
         messageBody.StatusOk = true;
-        messageBody.StatusCode = (int)NokoHttpStatusCode.Ok;
+        messageBody.StatusCode = NokoHttpStatusCode.Ok;
         messageBody.Status = NokoHttpStatusCode.Ok.GetValue();
         messageBody.Timestamp = NokoCommonMod.GetDateTimeUtcNow();
         messageBody.Message = "Successfully validate JWT Token.";
@@ -106,21 +106,22 @@ public class AuthController : BaseApiController
             
             var options = new JsonSerializerOptions();
             JsonSerializerService.Apply(options);
-            return Task.FromResult<IResult>(TypedResults.Json(data: messageBody, options: options, statusCode: messageBody.StatusCode));
+            var result = TypedResults.Json(data: messageBody, options: options, statusCode: (int)messageBody.StatusCode);
+            return Task.FromResult<IResult>(result);
         }
         catch (Exception ex)
         {
             messageBody.StatusOk = false;
-            messageBody.StatusCode = (int)NokoHttpStatusCode.InternalServerError;
+            messageBody.StatusCode = NokoHttpStatusCode.InternalServerError;
             messageBody.Status = NokoHttpStatusCode.InternalServerError.ToString();
             messageBody.Message = ex.Message;
             return Task.FromResult<IResult>(TypedResults.BadRequest(messageBody));
         }
     }
 
-    private string GenerateJwtToken(Guid tokenId, Guid sessionId, string username, DateTime? expires = null)
+    private static string GenerateJwtToken(Guid tokenId, Guid sessionId, string username, DateTime? expires = null)
     {
-        var secretKey = NokoCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
+        var secretKey = NokoWebApplicationGlobals.GetJwtSecretKey();
         var issuer = NokoWebApplicationGlobals.GetJwtIssuer();
         var audience = NokoWebApplicationGlobals.GetJwtAudience();
         
@@ -131,11 +132,11 @@ public class AuthController : BaseApiController
         var claims = new[] {
             new Claim(JwtClaimTagNames.Jti, tokenId.ToString()),
             new Claim(JwtClaimTagNames.Sid, sessionId.ToString()),
-            new Claim("name", username),
+            new Claim("user", username),
             new Claim("role", "Admin"),
         };
         
-        var symmetricSecurityKey = new SymmetricSecurityKey(secretKey);
+        var symmetricSecurityKey = new SymmetricSecurityKey(NokoCommonMod.EncodeSha512(secretKey));
         var signingCredentials = new SigningCredentials(symmetricSecurityKey, algorithm);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -162,7 +163,7 @@ public class AuthController : BaseApiController
 
         var tokenId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtClaimTagNames.Jti).Value);
         var sessionId = Guid.Parse(jwtToken.Claims.First(claim => claim.Type == JwtClaimTagNames.Sid).Value);
-        var username = jwtToken.Claims.First(claim => claim.Type == "name").Value;
+        var username = jwtToken.Claims.First(claim => claim.Type == "user").Value;
         var expires = jwtToken.ValidTo;
 
         return (tokenId, sessionId, username, expires);

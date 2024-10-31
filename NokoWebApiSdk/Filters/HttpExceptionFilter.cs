@@ -26,7 +26,7 @@ public class HttpExceptionFilter : IExceptionFilter
         var messageBody = new EmptyMessageBody
         {
             StatusOk = false,
-            StatusCode = (int)statusCode,
+            StatusCode = statusCode,
             Status = statusCode.ToString(),
             Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
             Message = exception.Message,
@@ -65,7 +65,7 @@ public static class HttpExceptionMiddleware
             var messageBody = new EmptyMessageBody
             {
                 StatusOk = false,
-                StatusCode = (int)statusCode,
+                StatusCode = statusCode,
                 Status = statusCode.ToString(),
                 Timestamp = NokoCommonMod.GetDateTimeUtcNow(),
                 Message = ex.Message,

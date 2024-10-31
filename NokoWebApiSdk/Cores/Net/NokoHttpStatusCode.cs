@@ -73,8 +73,7 @@ public enum NokoHttpStatusCode
     NetworkAuthenticationRequired = 511,
 }
 
-[StructLayout(LayoutKind.Sequential, Size = 1)]
-public sealed class NokoWebHttpStatusCodeValues
+public sealed class NokoHttpStatusCodeValue
 {
     public const string Continue = "CONTINUE";
     public const string SwitchingProtocols = "SWITCHING_PROTOCOLS";
@@ -286,7 +285,7 @@ public sealed class NokoWebHttpStatusCodeValues
     }
 }
 
-public static class HttpStatusCodeExtensions
+public static class NokoHttpStatusCodeExtensions
 {
     public static string GetKey(this NokoHttpStatusCode code)
     {
@@ -296,11 +295,11 @@ public static class HttpStatusCodeExtensions
 
     public static string GetValue(this NokoHttpStatusCode code)
     {
-        return NokoWebHttpStatusCodeValues.FromCode(code);
+        return NokoHttpStatusCodeValue.FromCode(code);
     }
 }
 
-public class JsonHttpStatusCodeSerializeConverter : JsonConverter<NokoHttpStatusCode>
+public class NokoJsonHttpStatusCodeSerializerConverter : JsonConverter<NokoHttpStatusCode>
 {
     public override NokoHttpStatusCode Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

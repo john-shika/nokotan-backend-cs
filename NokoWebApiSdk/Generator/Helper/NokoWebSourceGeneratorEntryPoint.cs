@@ -2,12 +2,12 @@
 
 namespace NokoWebApiSdk.Generator.Helper;
 
-public interface INokoWebGeneratorHelperEntryPoint
+public interface INokoWebSourceGeneratorEntryPoint
 {
     void OnInitialized(NokoWebApplication app);
 }
 
-public class NokoWebGeneratorHelperEntryPoint : INokoWebGeneratorHelperEntryPoint
+public class NokoWebSourceGeneratorEntryPoint : INokoWebSourceGeneratorEntryPoint
 {
     public virtual void OnInitialized(NokoWebApplication app)
     {

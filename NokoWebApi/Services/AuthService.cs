@@ -15,7 +15,7 @@ public class AuthService : AppServiceInitialized
     public override void OnInitialized(IServiceCollection services, IConfiguration configuration)
     {
         NokoWebApplicationGlobals.JwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-        var secretKey = NokoCommonMod.EncodeSha512(NokoWebApplicationGlobals.GetJwtSecretKey());
+        var secretKey = NokoWebApplicationGlobals.GetJwtSecretKey();
         var issuer = NokoWebApplicationGlobals.GetJwtIssuer();
         var audience = NokoWebApplicationGlobals.GetJwtAudience();
         
@@ -37,7 +37,7 @@ public class AuthService : AppServiceInitialized
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = issuer,
                     ValidAudience = audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+                    IssuerSigningKey = new SymmetricSecurityKey(NokoCommonMod.EncodeSha512(secretKey)),
                 };
             });
     }

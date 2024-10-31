@@ -11,15 +11,14 @@ public enum ThemeMode
     Dark
 }
 
-[StructLayout(LayoutKind.Sequential, Size = 1)]
-public sealed class ThemeModeValues
+public sealed class ThemeModeValue
 {
     public const string Dark = "dark";
     public const string Light = "light";
 
     public static ThemeMode ParseCode(string code)
     {
-        return (NokoTransformText.ToSnakeCase(code)) switch
+        return (NokoTransformText.ToCamelCase(code)) switch
         {
             Dark => ThemeMode.Dark,
             Light => ThemeMode.Light,
@@ -48,7 +47,7 @@ public static class ThemeModeExtensions
     
     public static string GetValue(this ThemeMode code)
     {
-        return ThemeModeValues.FromCode(code);
+        return ThemeModeValue.FromCode(code);
     }
 }
 

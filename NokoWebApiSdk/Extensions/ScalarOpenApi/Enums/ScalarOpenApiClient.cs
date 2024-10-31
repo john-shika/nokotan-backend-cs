@@ -38,8 +38,7 @@ public enum ScalarOpenApiClient
     Wget,
 }
 
-[StructLayout(LayoutKind.Sequential, Size = 1)]
-public sealed class ScalarOpenApiClientValues
+public sealed class ScalarOpenApiClientValue
 {
     public const string Libcurl = "libcurl";
     public const string CljHttp = "clj_http";
@@ -156,7 +155,7 @@ public static class ScalarOpenApiClientExtensions
     
     public static string GetValue(this ScalarOpenApiClient code)
     {
-        return ScalarOpenApiClientValues.FromCode(code);
+        return ScalarOpenApiClientValue.FromCode(code);
     }
 }
 

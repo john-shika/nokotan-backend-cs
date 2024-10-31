@@ -103,6 +103,20 @@ public static class NokoCommonMod
     }
     
     /// <summary>
+    /// InsertAnyItemList method inserts a new item into a list of items
+    /// by using the UpdateAnyItemList method with a default value.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the list.</typeparam>
+    /// <param name="items">The list of items to which the new item will be added.</param>
+    /// <param name="item">The item to be inserted into the list.</param>
+    /// <returns>True if the item was successfully inserted; otherwise, false.</returns>
+    public static bool InsertAnyItemList<T>(IList<T> items, T item)
+    {
+        items.Add(item);
+        return true;
+    }
+    
+    /// <summary>
     /// UpdateAnyItemList method updates an item in a list or inserts it if not present.
     /// If the `multiples` flag is set to true, it updates all occurrences of the item.
     /// </summary>
@@ -132,25 +146,10 @@ public static class NokoCommonMod
         }
         else
         {
-            // Insert New Item
-            items.Add(checkItem);
-            return true;
+            // Insert checkItem
+            return InsertAnyItemList(items, checkItem);
         }
         return false;
-    }
-
-    /// <summary>
-    /// InsertAnyItemList method inserts a new item into a list of items
-    /// by using the UpdateAnyItemList method with a default value.
-    /// </summary>
-    /// <typeparam name="T">The type of the items in the list.</typeparam>
-    /// <param name="items">The list of items to which the new item will be added.</param>
-    /// <param name="item">The item to be inserted into the list.</param>
-    /// <returns>True if the item was successfully inserted; otherwise, false.</returns>
-    public static bool InsertAnyItemList<T>(IList<T> items, T item)
-    {
-        items.Add(item);
-        return true;
     }
 
     /// <summary>
@@ -611,5 +610,275 @@ public static class NokoCommonMod
     
         var parts = value!.Split('.');
         return parts.Length > 1 ? string.Join('.', parts, 0, parts.Length - 1) : value;
+    }
+
+    /// <summary>
+    /// Converts a list of objects into a tuple with 2 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 2 elements.</param>
+    /// <returns>A tuple containing 2 elements of types T1 and T2.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 2 elements.</exception>
+    public static (T1, T2) ToTuple<T1, T2>(IList<object> items)
+    {
+        if (items.Count != 2)
+        {
+            throw new ArgumentException("List must contain exactly 2 elements");
+        }
+        return ((T1)items[0], (T2)items[1]);
+    }
+
+    /// <summary>
+    /// Converts a list of objects into a tuple with 3 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 3 elements.</param>
+    /// <returns>A tuple containing 3 elements of types T1, T2 and T3.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 3 elements.</exception>
+    public static (T1, T2, T3) ToTuple<T1, T2, T3>(IList<object> items)
+    {
+        if (items.Count != 3)
+        {
+            throw new ArgumentException("List must contain exactly 3 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2]);
+    }
+
+    /// <summary>
+    /// Converts a list of objects into a tuple with 4 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 4 elements.</param>
+    /// <returns>A tuple containing 4 elements of types T1, T2, T3 and T4.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 4 elements.</exception>
+    public static (T1, T2, T3, T4) ToTuple<T1, T2, T3, T4>(IList<object> items)
+    {
+        if (items.Count != 4)
+        {
+            throw new ArgumentException("List must contain exactly 4 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3]);
+    }
+
+    /// <summary>
+    /// Converts a list of objects into a tuple with 5 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 5 elements.</param>
+    /// <returns>A tuple containing 5 elements of types T1, T2, T3, T4 and T5.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 5 elements.</exception>
+    public static (T1, T2, T3, T4, T5) ToTuple<T1, T2, T3, T4, T5>(IList<object> items)
+    {
+        if (items.Count != 5)
+        {
+            throw new ArgumentException("List must contain exactly 5 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4]);
+    }
+
+    /// <summary>
+    /// Converts a list of objects into a tuple with 6 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 6 elements.</param>
+    /// <returns>A tuple containing 6 elements of types T1, T2, T3, T4, T5 and T6.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 6 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6) ToTuple<T1, T2, T3, T4, T5, T6>(IList<object> items)
+    {
+        if (items.Count != 6)
+        {
+            throw new ArgumentException("List must contain exactly 6 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5]);
+    }
+    
+    /// <summary>
+    /// Converts a list of objects into a tuple with 7 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <typeparam name="T7">The type of the 7 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 7 elements.</param>
+    /// <returns>A tuple containing 7 elements of types T1, T2, T3, T4, T5, T6 and T7.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 7 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6, T7) ToTuple<T1, T2, T3, T4, T5, T6, T7>(IList<object> items)
+    {
+        if (items.Count != 7)
+        {
+            throw new ArgumentException("List must contain exactly 7 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6]);
+    }
+    
+    /// <summary>
+    /// Converts a list of objects into a tuple with 8 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <typeparam name="T7">The type of the 7 element in the tuple.</typeparam>
+    /// <typeparam name="T8">The type of the 8 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 8 elements.</param>
+    /// <returns>A tuple containing 8 elements of types T1, T2, T3, T4, T5, T6, T7 and T8.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 8 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6, T7, T8) ToTuple<T1, T2, T3, T4, T5, T6, T7, T8>(IList<object> items)
+    {
+        if (items.Count != 8)
+        {
+            throw new ArgumentException("List must contain exactly 8 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6], (T8)items[7]);
+    }
+    
+    /// <summary>
+    /// Converts a list of objects into a tuple with 9 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <typeparam name="T7">The type of the 7 element in the tuple.</typeparam>
+    /// <typeparam name="T8">The type of the 8 element in the tuple.</typeparam>
+    /// <typeparam name="T9">The type of the 9 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 9 elements.</param>
+    /// <returns>A tuple containing 9 elements of types T1, T2, T3, T4, T5, T6, T7, T8 and T9.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 9 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6, T7, T8, T9) ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9>(IList<object> items)
+    {
+        if (items.Count != 9)
+        {
+            throw new ArgumentException("List must contain exactly 9 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6], (T8)items[7], (T9)items[8]);
+    }
+    
+    /// <summary>
+    /// Converts a list of objects into a tuple with 10 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <typeparam name="T7">The type of the 7 element in the tuple.</typeparam>
+    /// <typeparam name="T8">The type of the 8 element in the tuple.</typeparam>
+    /// <typeparam name="T9">The type of the 9 element in the tuple.</typeparam>
+    /// <typeparam name="T10">The type of the 10 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 10 elements.</param>
+    /// <returns>A tuple containing 10 elements of types T1, T2, T3, T4, T5, T6, T7, T8, T9 and T10.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 10 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(IList<object> items)
+    {
+        if (items.Count != 10)
+        {
+            throw new ArgumentException("List must contain exactly 10 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6], (T8)items[7], (T9)items[8], (T10)items[9]);
+    }
+    
+    /// <summary>
+    /// Converts a list of objects into a tuple with 11 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <typeparam name="T7">The type of the 7 element in the tuple.</typeparam>
+    /// <typeparam name="T8">The type of the 8 element in the tuple.</typeparam>
+    /// <typeparam name="T9">The type of the 9 element in the tuple.</typeparam>
+    /// <typeparam name="T10">The type of the 10 element in the tuple.</typeparam>
+    /// <typeparam name="T11">The type of the 11 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 11 elements.</param>
+    /// <returns>A tuple containing 11 elements of types T1, T2, T3, T4, T5, T6, T7, T8, T9, T10 and T11.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 11 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(IList<object> items)
+    {
+        if (items.Count != 11)
+        {
+            throw new ArgumentException("List must contain exactly 11 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6], (T8)items[7], (T9)items[8], (T10)items[9], (T11)items[10]);
+    }
+    
+    /// <summary>
+    /// Converts a list of objects into a tuple with 12 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <typeparam name="T7">The type of the 7 element in the tuple.</typeparam>
+    /// <typeparam name="T8">The type of the 8 element in the tuple.</typeparam>
+    /// <typeparam name="T9">The type of the 9 element in the tuple.</typeparam>
+    /// <typeparam name="T10">The type of the 10 element in the tuple.</typeparam>
+    /// <typeparam name="T11">The type of the 11 element in the tuple.</typeparam>
+    /// <typeparam name="T12">The type of the 12 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 12 elements.</param>
+    /// <returns>A tuple containing 12 elements of types T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11 and T12.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 12 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(IList<object> items)
+    {
+        if (items.Count != 12)
+        {
+            throw new ArgumentException("List must contain exactly 12 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6], (T8)items[7], (T9)items[8], (T10)items[9], (T11)items[10], (T12)items[11]);
+    }
+
+    /// <summary>
+    /// Converts a list of objects into a tuple with 13 elements.
+    /// </summary>
+    /// <typeparam name="T1">The type of the 1 element in the tuple.</typeparam>
+    /// <typeparam name="T2">The type of the 2 element in the tuple.</typeparam>
+    /// <typeparam name="T3">The type of the 3 element in the tuple.</typeparam>
+    /// <typeparam name="T4">The type of the 4 element in the tuple.</typeparam>
+    /// <typeparam name="T5">The type of the 5 element in the tuple.</typeparam>
+    /// <typeparam name="T6">The type of the 6 element in the tuple.</typeparam>
+    /// <typeparam name="T7">The type of the 7 element in the tuple.</typeparam>
+    /// <typeparam name="T8">The type of the 8 element in the tuple.</typeparam>
+    /// <typeparam name="T9">The type of the 9 element in the tuple.</typeparam>
+    /// <typeparam name="T10">The type of the 10 element in the tuple.</typeparam>
+    /// <typeparam name="T11">The type of the 11 element in the tuple.</typeparam>
+    /// <typeparam name="T12">The type of the 12 element in the tuple.</typeparam>
+    /// <typeparam name="T13">The type of the 13 element in the tuple.</typeparam>
+    /// <param name="items">The list of objects to be converted into a tuple. The list must contain exactly 13 elements.</param>
+    /// <returns>A tuple containing 13 elements of types T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12 and T13.</returns>
+    /// <exception cref="ArgumentException">Thrown when the list does not contain exactly 13 elements.</exception>
+    public static (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13) ToTuple<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(IList<object> items)
+    {
+        if (items.Count != 13)
+        {
+            throw new ArgumentException("List must contain exactly 13 elements");
+        }
+        return ((T1)items[0], (T2)items[1], (T3)items[2], (T4)items[3], (T5)items[4], (T6)items[5], (T7)items[6], (T8)items[7], (T9)items[8], (T10)items[9], (T11)items[10], (T12)items[11], (T13)items[12]);
     }
 }

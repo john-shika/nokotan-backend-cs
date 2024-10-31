@@ -2,12 +2,13 @@
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
+using NokoWebApiSdk.Cores.Net;
 
 namespace NokoWebApiSdk.Generator.Schemas;
 
-public class NokoWebApiControllerBaseInfo(string name, string @namespace, string[] genericTypes) 
+public class MemberDataBase(string name, string @namespace, string[] genericTypes) 
 {
-    public NokoWebApiControllerBaseInfo() : this("", "", [])
+    public MemberDataBase() : this("", "", [])
     {
         // do nothing...
     }
@@ -25,13 +26,35 @@ public class NokoWebApiControllerBaseInfo(string name, string @namespace, string
     public string[] GenericTypes { get; set; } = genericTypes;
 }
 
-public class NokoWebApiControllerParameterInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
-
-public class NokoWebApiControllerMethodProduceInfo(string name, string @namespace, string[] genericTypes) : NokoWebApiControllerBaseInfo(name, @namespace, genericTypes);
-
-public class NokoWebApiControllerMethodInfo(string name, string path, string summary, string description, string[] tags, string[] httpMethods, NokoWebApiControllerMethodProduceInfo[] produces, bool authorization)
+public class ApiControllerParameterData(int index, string name, string @namespace, string[] genericTypes)
+    : MemberDataBase(name, @namespace, genericTypes)
 {
-    public NokoWebApiControllerMethodInfo() : this("", "", "", "", [], [], [], false)
+    public ApiControllerParameterData() : this(0, "", "", [])
+    {
+        // do nothing...
+    }
+
+    [Required]
+    [JsonPropertyName("index")]
+    public int Index { get; set; } = index;
+}
+
+public class ApiControllerEndpointProduceData(int statusCode, string name, string @namespace, string[] genericTypes)
+    : MemberDataBase(name, @namespace, genericTypes)
+{
+    public ApiControllerEndpointProduceData() : this(0, "", "", [])
+    {
+        // do nothing...
+    }
+
+    [Required]
+    [JsonPropertyName("statusCode")]
+    public int StatusCode { get; set; } = statusCode;
+}
+
+public class ApiControllerEndpointData(string name, string path, string summary, string description, string[] tags, NokoHttpMethod[] methods, ApiControllerEndpointProduceData[] produces, bool authorization)
+{
+    public ApiControllerEndpointData() : this("", "", "", "", [], [], [], false)
     {
         // do nothing...
     }
@@ -57,21 +80,21 @@ public class NokoWebApiControllerMethodInfo(string name, string path, string sum
     public string[] Tags { get; set; } = tags;
     
     [Required]
-    [JsonPropertyName("httpMethods")]
-    public string[] HttpHttpMethods { get; set; } = httpMethods;
+    [JsonPropertyName("methods")]
+    public NokoHttpMethod[] Methods { get; set; } = methods;
     
     [Required]
     [JsonPropertyName("produces")]
-    public NokoWebApiControllerMethodProduceInfo[] Produces { get; set; } = produces;
+    public ApiControllerEndpointProduceData[] Produces { get; set; } = produces;
     
     [Required]
     [JsonPropertyName("authorization")]
     public bool Authorization { get; set; } = authorization;
 }
 
-public class NokoWebApiControllerInfo(string name, string @namespace, string path, NokoWebApiControllerParameterInfo[] parameters, NokoWebApiControllerMethodInfo[] methods)
+public class ApiControllerData(string name, string @namespace, string path, ApiControllerParameterData[] parameters, ApiControllerEndpointData[] endpoints)
 {
-    public NokoWebApiControllerInfo() : this("", "", "", [], [])
+    public ApiControllerData() : this("", "", "", [], [])
     {
         // do nothing...
     }
@@ -90,9 +113,9 @@ public class NokoWebApiControllerInfo(string name, string @namespace, string pat
     
     [Required]
     [JsonPropertyName("parameters")]
-    public NokoWebApiControllerParameterInfo[] Parameters { get; set; } = parameters;
+    public ApiControllerParameterData[] Parameters { get; set; } = parameters;
     
     [Required]
-    [JsonPropertyName("methods")]
-    public NokoWebApiControllerMethodInfo[] Methods { get; set; } = methods;
+    [JsonPropertyName("endpoints")]
+    public ApiControllerEndpointData[] Endpoints { get; set; } = endpoints;
 }

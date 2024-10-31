@@ -20,8 +20,7 @@ public enum ScalarOpenApiTheme
     DeepSpace,
 }
 
-[StructLayout(LayoutKind.Sequential, Size = 1)]
-public sealed class ScalarOpenApiThemeValues
+public sealed class ScalarOpenApiThemeValue
 {
     public const string None = "none";
     public const string Alternate = "alternate";
@@ -84,7 +83,7 @@ public static class ScalarOpenApiThemeExtensions
     
     public static string GetValue(this ScalarOpenApiTheme code)
     {
-        return ScalarOpenApiThemeValues.FromCode(code);
+        return ScalarOpenApiThemeValue.FromCode(code);
     }
 }
 
