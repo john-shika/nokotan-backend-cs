@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using NokoWebApiSdk.Annotations;
 using NokoWebApiSdk.Cores.Utils;
 
@@ -6,6 +7,7 @@ namespace NokoWebApiSdk.Extensions.AppService;
 
 public static class AppServiceExtensions
 {
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "The member is accessed dynamically.")]
     public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Get Assemblies In Current App Domain
@@ -57,15 +59,15 @@ public static class AppServiceExtensions
     public static void UseAppServices(this WebApplication application, IWebHostEnvironment? env = null)
     {
         // Get App Services From App Service Collections
-        var appServiceConfigurables = application.Services.GetServices<IAppServiceInitialized>();
+        var appServices = application.Services.GetServices<IAppServiceInitialized>();
         
         // Get Web Host Environment
         env ??= application.Environment;
         
-        foreach (var appServiceConfigurable in appServiceConfigurables)
+        foreach (var appService in appServices)
         {
             // Configuring App Service With Web Application Context And Web Host Environment
-            appServiceConfigurable.OnConfigure(application, env);
+            appService.OnConfigure(application, env);
         }
     }
 }

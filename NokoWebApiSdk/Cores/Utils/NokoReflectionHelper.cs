@@ -1,11 +1,14 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace NokoWebApiSdk.Cores.Utils;
 
 public class NokoReflectionHelper(Type baseType)
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public Type BaseType => baseType;
     
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "The member is accessed dynamically.")]
     public MethodInfo? GetMethod(string mName, IDictionary<Type, Type>? gData, params Type[] pTypes)
     {
         gData ??= new Dictionary<Type, Type>();

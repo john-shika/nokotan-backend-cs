@@ -8,6 +8,7 @@ namespace NokoWebApiSdk.Extensions.ApiRepository;
 
 public static class ApiRepositoryExtensions
 {
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "The member is accessed dynamically.")]
     public static IServiceCollection AddApiRepositories(this IServiceCollection services, 
         Action<DbContextOptionsBuilder>? optionsAction = null, 
         ServiceLifetime contextLifetime = ServiceLifetime.Scoped, 
