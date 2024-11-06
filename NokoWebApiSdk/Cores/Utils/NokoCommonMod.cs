@@ -900,4 +900,59 @@ public static class NokoCommonMod
         }
         return items;
     }
+    
+    /// <summary>
+    /// Encodes a byte array to a Base64 string.
+    /// </summary>
+    /// <param name="data">The byte array to encode.</param>
+    /// <returns>A Base64 encoded string.</returns>
+    public static string EncodeBase64(byte[] data)
+    {
+        return Convert.ToBase64String(data);
+    }
+    
+    /// <summary>
+    /// Encodes a byte array to a URL-safe base64 string without padding.
+    /// </summary>
+    /// <param name="data">The byte array to encode.</param>
+    /// <returns>A URL-safe base64 encoded string.</returns>
+    public static string EncodeBase64UrlSafe(byte[] data)
+    {
+        // Standard Base64 encoding
+        var base64 = Convert.ToBase64String(data);
+
+        // Replace '+' with '-' and '/' with '_', and remove any trailing '='
+        return base64.Replace('+', '-').Replace('/', '_').TrimEnd('=');
+    }
+    
+    /// <summary>
+    /// Decodes a Base64 string to a byte array.
+    /// </summary>
+    /// <param name="base64">The Base64 encoded string to decode.</param>
+    /// <returns>The decoded byte array.</returns>
+    public static byte[] DecodeBase64(string base64)
+    {
+        return Convert.FromBase64String(base64);
+    }
+
+    /// <summary>
+    /// Decodes a URL-safe base64 string to a byte array.
+    /// </summary>
+    /// <param name="base64">The URL-safe base64 encoded string to decode.</param>
+    /// <returns>The decoded byte array.</returns>
+    public static byte[] DecodeBase64UrlSafe(string base64)
+    {
+        // Replace '-' with '+' and '_' with '/'
+        var temp = base64.Replace('-', '+').Replace('_', '/');
+
+        // Add padding if necessary
+        switch (base64.Length % 4)
+        {
+            case 2: temp += "=="; break;
+            case 3: temp += "="; break;
+        }
+
+        // Convert from Base64 string to byte array
+        return Convert.FromBase64String(temp);
+    }
 }
