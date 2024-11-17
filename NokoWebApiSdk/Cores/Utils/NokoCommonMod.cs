@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NokoWebApiSdk.Cores.Utils;
 
@@ -13,6 +14,92 @@ public static class NokoCommonMod
     public const string Punctuation = "!\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~";
     public const string WhiteSpace = " \t\n\r\v\f";
     public const string Printable = Digits + AlphaUpper + AlphaLower + Punctuation + WhiteSpace;
+    
+    public delegate void ForEachEntryHandler<in TKey, in TValue>(TKey key, TValue value);
+
+    /// <summary>
+    /// Iterates over each element in the enumerable and invokes the handler with the index and value of each element.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the elements in the enumerable.</typeparam>
+    /// <param name="enumerable">The collection of elements to iterate over.</param>
+    /// <param name="handler">The delegate to handle each element and its index.</param>
+    public static void ForEach<TValue>(IEnumerable<TValue> enumerable, ForEachEntryHandler<int, TValue> handler)
+    {
+        var i = 0;
+        foreach (var value in enumerable)
+        {
+            handler.Invoke(i, value);
+            i++;
+        }
+    }
+
+    /// <summary>
+    /// Iterates over each key-value pair in the dictionary and invokes the handler with the key and value of each entry.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+    /// <param name="dictionary">The dictionary to iterate over.</param>
+    /// <param name="handler">The delegate to handle each key-value pair.</param>
+    public static void ForEach<TKey, TValue>(IDictionary<TKey, TValue> dictionary, ForEachEntryHandler<TKey, TValue> handler)
+    {
+        foreach (var kv in dictionary)
+        {
+            handler.Invoke(kv.Key, kv.Value);
+        }
+    }
+
+    /// <summary>
+    /// Splits the string by the specified separator, trims each substring, and invokes the handler with the index and substring.
+    /// </summary>
+    /// <param name="value">The string to split.</param>
+    /// <param name="separator">The separator to use for splitting the string.</param>
+    /// <param name="handler">The delegate to handle each substring and its index.</param>
+    public static void ForEachStringSplit(string value, string separator, ForEachEntryHandler<int, string> handler)
+    {
+        var i = 0;
+        foreach (var word in value.Split(separator).Select((x) => x.Trim()))
+        {
+            if (word.Length == 0) continue;
+            handler.Invoke(i, word);
+            i++;
+        }
+    }
+
+    /// <summary>
+    /// Splits the string using the specified regular expression pattern, trims each substring, and invokes the handler with the index and substring.
+    /// </summary>
+    /// <param name="value">The string to split.</param>
+    /// <param name="pattern">The regular expression pattern to use for splitting the string.</param>
+    /// <param name="handler">The delegate to handle each substring and its index.</param>
+    public static void ForEachStringSplit(string value, Regex pattern, ForEachEntryHandler<int, string> handler)
+    {
+        var i = 0;
+        foreach (var word in pattern.Split(value).Select((x) => x.Trim()))
+        {
+            if (word.Length == 0) continue;
+            handler.Invoke(i, word);
+            i++;
+        }
+    }
+    
+    /// <summary>
+    /// Displays a fatal error message in red and formats the message if necessary.
+    /// </summary>
+    /// <param name="message">The main error message to display.</param>
+    /// <param name="args">Optional parameters for additional formatted messages.</param>
+    public static void FatalError(string message, params object?[] args)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+
+        if (args is { Length: > 0 })
+        {
+            message = string.Format(message, args);
+        }
+
+        Console.WriteLine(message);
+        Console.ResetColor();
+        Environment.Exit(1);
+    }
     
     /// <summary>
     /// IsNoneOrEmpty method checks if a string is null or has a length of zero.
