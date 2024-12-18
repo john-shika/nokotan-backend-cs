@@ -14,9 +14,9 @@ public class User(string? fullname, string username, string password, string? em
         // do nothing...
     }
 
-    [Column("fullname")]
-    [JsonPropertyName("fullname")]
-    public string? Fullname { get; set; } = fullname;
+    [Column("full_name")]
+    [JsonPropertyName("fullName")]
+    public string? FullName { get; set; } = fullname;
     
     [Required]
     [UniqueKey]

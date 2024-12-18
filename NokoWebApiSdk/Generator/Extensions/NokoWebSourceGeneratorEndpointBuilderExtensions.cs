@@ -5,7 +5,7 @@ namespace NokoWebApiSdk.Generator.Extensions;
 
 public static class NokoWebSourceGeneratorEndpointBuilderExtensions
 {
-    public static void EntryPoint<TEntryPoint>(this NokoWebApplication nokoWebApplication) 
+    public static void EntryPoint<TEntryPoint>(this NokoWebApplication noko) 
         where TEntryPoint : class, INokoWebSourceGeneratorEntryPoint, new()
     {
         var entryPoint = new TEntryPoint();
@@ -14,6 +14,6 @@ public static class NokoWebSourceGeneratorEndpointBuilderExtensions
             entryPoint.OnInitialized(application);
         };
         
-        nokoWebApplication.Listen(action.Listener);
+        noko.Listen(action.Listener);
     }
 }
