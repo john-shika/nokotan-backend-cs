@@ -9,8 +9,6 @@
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
-    <PackageVersion Include="Serilog" Version="4.1.1-dev-02320" />
-    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.5" />
-    <PackageVersion Include="SixLabors.ImageSharp.Drawing" Version="2.1.4" />
+    <PackageVersion Include="Serilog" Version="4.2.0" />
   </ItemGroup>
 </Project>

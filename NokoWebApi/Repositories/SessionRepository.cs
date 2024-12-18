@@ -12,9 +12,9 @@ public class SessionRepository(DbContextOptions<SessionRepository> options) : Ba
     {
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
         
         // modelBuilder.Entity<Session>((entity) =>
         // {

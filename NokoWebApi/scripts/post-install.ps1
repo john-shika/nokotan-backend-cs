@@ -1,8 +1,8 @@
 #!pwsh
 
 $currWorkDir = Get-Location
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-Set-Location $scriptDir -ErrorAction Stop
+$scriptRootDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+Set-Location $scriptRootDir -ErrorAction Stop
 Set-Location ..
 
 $downloads = @(

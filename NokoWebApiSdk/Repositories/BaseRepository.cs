@@ -60,23 +60,23 @@ public abstract class BaseRepository<TContext, TBaseModel>(DbContextOptions<TCon
     public LocalView<TBaseModel> Local => Db.Local;
     public int Count => Db.Count();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
 
         var baseModelType = typeof(BaseModel);
         // const string bModeIdName = nameof(BaseModel.Id);
         
         // Apply configurations to all entities derived from BaseModel
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        foreach (var entityType in builder.Model.GetEntityTypes())
         {
-            var modelType = entityType.ClrType;
+            var clrType = entityType.ClrType;
             
-            if (!baseModelType.IsAssignableFrom(modelType)) continue;
-            var entity = modelBuilder.Entity(modelType);
+            if (!baseModelType.IsAssignableFrom(clrType)) continue;
+            var entity = builder.Entity(clrType);
             
             // Apply UniqueKey configuration
-            foreach (var property in modelType.GetProperties())
+            foreach (var property in clrType.GetProperties())
             {
                 // High priority
                 var primaryKey = property.GetCustomAttribute<PrimaryKeyAttribute>();
