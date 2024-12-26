@@ -47,7 +47,7 @@ public static class NokoAuthenticationMod
         var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
         var audiences = new List<string>{audience};
         
-        NokoCommonMod.MergeAnyListItems(audiences, nokoWebToken.Audiences);
+        NokoCommonMod.MergeAnyItemsList(audiences, nokoWebToken.Audiences);
         
         token.Payload.Add(NokoJwtClaimTags.Aud.GetValue(), string.Join(",", audiences));
         

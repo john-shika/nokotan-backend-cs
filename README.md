@@ -1,5 +1,22 @@
 # NokoWebApi (Nokotan) AspNetCore .NET 9
 
+## dotnet upgrade
+
+```shell
+# Nuget Man CPM, SDK-Style, choose: N, Y, ...
+upgrade-assistant upgrade
+
+# update latest
+dotnet outdated -u
+
+# dotnet run
+dotnet run --project <projectName>
+
+# dotnet build
+dotnet build -c:<Debug|Release>
+dotnet publish -c:<Debug|Release>
+```
+
 ## dotnet workload
 
 ```shell

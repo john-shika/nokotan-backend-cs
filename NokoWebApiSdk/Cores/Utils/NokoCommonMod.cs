@@ -975,7 +975,7 @@ public static class NokoCommonMod
     /// <param name="items">The existing list of items.</param>
     /// <param name="newItems">The list of new items to be added if they are not already present in the existing list.</param>
     /// <returns>The merged list with all unique items.</returns>
-    public static IList<T> MergeAnyListItems<T>(IList<T> items, IList<T> newItems)
+    public static IList<T> MergeAnyItemsList<T>(IList<T> items, IList<T> newItems)
         where T : IComparable<T>, IEquatable<T>
     {
         foreach (var item in newItems)
