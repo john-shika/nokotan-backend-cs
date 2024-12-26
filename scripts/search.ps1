@@ -5,9 +5,9 @@ param (
 )
 
 $currWorkDir = Get-Location
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$scriptRootDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
-Set-Location $scriptDir -ErrorAction Stop
+Set-Location $scriptRootDir -ErrorAction Stop
 Set-Location ..
 
 $files = Get-ChildItem -Recurse -File -Filter *.cs

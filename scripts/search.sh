@@ -7,8 +7,8 @@ if [ -z "$pattern" ]; then
 fi
 
 currWorkDir=$(pwd)
-scriptDir=$(dirname "$0")
-cd "$scriptDir" || exit 1
+scriptRootDir=$(dirname "$0")
+cd "$scriptRootDir" || exit 1
 cd ..
 
 files=$(find . -type f -name '*.cs')
